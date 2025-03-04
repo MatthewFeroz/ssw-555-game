@@ -1,9 +1,15 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1741107595
+::res://::1741123858
 icon.svg::CompressedTexture2D/CompressedTexture2D::4297065969631916907::1741098397::1741098397::1::::<><><>0<>0<>161ce6f5aba4449514ed8961f77e38c8<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
 README.md::TextFile/TextFile::-1::1741098397::0::1::::<><><>0<>0<><>::
-BackgroundSpaceMap.tscn::PackedScene::5422106881477215026::1741107595::0::1::::<><><>0<>0<><>::uid://clagag22hf2pm::::res://SpaceMap/galaxy1.jpg<>uid://bktmyh8t33pvh::::res://SpaceMap/earth_png.png<>uid://dt3l1jjanu28i::::res://SpaceMap/planet2.png<>uid://dluaw0xawymiv::::res://SpaceMap/planet3.png<>uid://dd1dqtcsj8kes::::res://SpaceMap/planet4.png
-::res://SpaceMap/::1741107726
+BackgroundSpaceMap.tscn::PackedScene::5422106881477215026::1741123858::0::1::::<><><>0<>0<><>::uid://clagag22hf2pm::::res://SpaceMap/galaxy1.jpg<>uid://bktmyh8t33pvh::::res://SpaceMap/earth_png.png<>uid://dt3l1jjanu28i::::res://SpaceMap/planet2.png<>uid://dluaw0xawymiv::::res://SpaceMap/planet3.png<>uid://dyuvwc3m48ull::::res://planet2_button.gd<>uid://brj04gfmi1l7l::::res://lesson_1.tscn<>uid://dd1dqtcsj8kes::::res://SpaceMap/planet4.png<>uid://cwvo7liefqklt::::res://SpaceMap/planet 5.png<>uid://dd4k1yuo42f74::::res://planet3_button.gd<>uid://liywc0r121p5::::res://mini-game_1.tscn
+lesson_1.tscn::PackedScene::3599780461589667591::1741123858::0::1::::<><><>0<>0<><>::uid://bkuo4uepajlr1::::res://SpaceMap/galaxy.jpg
+planet2_button.gd::GDScript::8886396346673802665::1741120715::0::1::::<>Button<><>0<>0<><>::
+mini-game_1.tscn::PackedScene::790088941818186716::1741123858::0::1::::<><><>0<>0<><>::
+planet3_button.gd::GDScript::7430350429562735321::1741120706::0::1::::<>Button<><>0<>0<><>::
+::res://Lesson1/::1741124182
+quantum_computer.jpg::CompressedTexture2D::711758832864172040::1741124159::1741124188::1::::<><><>0<>0<>8128bdd85f699a880fe406b750e37453<>res://.godot/imported/quantum_computer.jpg-8eb88414998e85838900b03b89ade1c4.ctex::
+::res://SpaceMap/::1741107728
 earth_png.png::CompressedTexture2D::3128304179911281485::1741106600::1741107120::1::::<><><>0<>0<>27f45ed16d8b4b289c338a640eded761<>res://.godot/imported/earth_png.png-655174b0c564d840c3f25c887cc371a7.ctex::
 galaxy1.jpg::CompressedTexture2D::5545283307447316270::1741106177::1741107120::1::::<><><>0<>0<>c33c2ee2b719f31e3fd3657e0f6bf178<>res://.godot/imported/galaxy1.jpg-51c664f59a95459fc4448b5072faa063.ctex::
 galaxy.jpg::CompressedTexture2D::3130499558404711856::1741011567::1741107120::1::::<><><>0<>0<>af13d86a66b2e2890d190667c1a345fd<>res://.godot/imported/galaxy.jpg-9f0d18b1db93dbd4e4e7f5cce09609fa.ctex::
