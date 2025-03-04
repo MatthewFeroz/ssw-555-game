@@ -1,0 +1,80 @@
+[gd_scene load_steps=7 format=3 uid="uid://cjirkqh35qrve"]
+
+[ext_resource type="Texture2D" uid="uid://clagag22hf2pm" path="res://SpaceMap/galaxy1.jpg" id="1_w6rk8"]
+[ext_resource type="Texture2D" uid="uid://bktmyh8t33pvh" path="res://SpaceMap/earth_png.png" id="2_bmd6a"]
+[ext_resource type="Texture2D" uid="uid://dt3l1jjanu28i" path="res://SpaceMap/planet2.png" id="3_2m804"]
+[ext_resource type="Texture2D" uid="uid://dluaw0xawymiv" path="res://SpaceMap/planet3.png" id="4_2m804"]
+[ext_resource type="Texture2D" uid="uid://dd1dqtcsj8kes" path="res://SpaceMap/planet4.png" id="5_qmej6"]
+[ext_resource type="Texture2D" uid="uid://cwvo7liefqklt" path="res://SpaceMap/planet 5.png" id="6_qmej6"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="GalaxyBackground" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -2.0
+offset_top = -1.0
+offset_right = 1130.0
+offset_bottom = 611.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_w6rk8")
+
+[node name="Planet 1 (Earth)" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.85
+anchor_top = -0.2
+anchor_right = 5.025
+anchor_bottom = 4.225
+texture = ExtResource("2_bmd6a")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Planet 2" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 13.05
+anchor_top = 1.725
+anchor_right = 17.375
+anchor_bottom = 6.35
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_2m804")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Planet 3" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 972.0
+offset_top = 25.0
+offset_right = 1130.0
+offset_bottom = 179.0
+texture = ExtResource("4_2m804")
+expand_mode = 1
+
+[node name="Planet 4" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 22.25
+anchor_top = 10.1
+anchor_right = 26.55
+anchor_bottom = 14.475
+texture = ExtResource("5_qmej6")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Planet 5" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 435.0
+offset_top = 413.0
+offset_right = 595.0
+offset_bottom = 585.0
+texture = ExtResource("6_qmej6")
+expand_mode = 1
