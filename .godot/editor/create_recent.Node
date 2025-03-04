@@ -1,9 +1,9 @@
+Button
 Label
 TextureRect
 RichTextLabel
 VBoxContainer
 ScrollContainer
 Panel
-Button
 Control
 Line2D
