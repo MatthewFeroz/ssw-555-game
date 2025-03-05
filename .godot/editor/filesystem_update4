@@ -1,5 +1,6 @@
 res://BackgroundSpaceMap.tscn
-res://planet2_button.gd
 res://lesson_1.tscn
-res://planet3_button.gd
 res://mini-game_1.tscn
+res://'next'_button.gd
+res://lesson_1.gd
+res://understandButton.gd
