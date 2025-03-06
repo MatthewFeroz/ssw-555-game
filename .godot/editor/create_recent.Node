@@ -1,3 +1,6 @@
+Polygon2D
+CollisionShape2D
+Area2D
 Label
 TextureRect
 Button

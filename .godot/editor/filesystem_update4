@@ -1,6 +1,5 @@
+res://Character/character.tscn
+res://Character/character.gd
 res://BackgroundSpaceMap.tscn
 res://lesson_1.tscn
 res://mini-game_1.tscn
-res://'next'_button.gd
-res://lesson_1.gd
-res://understandButton.gd
