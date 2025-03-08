@@ -6,7 +6,8 @@
 radius = 21.0
 height = 58.0
 
-[node name="Character" type="Area2D"]
+[node name="Character" type="CharacterBody2D"]
+motion_mode = 1
 script = ExtResource("1_k3002")
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
@@ -14,7 +15,5 @@ position = Vector2(0, -5)
 shape = SubResource("CapsuleShape2D_53kqe")
 
 [node name="Spaceship" type="Polygon2D" parent="."]
-position = Vector2(0, -10)
-rotation = 3.14155
 antialiased = true
 polygon = PackedVector2Array(0, 24, 18, -24, 0, -18, -18, -24)

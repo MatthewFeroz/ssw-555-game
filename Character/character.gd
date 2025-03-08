@@ -1,43 +1,46 @@
-extends Area2D
+extends CharacterBody2D
 
-# basic movement code taken from https://docs.godotengine.org/en/stable/getting_started/step_by_step/scripting_player_input.html
-# code taken from https://gamemechanicexplorer.com/#thrust-1
 
 @export var rotation_speed = PI # radians/second
 @export var acceleration = 200 # pixels/second/second
 @export var max_velocity = 250 # pixels/second
+@export var damping = 3 # frames/second
 var screen_size : Vector2
 var player_size : Vector2
+var min_player_pos : Vector2
+var max_player_pos : Vector2
 
 func _ready():
+	# prevent the character from going offscreen
 	print("Initial Position: (" + str(position.x) + ", " + str(position.y) + ")")
 	screen_size = get_viewport_rect().size
 	player_size = $CollisionShape.shape.get_rect().size
-	var min_position: Vector2 = Vector2.ZERO + player_size / 2
-	var max_position: Vector2 = screen_size - player_size / 2
-	position = position.clamp(min_position, max_position)
+	min_player_pos = Vector2.ZERO + player_size / 2
+	max_player_pos = screen_size - player_size / 2
+	position = position.clamp(min_player_pos, max_player_pos)
 	print("New Position: (" + str(position.x) + ", " + str(position.y) + ")")
 
-func _process(delta):
-	# keep the ship on screen
-	position.x = wrapf(position.x, 0, screen_size.x)
-	position.y = wrapf(position.y, 0, screen_size.y)
+# movement code taken from https://youtu.be/FmIo8iBV1W8
+# TODO: decouple input into its own function; add functionality to control with mouse
+func _physics_process(delta: float) -> void:
+	# determine the input vector
+	var input_vector = Vector2(0, 1 if Input.is_action_pressed("ui_up") else 0)
 	
-	var direction = 0
+	# prevent the character from going offscreen
+	position = position.clamp(min_player_pos, max_player_pos)
+
+	# calculate the character's velocity (and limit it to max velocity)
+	velocity += input_vector.rotated(rotation) * acceleration
+	velocity = velocity.limit_length(max_velocity)
+	
+	# rotate the character based on the input
 	if Input.is_action_pressed("ui_left"):
-		direction = -1
+		rotate(-rotation_speed * delta)
 	if Input.is_action_pressed("ui_right"):
-		direction = 1
+		rotate(rotation_speed * delta)
 	
-	rotation += rotation_speed * direction * delta
-	
-	# calculate the velocity
-	var velocity : Vector2 = Vector2.ZERO
-	if Input.is_action_pressed("ui_up"):
-		# TODO: ensure that the spaceship actually accelerates, for now this uses the
-		velocity = Vector2.UP.rotated(rotation) * acceleration
+	# if the user isn't moving forward, then let the velocity fall back to 0
+	if input_vector.y == 0:
+		velocity = velocity.move_toward(Vector2.ZERO, damping)
 		
-		# TODO: prevent the spaceship from exceeding the max speed
-	
-	# move the character
-	position += velocity * delta
+	move_and_slide()
