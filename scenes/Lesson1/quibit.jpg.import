@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dluaw0xawymiv"
-path="res://.godot/imported/planet3.png-077f2f18e16881ca6a0a63556d8ca144.ctex"
+uid="uid://dwgc8itjyrrcs"
+path="res://.godot/imported/quibit.jpg-d8c111dc7579583bfcafddeeb1774978.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://SpaceMap/planet3.png"
-dest_files=["res://.godot/imported/planet3.png-077f2f18e16881ca6a0a63556d8ca144.ctex"]
+source_file="res://scenes/Lesson1/quibit.jpg"
+dest_files=["res://.godot/imported/quibit.jpg-d8c111dc7579583bfcafddeeb1774978.ctex"]
 
 [params]
 

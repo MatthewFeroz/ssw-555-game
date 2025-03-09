@@ -1,9 +1,9 @@
 [gd_scene load_steps=9 format=3 uid="uid://brj04gfmi1l7l"]
 
-[ext_resource type="Texture2D" uid="uid://bkuo4uepajlr1" path="res://SpaceMap/galaxy.jpg" id="1_esa40"]
-[ext_resource type="Texture2D" uid="uid://ke1tf78qgip1" path="res://Lesson1/quantum_computer.jpg" id="2_8m4ky"]
-[ext_resource type="Script" uid="uid://b4vvakap8k7vu" path="res://understandButton.gd" id="3_bs7th"]
-[ext_resource type="Texture2D" uid="uid://dwgc8itjyrrcs" path="res://Lesson1/quibit.jpg" id="3_nqqdn"]
+[ext_resource type="Texture2D" uid="uid://bkuo4uepajlr1" path="res://scenes/SpaceMap/galaxy.jpg" id="1_esa40"]
+[ext_resource type="Texture2D" uid="uid://ke1tf78qgip1" path="res://scenes/Lesson1/quantum_computer.jpg" id="2_8m4ky"]
+[ext_resource type="Script" uid="uid://b4vvakap8k7vu" path="res://scripts/understandButton.gd" id="3_bs7th"]
+[ext_resource type="Texture2D" uid="uid://dwgc8itjyrrcs" path="res://scenes/Lesson1/quibit.jpg" id="3_nqqdn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_esa40"]
 bg_color = Color(1, 1, 1, 1)

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://clagag22hf2pm"
-path="res://.godot/imported/galaxy1.jpg-51c664f59a95459fc4448b5072faa063.ctex"
+uid="uid://dluaw0xawymiv"
+path="res://.godot/imported/planet3.png-2e16162a4cbdb33ac6f8ad5ef54c8def.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://SpaceMap/galaxy1.jpg"
-dest_files=["res://.godot/imported/galaxy1.jpg-51c664f59a95459fc4448b5072faa063.ctex"]
+source_file="res://scenes/SpaceMap/planet3.png"
+dest_files=["res://.godot/imported/planet3.png-2e16162a4cbdb33ac6f8ad5ef54c8def.ctex"]
 
 [params]
 

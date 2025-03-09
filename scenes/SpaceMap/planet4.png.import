@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ke1tf78qgip1"
-path="res://.godot/imported/quantum_computer.jpg-8eb88414998e85838900b03b89ade1c4.ctex"
+uid="uid://dd1dqtcsj8kes"
+path="res://.godot/imported/planet4.png-889536e1acd1edc789e7216da86693a9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Lesson1/quantum_computer.jpg"
-dest_files=["res://.godot/imported/quantum_computer.jpg-8eb88414998e85838900b03b89ade1c4.ctex"]
+source_file="res://scenes/SpaceMap/planet4.png"
+dest_files=["res://.godot/imported/planet4.png-889536e1acd1edc789e7216da86693a9.ctex"]
 
 [params]
 

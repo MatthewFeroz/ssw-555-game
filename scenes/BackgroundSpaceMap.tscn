@@ -1,15 +1,15 @@
 [gd_scene load_steps=11 format=3 uid="uid://cjirkqh35qrve"]
 
-[ext_resource type="Texture2D" uid="uid://clagag22hf2pm" path="res://SpaceMap/galaxy1.jpg" id="1_w6rk8"]
-[ext_resource type="Texture2D" uid="uid://bktmyh8t33pvh" path="res://SpaceMap/earth_png.png" id="2_bmd6a"]
-[ext_resource type="Texture2D" uid="uid://dt3l1jjanu28i" path="res://SpaceMap/planet2.png" id="3_2m804"]
-[ext_resource type="Texture2D" uid="uid://dluaw0xawymiv" path="res://SpaceMap/planet3.png" id="4_2m804"]
-[ext_resource type="Script" uid="uid://dyuvwc3m48ull" path="res://planet2_button.gd" id="4_kgwen"]
-[ext_resource type="PackedScene" uid="uid://brj04gfmi1l7l" path="res://lesson_1.tscn" id="5_3jwhq"]
-[ext_resource type="Texture2D" uid="uid://dd1dqtcsj8kes" path="res://SpaceMap/planet4.png" id="5_qmej6"]
-[ext_resource type="Texture2D" uid="uid://cwvo7liefqklt" path="res://SpaceMap/planet 5.png" id="6_qmej6"]
-[ext_resource type="Script" uid="uid://dd4k1yuo42f74" path="res://planet3_button.gd" id="7_endr3"]
-[ext_resource type="PackedScene" uid="uid://liywc0r121p5" path="res://mini-game_1.tscn" id="8_w20kw"]
+[ext_resource type="Texture2D" uid="uid://clagag22hf2pm" path="res://scenes/SpaceMap/galaxy1.jpg" id="1_3bbn0"]
+[ext_resource type="Texture2D" uid="uid://bktmyh8t33pvh" path="res://scenes/SpaceMap/earth_png.png" id="2_oa1v4"]
+[ext_resource type="Texture2D" uid="uid://dt3l1jjanu28i" path="res://scenes/SpaceMap/planet2.png" id="3_jhosq"]
+[ext_resource type="Script" uid="uid://dyuvwc3m48ull" path="res://scripts/planet2_button.gd" id="4_am0mu"]
+[ext_resource type="PackedScene" uid="uid://brj04gfmi1l7l" path="res://levels/lesson_1.tscn" id="5_xk58y"]
+[ext_resource type="Texture2D" uid="uid://dluaw0xawymiv" path="res://scenes/SpaceMap/planet3.png" id="6_33mwi"]
+[ext_resource type="Script" uid="uid://dd4k1yuo42f74" path="res://scripts/planet3_button.gd" id="7_ghhvo"]
+[ext_resource type="PackedScene" uid="uid://liywc0r121p5" path="res://levels/mini-game_1.tscn" id="8_66ear"]
+[ext_resource type="Texture2D" uid="uid://dd1dqtcsj8kes" path="res://scenes/SpaceMap/planet4.png" id="9_k4sr1"]
+[ext_resource type="Texture2D" uid="uid://cwvo7liefqklt" path="res://scenes/SpaceMap/planet 5.png" id="10_kknya"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -28,7 +28,7 @@ offset_right = 1130.0
 offset_bottom = 611.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_w6rk8")
+texture = ExtResource("1_3bbn0")
 
 [node name="Planet 1 (Earth)" type="TextureRect" parent="."]
 layout_mode = 1
@@ -37,7 +37,7 @@ anchor_left = 1.15
 anchor_top = 0.375
 anchor_right = 5.325
 anchor_bottom = 4.8
-texture = ExtResource("2_bmd6a")
+texture = ExtResource("2_oa1v4")
 expand_mode = 1
 metadata/_edit_use_anchors_ = true
 
@@ -50,7 +50,7 @@ anchor_right = 17.375
 anchor_bottom = 6.35
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("3_2m804")
+texture = ExtResource("3_jhosq")
 expand_mode = 1
 metadata/_edit_use_anchors_ = true
 
@@ -61,8 +61,8 @@ offset_top = 32.0
 offset_right = 162.0
 offset_bottom = 151.0
 flat = true
-script = ExtResource("4_kgwen")
-lesson_scene = ExtResource("5_3jwhq")
+script = ExtResource("4_am0mu")
+lesson_scene = ExtResource("5_xk58y")
 
 [node name="Planet 3 - MG 1" type="TextureRect" parent="."]
 layout_mode = 0
@@ -70,7 +70,7 @@ offset_left = 972.0
 offset_top = 25.0
 offset_right = 1130.0
 offset_bottom = 179.0
-texture = ExtResource("4_2m804")
+texture = ExtResource("6_33mwi")
 expand_mode = 1
 
 [node name="Button" type="Button" parent="Planet 3 - MG 1"]
@@ -80,8 +80,8 @@ offset_top = 19.0
 offset_right = 141.0
 offset_bottom = 137.0
 flat = true
-script = ExtResource("7_endr3")
-lesson_scene = ExtResource("8_w20kw")
+script = ExtResource("7_ghhvo")
+lesson_scene = ExtResource("8_66ear")
 
 [node name="Planet 4 - L2" type="TextureRect" parent="."]
 layout_mode = 1
@@ -90,7 +90,7 @@ anchor_left = 22.25
 anchor_top = 10.1
 anchor_right = 26.55
 anchor_bottom = 14.475
-texture = ExtResource("5_qmej6")
+texture = ExtResource("9_k4sr1")
 expand_mode = 1
 metadata/_edit_use_anchors_ = true
 
@@ -100,7 +100,7 @@ offset_left = 435.0
 offset_top = 413.0
 offset_right = 595.0
 offset_bottom = 585.0
-texture = ExtResource("6_qmej6")
+texture = ExtResource("10_kknya")
 expand_mode = 1
 
 [node name="Line2D" type="Line2D" parent="."]
