@@ -1,3 +1,9 @@
+RigidBody2D
+RayCast2D
+Area2D
+CharacterBody2D
+Polygon2D
+CollisionShape2D
 Label
 TextureRect
 Button
