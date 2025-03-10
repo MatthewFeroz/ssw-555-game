@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://dhau8u44q7blp"]
+
+[ext_resource type="Script" uid="uid://c1ea3bbmwwuis" path="res://scripts/character.gd" id="1_agfs1"]
+[ext_resource type="PackedScene" uid="uid://d2oa2xrt74hqg" path="res://scripts/coin_base.tscn" id="2_rkhd4"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_53kqe"]
+radius = 21.0
+height = 58.0
+
+[node name="Character" type="CharacterBody2D"]
+motion_mode = 1
+script = ExtResource("1_agfs1")
+
+[node name="CollisionShape" type="CollisionShape2D" parent="."]
+position = Vector2(0, -5)
+shape = SubResource("CapsuleShape2D_53kqe")
+
+[node name="Spaceship" type="Polygon2D" parent="."]
+antialiased = true
+polygon = PackedVector2Array(0, 24, 18, -24, 0, -18, -18, -24)
+uv = PackedVector2Array(0, 24, 18, -24, 0, -18, -18, -24)
+
+[node name="Coins" type="Node2D" parent="."]
+position = Vector2(44, -17)
+
+[node name="CoinBase" parent="Coins" instance=ExtResource("2_rkhd4")]
+position = Vector2(-8, 42)

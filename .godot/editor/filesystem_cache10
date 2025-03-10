@@ -1,5 +1,5 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1741537521
+::res://::1741574800
 icon.svg::CompressedTexture2D/CompressedTexture2D::8301742760376911387::1741040657::1741536816::1::::<><><>0<>0<>cb326247aa72d25db54ee9427f583c24<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
 README.md::TextFile/TextFile::-1::1741125389::0::1::::<><><>0<>0<><>::
 ::res://addons/::1741537405
@@ -122,10 +122,23 @@ green.png::CompressedTexture2D/CompressedTexture2D::3896279560051998512::1741537
 red.png::CompressedTexture2D/CompressedTexture2D::2443263267725858415::1741537406::1741537406::1::::<><><>0<>0<>de7da5cb5e10aa908889f3b4d7d249c4<>res://.godot/imported/red.png-47a557c3922e800f76686bc1a4ad0c3c.ctex::
 Script.svg::CompressedTexture2D/CompressedTexture2D::4817060143842260657::1741537406::1741537406::1::::<><><>0<>0<>05e1c91ae4a3e5ff80a257ec9b9f659c<>res://.godot/imported/Script.svg-34c66aae9c985e3e0470426acbbcda04.ctex::
 yellow.png::CompressedTexture2D/CompressedTexture2D::1043265824178416429::1741537406::1741537406::1::::<><><>0<>0<>1f29ae3064a14df675b46036c620de5d<>res://.godot/imported/yellow.png-b3cf3d463958a169d909273d3d742052.ctex::
-::res://assets/::1741537011
+::res://assets/::1741571406
 ::res://assets/audio/::1741535492
 ::res://assets/fonts/::1741535496
-::res://assets/sprites/::1741537271
+::res://assets/Lesson1/::1741569484
+quantum_computer.jpg::CompressedTexture2D/CompressedTexture2D::711758832864172040::1741125389::1741569483::1::::<><><>0<>0<>10a40c9800478ae7af29ce4e61ce5970<>res://.godot/imported/quantum_computer.jpg-c665783840f1574d45115383550703c7.ctex::
+quibit.jpg::CompressedTexture2D/CompressedTexture2D::8715983692804532610::1741532796::1741569484::1::::<><><>0<>0<>9d9ca1720d7b49a63c30cb80f6f7628d<>res://.godot/imported/quibit.jpg-2f895a86ddb7897128b464a1aded7d10.ctex::
+::res://assets/SpaceMap/::1741569478
+earth_png.png::CompressedTexture2D/CompressedTexture2D::3128304179911281485::1741125389::1741569478::1::::<><><>0<>0<>41b2a623669200698dd9f98e0c259a52<>res://.godot/imported/earth_png.png-ef973a28082e1199406dcd264a96b31e.ctex::
+galaxy1.jpg::CompressedTexture2D/CompressedTexture2D::5545283307447316270::1741125389::1741569478::1::::<><><>0<>0<>ac59b4f4fb2f8b6ce1e9bd4f011b1bbd<>res://.godot/imported/galaxy1.jpg-b03e8b82b88f29838a52470696892db4.ctex::
+galaxy.jpg::CompressedTexture2D/CompressedTexture2D::3130499558404711856::1741125389::1741569478::1::::<><><>0<>0<>bf3e1819c0c380f4591c0fcf66b03768<>res://.godot/imported/galaxy.jpg-f7a7168e9e6dbaa2e257900dd21a977c.ctex::
+planet2.png::CompressedTexture2D/CompressedTexture2D::8551367461509132422::1741125389::1741569478::1::::<><><>0<>0<>60588c3d31c785113f2eccfe78e557e4<>res://.godot/imported/planet2.png-de226bd1c3ca5136c3b6986b7cb4c366.ctex::
+planet3.png::CompressedTexture2D/CompressedTexture2D::7972667522289374645::1741125389::1741569478::1::::<><><>0<>0<>073a989f6594e8ea2d3a066854c57d5a<>res://.godot/imported/planet3.png-1d07113e39ab7e8635da98b9c80e0775.ctex::
+planet4.png::CompressedTexture2D/CompressedTexture2D::7423714129144167194::1741125389::1741569478::1::::<><><>0<>0<>bffe625e775ae64030725316bbf6f793<>res://.godot/imported/planet4.png-b9b9aa82c9f0d092cee4486bd49e0048.ctex::
+planet 5.png::CompressedTexture2D/CompressedTexture2D::6361255633866208129::1741125389::1741569478::1::::<><><>0<>0<>142a5fba40c44669b4c60aa62061fd40<>res://.godot/imported/planet 5.png-885cd1001d635a27a3c1d7d0cf005910.ctex::
+::res://assets/sprites/::1741571406
+items.png::CompressedTexture2D/CompressedTexture2D::8351707190627610553::1741570912::1741570917::1::::<><><>0<>0<>c3860ee55747479a0cee5d6102308de3<>res://.godot/imported/items.png-bbdc37fb0594eb66b996033d9edd41a1.ctex::
+power-up.png::CompressedTexture2D/CompressedTexture2D::5819426999108279427::1741571401::1741571406::1::::<><><>0<>0<>c96bc9b95a890d75d98af923709e5a80<>res://.godot/imported/power-up.png-6b1065d1b73b597a7cd3b70782ee2d3f.ctex::
 ::res://assets/sprites/space-marine/::1741537272
 Spritesheet.png::CompressedTexture2D/CompressedTexture2D::6395385974710566169::1741537271::1741537272::1::::<><><>0<>0<>cb2c9e4f21c0c6c8d60f3f183a37200c<>res://.godot/imported/Spritesheet.png-4afd87603d1877dbd41b8c82c3e93848.ctex::
 ::res://assets/sprites/space-marine/Sprites/::1741537271
@@ -237,29 +250,25 @@ throw8.png::CompressedTexture2D/CompressedTexture2D::3950771005615205101::174153
 ::res://assets/textures/::1741535483
 ::res://builds/::1741535673
 ::res://config/::1741535666
-::res://levels/::1741535896
-lesson_1.tscn::PackedScene/PackedScene::3599780461589667591::1741535896::0::1::::<><><>0<>0<><>::uid://bkuo4uepajlr1::::res://scenes/SpaceMap/galaxy.jpg<>uid://ke1tf78qgip1::::res://scenes/Lesson1/quantum_computer.jpg<>uid://b4vvakap8k7vu::::res://scripts/understandButton.gd<>uid://dwgc8itjyrrcs::::res://scenes/Lesson1/quibit.jpg
-mini-game_1.tscn::PackedScene/PackedScene::790088941818186716::1741533369::0::1::::<><><>0<>0<><>::
-::res://scenes/::1741537069
-BackgroundSpaceMap.tscn::PackedScene/PackedScene::5422106881477215026::1741537069::0::1::::<><><>0<>0<><>::uid://clagag22hf2pm::::res://scenes/SpaceMap/galaxy1.jpg<>uid://bktmyh8t33pvh::::res://scenes/SpaceMap/earth_png.png<>uid://dt3l1jjanu28i::::res://scenes/SpaceMap/planet2.png<>uid://dyuvwc3m48ull::::res://scripts/planet2_button.gd<>uid://brj04gfmi1l7l::::res://levels/lesson_1.tscn<>uid://dluaw0xawymiv::::res://scenes/SpaceMap/planet3.png<>uid://dd4k1yuo42f74::::res://scripts/planet3_button.gd<>uid://liywc0r121p5::::res://levels/mini-game_1.tscn<>uid://dd1dqtcsj8kes::::res://scenes/SpaceMap/planet4.png<>uid://cwvo7liefqklt::::res://scenes/SpaceMap/planet 5.png
-::res://scenes/Lesson1/::1741536816
-quantum_computer.jpg::CompressedTexture2D/CompressedTexture2D::711758832864172040::1741125389::1741536816::1::::<><><>0<>0<>f94342a18cdea1a843168ea4fc7e7d3b<>res://.godot/imported/quantum_computer.jpg-3b0ef5f464021893bf831c44e545675e.ctex::
-quibit.jpg::CompressedTexture2D/CompressedTexture2D::8715983692804532610::1741532796::1741536816::1::::<><><>0<>0<>0028996389def47e074933e36ea3a1c1<>res://.godot/imported/quibit.jpg-d8c111dc7579583bfcafddeeb1774978.ctex::
-::res://scenes/SpaceMap/::1741536816
-earth_png.png::CompressedTexture2D/CompressedTexture2D::3128304179911281485::1741125389::1741536816::1::::<><><>0<>0<>54041537f05e07685c8cb22e3a168c4f<>res://.godot/imported/earth_png.png-49a18ff9bacb19fc139ca8aa8aa6444e.ctex::
-galaxy1.jpg::CompressedTexture2D/CompressedTexture2D::5545283307447316270::1741125389::1741536816::1::::<><><>0<>0<>9f5ebee756b4f5ff2a7371021c7ab9c8<>res://.godot/imported/galaxy1.jpg-0fb94417a0aaab502be62172dba84844.ctex::
-galaxy.jpg::CompressedTexture2D/CompressedTexture2D::3130499558404711856::1741125389::1741536816::1::::<><><>0<>0<>b6baab0f3c3cbe2e09b5ae135c593931<>res://.godot/imported/galaxy.jpg-6fe4266537bd37e68dcffe68dd346516.ctex::
-planet2.png::CompressedTexture2D/CompressedTexture2D::8551367461509132422::1741125389::1741536816::1::::<><><>0<>0<>3810f5820afba954e767adcaf607dcc3<>res://.godot/imported/planet2.png-5a5fb81cd2d9ac16ac448c131f2aa531.ctex::
-planet3.png::CompressedTexture2D/CompressedTexture2D::7972667522289374645::1741125389::1741536816::1::::<><><>0<>0<>4c364232593e1088fb0a270fcf626500<>res://.godot/imported/planet3.png-2e16162a4cbdb33ac6f8ad5ef54c8def.ctex::
-planet4.png::CompressedTexture2D/CompressedTexture2D::7423714129144167194::1741125389::1741536816::1::::<><><>0<>0<>037569084458c7e7383bb0e7ed4598d6<>res://.godot/imported/planet4.png-889536e1acd1edc789e7216da86693a9.ctex::
-planet 5.png::CompressedTexture2D/CompressedTexture2D::6361255633866208129::1741125389::1741536816::1::::<><><>0<>0<>391d78a3c8dd6071f92d993222d7be51<>res://.godot/imported/planet 5.png-a441a3a8fee318f70a9ae6e586e55d8c.ctex::
-::res://scripts/::1741535896
+::res://levels/::1741571404
+::res://scenes/::1741575475
+character.tscn::PackedScene::7651858324206319593::1741575475::0::1::::<><><>0<>0<><>::
+coin_base.tscn::PackedScene::4924789558171737622::1741575475::0::1::::<><><>0<>0<><>::uid://ccv60yxsrktcf::::res://scripts/coin_base.gd<>uid://co58d28uflap4::::res://assets/sprites/power-up.png
+lesson_1.tscn::PackedScene/PackedScene::3599780461589667591::1741569483::0::1::::<><><>0<>0<><>::uid://bkuo4uepajlr1::::res://assets/SpaceMap/galaxy.jpg<>uid://ke1tf78qgip1::::res://assets/Lesson1/quantum_computer.jpg<>uid://b4vvakap8k7vu::::res://scripts/understandButton.gd<>uid://dwgc8itjyrrcs::::res://assets/Lesson1/quibit.jpg
+main_scene1.tscn::PackedScene::4983369208131927832::1741575475::0::1::::<><><>0<>0<><>::uid://cjirkqh35qrve::::res://scenes/main_scene.tscn<>uid://dhau8u44q7blp::::res://scenes/character.tscn<>uid://ccfutgtg1xdbq::::res://scenes/coin_base.tscn
+main_scene.tscn::PackedScene::5422106881477215026::1741575475::0::1::::<><><>0<>0<><>::uid://clagag22hf2pm::::res://assets/SpaceMap/galaxy1.jpg<>uid://bktmyh8t33pvh::::res://assets/SpaceMap/earth_png.png<>uid://dt3l1jjanu28i::::res://assets/SpaceMap/planet2.png<>uid://dyuvwc3m48ull::::res://scripts/planet2_button.gd<>uid://brj04gfmi1l7l::::res://scenes/lesson_1.tscn<>uid://dluaw0xawymiv::::res://assets/SpaceMap/planet3.png<>uid://dd4k1yuo42f74::::res://scripts/planet3_button.gd<>uid://liywc0r121p5::::res://scenes/mini_game_1.tscn<>uid://dd1dqtcsj8kes::::res://assets/SpaceMap/planet4.png<>uid://cwvo7liefqklt::::res://assets/SpaceMap/planet 5.png
+mini_game_1.tscn::PackedScene/PackedScene::790088941818186716::1741533369::0::1::::<><><>0<>0<><>::
+test.gd::GDScript::5572308884837687091::1741575447::0::1::::<>Node<><>0<>0<><>::
+test.tscn::PackedScene::4415741497007932751::1741575556::0::1::::<><><>0<>0<><>::uid://ccfutgtg1xdbq::::res://scenes/coin_base.tscn<>uid://clnjd34s7afp8::::res://scenes/test.gd<>uid://dhau8u44q7blp::::res://scenes/character.tscn
+::res://scripts/::1741574738
 'next'_button.gd::GDScript/GDScript::8618305419054547237::1741532796::0::1::::<>RefCounted<><>0<>0<><>::
+character.gd::GDScript/GDScript::6606058869864287426::1741571975::0::1::::<>CharacterBody2D<><>0<>0<><>::
+coin_base.gd::GDScript::4958499156052780405::1741574491::0::1::::<>Area2D<><>0<>0<><>::
 lesson_1.gd::GDScript/GDScript::9032304245761229046::1741532796::0::1::::<>RefCounted<><>0<>0<><>::
 planet2_button.gd::GDScript/GDScript::8886396346673802665::1741125389::0::1::::<>Button<><>0<>0<><>::
 planet3_button.gd::GDScript/GDScript::7430350429562735321::1741125389::0::1::::<>Button<><>0<>0<><>::
 understandButton.gd::GDScript/GDScript::4466524664838953886::1741532797::0::1::::<>Button<><>0<>0<><>::
 ::res://shaders/::1741535658
-::res://test/::1741537698
-movement.gd::GDScript::8849763042049705452::1741537698::0::1::::<>Node<><>0<>0<><>::
+::res://test/::1741537732
+test_movement.gd::GDScript/GDScript::8849763042049705452::1741537698::0::1::::<>Node<><>0<>0<><>::
 ::res://ui/::1741535650
