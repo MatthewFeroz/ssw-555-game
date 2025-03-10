@@ -1,0 +1,131 @@
+[gd_scene load_steps=9 format=3 uid="uid://brj04gfmi1l7l"]
+
+[ext_resource type="Texture2D" uid="uid://bkuo4uepajlr1" path="res://scenes/SpaceMap/galaxy.jpg" id="1_esa40"]
+[ext_resource type="Texture2D" uid="uid://ke1tf78qgip1" path="res://scenes/Lesson1/quantum_computer.jpg" id="2_8m4ky"]
+[ext_resource type="Script" uid="uid://b4vvakap8k7vu" path="res://scripts/understandButton.gd" id="3_bs7th"]
+[ext_resource type="Texture2D" uid="uid://dwgc8itjyrrcs" path="res://scenes/Lesson1/quibit.jpg" id="3_nqqdn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_esa40"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.373477, 0.000499597, 0.47786, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+corner_detail = 16
+
+[sub_resource type="Theme" id="Theme_8m4ky"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bs7th"]
+bg_color = Color(0.14862, 0.461209, 0.214876, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nqqdn"]
+bg_color = Color(0.266667, 0.839216, 0.419608, 1)
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 1159.0
+offset_bottom = 663.0
+texture = ExtResource("1_esa40")
+
+[node name="Panel" type="Panel" parent="."]
+custom_minimum_size = Vector2(1100, 550)
+layout_mode = 0
+offset_left = 25.0
+offset_top = 33.0
+offset_right = 1125.0
+offset_bottom = 633.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_esa40")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 17.0
+offset_right = 1087.0
+offset_bottom = 571.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Panel/ScrollContainer/VBoxContainer"]
+modulate = Color(0, 0, 0, 1)
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+size_flags_stretch_ratio = 0.0
+theme_override_font_sizes/font_size = 26
+text = "Lesson 1: Quantum Computing and Superposition
+"
+
+[node name="Label2" type="Label" parent="Panel/ScrollContainer/VBoxContainer"]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Quantum computing is a special type of computing that uses the strange rules of quantum mechanics, which is the science that explains how very tiny particles like atoms and electrons behave. Regular computers use bits to store information, where each bit is either a 0 or a 1—like a tiny light switch that's either on or off. Quantum computers, however, use quantum bits, or qubits, which can be both 0 and 1 at the same time. This allows quantum computers to do many calculations at once, making them potentially much more powerful than regular computers for certain types of problems."
+autowrap_mode = 3
+
+[node name="TextureRect" type="TextureRect" parent="Panel/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 500)
+layout_mode = 2
+texture = ExtResource("2_8m4ky")
+expand_mode = 1
+stretch_mode = 3
+
+[node name="Label3" type="Label" parent="Panel/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Figure 1. A physical quantum computer...much different than computers you've seen before!"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Label4" type="Label" parent="Panel/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "
+One of the coolest features of quantum computers is superposition. Superposition means that a qubit can exist in multiple states at once, rather than just being in a 0 or a 1 state like a regular bit. You can think of it like a spinning coin: while it’s spinning, it’s both heads and tails at the same time. When it lands, it’s either heads or tails. With superposition, quantum computers can explore lots of possibilities at the same time, which helps them solve really complex problems much faster than regular computers."
+autowrap_mode = 3
+
+[node name="TextureRect2" type="TextureRect" parent="Panel/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(20, 700)
+layout_mode = 2
+texture = ExtResource("3_nqqdn")
+expand_mode = 1
+stretch_mode = 3
+
+[node name="Label5" type="Label" parent="Panel/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Figure 2. The difference between a regular computer's bit and a quantum computer's quibit! Notice how a quibit is both 0 and 1 at the same time? This allows quantum computers to process data much quicker than regular computers!
+"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="\'Next\' button" type="Button" parent="Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme = SubResource("Theme_8m4ky")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/hover = SubResource("StyleBoxFlat_bs7th")
+theme_override_styles/normal = SubResource("StyleBoxFlat_nqqdn")
+text = "     I understand!     "
+icon_alignment = 2
+vertical_icon_alignment = 2
+script = ExtResource("3_bs7th")
+
+[connection signal="pressed" from="Panel/ScrollContainer/VBoxContainer/\'Next\' button" to="Panel/ScrollContainer/VBoxContainer/\'Next\' button" method="_on_pressed"]
