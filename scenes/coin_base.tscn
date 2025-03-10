@@ -1,0 +1,50 @@
+[gd_scene load_steps=7 format=3 uid="uid://ccfutgtg1xdbq"]
+
+[ext_resource type="Script" uid="uid://ccv60yxsrktcf" path="res://scripts/coin_base.gd" id="1_d3ku6"]
+[ext_resource type="Texture2D" uid="uid://co58d28uflap4" path="res://assets/sprites/power-up.png" id="1_xm30w"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c66gq"]
+atlas = ExtResource("1_xm30w")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e4iij"]
+atlas = ExtResource("1_xm30w")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1t06h"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c66gq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e4iij")
+}],
+"loop": true,
+"name": &"spin",
+"speed": 9.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t3ud1"]
+radius = 9.0
+
+[node name="CoinBase" type="Area2D"]
+script = ExtResource("1_d3ku6")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 1
+position = Vector2(28.2222, 28.2222)
+scale = Vector2(3.52778, 3.52778)
+sprite_frames = SubResource("SpriteFrames_1t06h")
+animation = &"spin"
+autoplay = "spin"
+frame_progress = 0.537318
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+top_level = true
+z_index = 1
+position = Vector2(28.2222, 28.2222)
+scale = Vector2(3.24, 3.24)
+shape = SubResource("CircleShape2D_t3ud1")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -11,9 +11,15 @@ config_version=5
 [application]
 
 config/name="SSW-555-Game"
-run/main_scene="uid://cjirkqh35qrve"
+run/main_scene="uid://cc88mlmwct3qq"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/canvas_textures/default_texture_filter=0
 
 [input]
 
@@ -37,7 +43,15 @@ rotate_right={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="Player"
+2d_physics/layer_2="Platforms"
+2d_physics/size/mode=0
+2d_physics/canvas_textures/default_texture_filter=0
+
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
