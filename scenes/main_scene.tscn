@@ -24,8 +24,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -2.0
 offset_top = -1.0
-offset_right = 1130.0
-offset_bottom = 611.0
+offset_right = 1876.0
+offset_bottom = 1039.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("1_6wevv")
@@ -33,10 +33,10 @@ texture = ExtResource("1_6wevv")
 [node name="Planet 1 (Earth)" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 1.15
-anchor_top = 0.375
-anchor_right = 5.325
-anchor_bottom = 4.8
+anchor_left = 0.45
+anchor_top = 0.225
+anchor_right = 4.625
+anchor_bottom = 4.65
 texture = ExtResource("2_e1cbu")
 expand_mode = 1
 metadata/_edit_use_anchors_ = true
@@ -44,10 +44,10 @@ metadata/_edit_use_anchors_ = true
 [node name="Planet 2 - L1" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 13.05
-anchor_top = 1.725
-anchor_right = 17.375
-anchor_bottom = 6.35
+anchor_left = 18.475
+anchor_top = 3.125
+anchor_right = 22.8
+anchor_bottom = 7.75
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_mngbo")
@@ -55,30 +55,36 @@ expand_mode = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="Button" type="Button" parent="Planet 2 - L1"]
-layout_mode = 0
-offset_left = 16.0
-offset_top = 32.0
-offset_right = 162.0
-offset_bottom = 151.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -77.5
+offset_top = -48.5
+offset_right = 68.5
+offset_bottom = 70.5
 flat = true
 script = ExtResource("4_4w45t")
 lesson_scene = ExtResource("5_r6p65")
+metadata/_edit_use_anchors_ = true
 
 [node name="Planet 3 - MG 1" type="TextureRect" parent="."]
 layout_mode = 0
-offset_left = 972.0
-offset_top = 25.0
-offset_right = 1130.0
-offset_bottom = 179.0
+offset_left = 1358.0
+offset_top = 157.0
+offset_right = 1516.0
+offset_bottom = 311.0
 texture = ExtResource("6_si52b")
 expand_mode = 1
 
 [node name="Button" type="Button" parent="Planet 3 - MG 1"]
 layout_mode = 0
-offset_left = 21.0
-offset_top = 19.0
-offset_right = 141.0
-offset_bottom = 137.0
+offset_left = 416.0
+offset_top = 157.0
+offset_right = 536.0
+offset_bottom = 275.0
 flat = true
 script = ExtResource("7_01n6w")
 lesson_scene = ExtResource("8_6u1mn")
@@ -86,20 +92,20 @@ lesson_scene = ExtResource("8_6u1mn")
 [node name="Planet 4 - L2" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 22.25
-anchor_top = 10.1
-anchor_right = 26.55
-anchor_bottom = 14.475
+anchor_left = 27.5
+anchor_top = 14.5
+anchor_right = 31.8
+anchor_bottom = 18.875
 texture = ExtResource("9_bcnxi")
 expand_mode = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="Planet 5 - MG2" type="TextureRect" parent="."]
 layout_mode = 0
-offset_left = 435.0
-offset_top = 413.0
-offset_right = 595.0
-offset_bottom = 585.0
+offset_left = 455.0
+offset_top = 604.0
+offset_right = 615.0
+offset_bottom = 776.0
 texture = ExtResource("10_7nt27")
 expand_mode = 1
 
