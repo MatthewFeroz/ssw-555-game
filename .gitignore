@@ -25,3 +25,6 @@ data_*/
 .godot/editor/mini-game_1.tscn-editstate-762438c6eaf58ffdba886017910f8ac9.cfg
 .godot/editor/project_metadata.cfg
 .godot/editor/quick_open_dialog_cache.cfg
+
+# VS Code-specific ignores
+.vscode/
