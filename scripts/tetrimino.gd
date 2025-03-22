@@ -1,16 +1,21 @@
-@tool
 extends Node2D
 
-var blocks_container: Node2D
-const BLOCK_SCENE = preload("res://scenes/block.tscn")
+# contants
+const BLOCK_SCENE_PATH = "res://scenes/block.tscn"
+const BLOCK_SCENE = preload(BLOCK_SCENE_PATH)
+
+# exported variables
 enum Shape {O, I, T, L, J, S, Z}
 @export var tetrimino_shape = Shape.O:
 	set(new_shape):
 		tetrimino_shape = new_shape
-		if !Engine.is_editor_hint(): # only update in editor
+		if !Engine.is_editor_hint():	# only update in editor
 			generate_tetrimino()
 
-const BLOCK_SIZE = 128.0 # TODO: dynamically define block size instead of hard coding it
+const BLOCK_SIZE = 128.0	# the original texture size is 128x128
+@export var block_size = BLOCK_SIZE:
+	set(new_size):
+		block_size = new_size
 
 
 # below are the shapes in unit form (as in, not scaled)
@@ -27,10 +32,10 @@ const BLOCK_SIZE = 128.0 # TODO: dynamically define block size instead of hard c
 """
 var O_SHAPE = {
 	"coords": [
-		[0.0, 0.0],
-		[0.0, 1.0],
-		[1.0, 0.0],
-		[1.0, 1.0],
+		Vector2(0.0, 0.0),
+		Vector2(0.0, 1.0),
+		Vector2(1.0, 0.0),
+		Vector2(1.0, 1.0),
 	],
 	"color": Color.YELLOW,
 }
@@ -46,10 +51,10 @@ var O_SHAPE = {
 """
 var I_SHAPE = {
 	"coords": [
-		[0.0, 0.0],
-		[0.0, 1.0],
-		[0.0, 2.0],
-		[0.0, 3.0],
+		Vector2(0.0, 0.0),
+		Vector2(0.0, 1.0),
+		Vector2(0.0, 2.0),
+		Vector2(0.0, 3.0),
 	],
 	"color": Color.CYAN
 }
@@ -65,10 +70,10 @@ var I_SHAPE = {
 """
 var T_SHAPE = {
 	"coords": [
-		[1.0, 0.0],
-		[0.0, 1.0],
-		[1.0, 1.0],
-		[2.0, 1.0],
+		Vector2(1.0, 0.0),
+		Vector2(0.0, 1.0),
+		Vector2(1.0, 1.0),
+		Vector2(2.0, 1.0),
 	],
 	"color": Color.PURPLE
 }
@@ -83,10 +88,10 @@ var T_SHAPE = {
 """
 var L_SHAPE = {
 	"coords": [
-		[2.0, 0.0],
-		[0.0, 1.0],
-		[1.0, 1.0],
-		[2.0, 1.0],
+		Vector2(2.0, 0.0),
+		Vector2(0.0, 1.0),
+		Vector2(1.0, 1.0),
+		Vector2(2.0, 1.0),
 	],
 	"color": Color.ORANGE
 }
@@ -102,10 +107,10 @@ var L_SHAPE = {
 """
 var J_SHAPE = {
 	"coords": [
-		[0.0, 0.0],
-		[0.0, 1.0],
-		[1.0, 1.0],
-		[2.0, 1.0],
+		Vector2(0.0, 0.0),
+		Vector2(0.0, 1.0),
+		Vector2(1.0, 1.0),
+		Vector2(2.0, 1.0),
 	],
 	"color": Color.BLUE
 }
@@ -121,10 +126,10 @@ var J_SHAPE = {
 """
 var S_SHAPE = {
 	"coords": [
-		[1.0, 0.0],
-		[2.0, 0.0],
-		[0.0, 1.0],
-		[1.0, 1.0],
+		Vector2(1.0, 0.0),
+		Vector2(2.0, 0.0),
+		Vector2(0.0, 1.0),
+		Vector2(1.0, 1.0),
 	],
 	"color": Color.LIME
 }
@@ -140,10 +145,10 @@ var S_SHAPE = {
 """
 var Z_SHAPE = {
 	"coords": [
-		[0.0, 0.0],
-		[1.0, 0.0],
-		[1.0, 1.0],
-		[2.0, 1.0],
+		Vector2(0.0, 0.0),
+		Vector2(1.0, 0.0),
+		Vector2(1.0, 1.0),
+		Vector2(2.0, 1.0),
 	],
 	"color": Color.RED
 }
@@ -159,31 +164,44 @@ var TETRIMINOS = {
 }
 
 func generate_tetrimino() -> void:
+	# prevent from running if scene is not fully loaded
+	if !Engine.is_editor_hint() and !is_inside_tree():
+		return
+		
 	# get rid of existing blocks first
-	for block in get_children():
+	for block in $Blocks.get_children():
 		block.queue_free()
 
 	var shape = TETRIMINOS[tetrimino_shape]
 	var color = shape["color"]
 
+	var block_num = 1
 	for coord in shape["coords"]:
+		# create the block scene
+		print("tetrimino.gd: Adding Block #" + str(block_num))
 		var block = BLOCK_SCENE.instantiate()
-		block.position = Vector2(
-			coord[0] * BLOCK_SIZE,
-			coord[1] * BLOCK_SIZE
-		)
+		block.name = "Block %d" % block_num
+		
+		# change the block's color and size
+		print("tetrimino.gd: Calling set_block_color() on block " + str(block) + ", with argument " + str(color))
 		block.set_block_color(color)
-		add_child(block)
+		print("tetrimino.gd: Calling resize_block() on block " + str(block) + ", with argument " + str(block_size))
+		block.resize_block(block_size)
+		
+		# add the block to the Blocks node
+		$Blocks.add_child(block)
+		print("tetrimino.gd: Adding Block #" + str(block_num) + " to the scene")
+		
+		# position the block in the right place for the shape
+		print("tetrimino.gd: Initial position of Block #" + str(block_num) + ": " + str(block.position))
+		block.position = coord * block_size
+		print("tetrimino.gd: Updated position of Block #" + str(block_num) + ": " + str(block.position))
+		block_num += 1
+		
+		# ensure that the blocks are selectable nodes in the editor
+		if Engine.is_editor_hint():
+			$Blocks.set_editable_instance(block, true)
 
 func _ready() -> void:
-	#blocks_container = get_node_or_null("Blocks")
-	#print("Block container in _ready(): ", blocks_container)
-	#if blocks_container == null:
-		## push_error("ERROR: Blocks node is missing!")
-		## return
-		#blocks_container = Node2D.new()
-		#blocks_container.name = "Blocks"
-		#add_child(blocks_container)
-	
 	if !Engine.is_editor_hint():
-		call_deferred("generate_tetrimino")
+		generate_tetrimino()
