@@ -1,3 +1,4 @@
+@tool
 extends Node2D
 
 # contants
@@ -9,13 +10,15 @@ enum Shape {O, I, T, L, J, S, Z}
 @export var tetrimino_shape = Shape.O:
 	set(new_shape):
 		tetrimino_shape = new_shape
-		if !Engine.is_editor_hint():	# only update in editor
+		if Engine.is_editor_hint():	# only update in editor
 			generate_tetrimino()
 
 const BLOCK_SIZE = 128.0	# the original texture size is 128x128
 @export var block_size = BLOCK_SIZE:
 	set(new_size):
 		block_size = new_size
+		if Engine.is_editor_hint():	# only update in editor
+			generate_tetrimino()
 
 
 # below are the shapes in unit form (as in, not scaled)
@@ -178,24 +181,24 @@ func generate_tetrimino() -> void:
 	var block_num = 1
 	for coord in shape["coords"]:
 		# create the block scene
-		print("tetrimino.gd: Adding Block #" + str(block_num))
+		#print("tetrimino.gd: Adding Block #" + str(block_num))
 		var block = BLOCK_SCENE.instantiate()
 		block.name = "Block %d" % block_num
 		
 		# change the block's color and size
-		print("tetrimino.gd: Calling set_block_color() on block " + str(block) + ", with argument " + str(color))
+		#print("tetrimino.gd: Calling set_block_color() on block " + str(block) + ", with argument " + str(color))
 		block.set_block_color(color)
-		print("tetrimino.gd: Calling resize_block() on block " + str(block) + ", with argument " + str(block_size))
+		#print("tetrimino.gd: Calling resize_block() on block " + str(block) + ", with argument " + str(block_size))
 		block.resize_block(block_size)
 		
 		# add the block to the Blocks node
 		$Blocks.add_child(block)
-		print("tetrimino.gd: Adding Block #" + str(block_num) + " to the scene")
+		#print("tetrimino.gd: Adding Block #" + str(block_num) + " to the scene")
 		
 		# position the block in the right place for the shape
-		print("tetrimino.gd: Initial position of Block #" + str(block_num) + ": " + str(block.position))
+		#print("tetrimino.gd: Initial position of Block #" + str(block_num) + ": " + str(block.position))
 		block.position = coord * block_size
-		print("tetrimino.gd: Updated position of Block #" + str(block_num) + ": " + str(block.position))
+		#print("tetrimino.gd: Updated position of Block #" + str(block_num) + ": " + str(block.position))
 		block_num += 1
 		
 		# ensure that the blocks are selectable nodes in the editor
@@ -203,5 +206,5 @@ func generate_tetrimino() -> void:
 			$Blocks.set_editable_instance(block, true)
 
 func _ready() -> void:
-	if !Engine.is_editor_hint():
+	if Engine.is_editor_hint():
 		generate_tetrimino()

@@ -4,6 +4,6 @@
 
 [node name="Tetrimino" type="Node2D"]
 script = ExtResource("1_6124e")
-block_size = 32.0
+block_size = 64.0
 
 [node name="Blocks" type="Node2D" parent="."]

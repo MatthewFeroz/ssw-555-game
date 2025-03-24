@@ -1,18 +1,31 @@
+@tool
 extends Node2D
 
 # constants
 const TEX_PATH: String = "res://assets/sprites/Tetromino_Block.svg"
 
 # exported variables
-@export var block_size: float = 128.0	# the original texture size is 128x128
-@export var color: Color = Color.WHITE
+@export var block_size: float = 128.0: # the original texture size is 128x128
+	set(new_size):
+		if block_size != new_size:
+			block_size = new_size
+			if Engine.is_editor_hint():
+				update_block()
+
+@export var color: Color = Color.WHITE:
+	set(new_color):
+		if color != new_color:
+			color = new_color
+			if Engine.is_editor_hint():
+				update_block()
 
 # instance variables
 var sprite: Sprite2D
 var collision: CollisionShape2D
 
 func _ready() -> void:
-	create_block()
+	if Engine.is_editor_hint():
+		update_block()
 	
 func create_block() -> void:
 	# create the sprite, set its color, and resize it
@@ -30,6 +43,12 @@ func create_block() -> void:
 	# add the sprite and collision to the scene
 	add_child(sprite)
 	add_child(collision)
+
+func update_block():
+	for child in get_children():
+		child.queue_free()
+
+	create_block()
 	
 func set_block_color(new_color: Color) -> void:
 	color = new_color
@@ -39,7 +58,7 @@ func set_block_color(new_color: Color) -> void:
 func resize_block(new_size: float) -> void:
 	block_size = new_size
 	if sprite:
-		var scale_factor = new_size / 128.0	# the original texture size is 128x128
+		var scale_factor = new_size / 128.0 # the original texture size is 128x128
 		sprite.scale = Vector2(scale_factor, scale_factor)
 
 func add_block_collision(new_size: float) -> void:
