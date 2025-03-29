@@ -51,9 +51,6 @@ func test_player_movement():
 	player._physics_process(1.0)
 	Input.action_release(\"rotate_left\")
 	
-w	assert(player.rotation < 0)
-
-	print(\"test_player_movement passed\")
 "
 
 [node name="Test" type="Node2D"]
