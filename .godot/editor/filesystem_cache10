@@ -1,5 +1,5 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1741574800
+::res://::1741903980
 icon.svg::CompressedTexture2D/CompressedTexture2D::8301742760376911387::1741040657::1741536816::1::::<><><>0<>0<>cb326247aa72d25db54ee9427f583c24<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
 README.md::TextFile/TextFile::-1::1741125389::0::1::::<><><>0<>0<><>::
 ::res://addons/::1741537405
@@ -251,20 +251,20 @@ throw8.png::CompressedTexture2D/CompressedTexture2D::3950771005615205101::174153
 ::res://builds/::1741535673
 ::res://config/::1741535666
 ::res://levels/::1741571404
-::res://scenes/::1741575475
-character.tscn::PackedScene::7651858324206319593::1741575475::0::1::::<><><>0<>0<><>::
-coin_base.tscn::PackedScene::4924789558171737622::1741575475::0::1::::<><><>0<>0<><>::uid://ccv60yxsrktcf::::res://scripts/coin_base.gd<>uid://co58d28uflap4::::res://assets/sprites/power-up.png
+::res://scenes/::1741576552
+area.tscn::PackedScene/PackedScene::5422106881477215026::1741576010::0::1::::<><><>0<>0<><>::uid://clagag22hf2pm::::res://assets/SpaceMap/galaxy1.jpg<>uid://bktmyh8t33pvh::::res://assets/SpaceMap/earth_png.png<>uid://dt3l1jjanu28i::::res://assets/SpaceMap/planet2.png<>uid://dyuvwc3m48ull::::res://scripts/planet2_button.gd<>uid://brj04gfmi1l7l::::res://scenes/lesson_1.tscn<>uid://dluaw0xawymiv::::res://assets/SpaceMap/planet3.png<>uid://dd4k1yuo42f74::::res://scripts/planet3_button.gd<>uid://liywc0r121p5::::res://scenes/mini_game_1.tscn<>uid://dd1dqtcsj8kes::::res://assets/SpaceMap/planet4.png<>uid://cwvo7liefqklt::::res://assets/SpaceMap/planet 5.png
+character.tscn::PackedScene/PackedScene::7651858324206319593::1741576010::0::1::::<><><>0<>0<><>::
+coin_base.tscn::PackedScene::4924789558171737622::1741576414::0::1::::<><><>0<>0<><>::uid://ccv60yxsrktcf::::res://scripts/coin_base.gd<>uid://co58d28uflap4::::res://assets/sprites/power-up.png
 lesson_1.tscn::PackedScene/PackedScene::3599780461589667591::1741569483::0::1::::<><><>0<>0<><>::uid://bkuo4uepajlr1::::res://assets/SpaceMap/galaxy.jpg<>uid://ke1tf78qgip1::::res://assets/Lesson1/quantum_computer.jpg<>uid://b4vvakap8k7vu::::res://scripts/understandButton.gd<>uid://dwgc8itjyrrcs::::res://assets/Lesson1/quibit.jpg
-main_scene1.tscn::PackedScene::4983369208131927832::1741575475::0::1::::<><><>0<>0<><>::uid://cjirkqh35qrve::::res://scenes/main_scene.tscn<>uid://dhau8u44q7blp::::res://scenes/character.tscn<>uid://ccfutgtg1xdbq::::res://scenes/coin_base.tscn
-main_scene.tscn::PackedScene::5422106881477215026::1741575475::0::1::::<><><>0<>0<><>::uid://clagag22hf2pm::::res://assets/SpaceMap/galaxy1.jpg<>uid://bktmyh8t33pvh::::res://assets/SpaceMap/earth_png.png<>uid://dt3l1jjanu28i::::res://assets/SpaceMap/planet2.png<>uid://dyuvwc3m48ull::::res://scripts/planet2_button.gd<>uid://brj04gfmi1l7l::::res://scenes/lesson_1.tscn<>uid://dluaw0xawymiv::::res://assets/SpaceMap/planet3.png<>uid://dd4k1yuo42f74::::res://scripts/planet3_button.gd<>uid://liywc0r121p5::::res://scenes/mini_game_1.tscn<>uid://dd1dqtcsj8kes::::res://assets/SpaceMap/planet4.png<>uid://cwvo7liefqklt::::res://assets/SpaceMap/planet 5.png
+main_scene1.tscn::PackedScene::4983369208131927832::1741576406::0::1::::<><><>0<>0<><>::uid://cjirkqh35qrve::::res://scenes/area.tscn<>uid://b0nyjd35uoqm8::::res://scripts/main_scene_1.gd<>uid://dhau8u44q7blp::::res://scenes/character.tscn<>uid://ccfutgtg1xdbq::::res://scenes/coin_base.tscn
 mini_game_1.tscn::PackedScene/PackedScene::790088941818186716::1741533369::0::1::::<><><>0<>0<><>::
-test.gd::GDScript::5572308884837687091::1741575447::0::1::::<>Node<><>0<>0<><>::
-test.tscn::PackedScene::4415741497007932751::1741575556::0::1::::<><><>0<>0<><>::uid://ccfutgtg1xdbq::::res://scenes/coin_base.tscn<>uid://clnjd34s7afp8::::res://scenes/test.gd<>uid://dhau8u44q7blp::::res://scenes/character.tscn
-::res://scripts/::1741574738
+test.tscn::PackedScene::2652713801916782661::1741576552::0::1::::<><><>0<>0<><>::uid://dhau8u44q7blp::::res://scenes/character.tscn
+::res://scripts/::1741576406
 'next'_button.gd::GDScript/GDScript::8618305419054547237::1741532796::0::1::::<>RefCounted<><>0<>0<><>::
 character.gd::GDScript/GDScript::6606058869864287426::1741571975::0::1::::<>CharacterBody2D<><>0<>0<><>::
-coin_base.gd::GDScript::4958499156052780405::1741574491::0::1::::<>Area2D<><>0<>0<><>::
+coin_base.gd::GDScript/GDScript::4958499156052780405::1741575973::0::1::::<>Area2D<><>0<>0<><>::
 lesson_1.gd::GDScript/GDScript::9032304245761229046::1741532796::0::1::::<>RefCounted<><>0<>0<><>::
+main_scene_1.gd::GDScript::4169452167633159657::1741576006::0::1::::<>Node2D<><>0<>0<><>::
 planet2_button.gd::GDScript/GDScript::8886396346673802665::1741125389::0::1::::<>Button<><>0<>0<><>::
 planet3_button.gd::GDScript/GDScript::7430350429562735321::1741125389::0::1::::<>Button<><>0<>0<><>::
 understandButton.gd::GDScript/GDScript::4466524664838953886::1741532797::0::1::::<>Button<><>0<>0<><>::
