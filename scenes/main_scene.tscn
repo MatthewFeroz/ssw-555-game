@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cjirkqh35qrve"]
+[gd_scene load_steps=10 format=3 uid="uid://cjirkqh35qrve"]
 
 [ext_resource type="Texture2D" uid="uid://clagag22hf2pm" path="res://assets/SpaceMap/galaxy1.jpg" id="1_6wevv"]
 [ext_resource type="Texture2D" uid="uid://bktmyh8t33pvh" path="res://assets/SpaceMap/earth_png.png" id="2_e1cbu"]
@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://brj04gfmi1l7l" path="res://scenes/lesson_1.tscn" id="5_r6p65"]
 [ext_resource type="Texture2D" uid="uid://dluaw0xawymiv" path="res://assets/SpaceMap/planet3.png" id="6_si52b"]
 [ext_resource type="Script" uid="uid://dd4k1yuo42f74" path="res://scripts/planet3_button.gd" id="7_01n6w"]
-[ext_resource type="PackedScene" uid="uid://liywc0r121p5" path="res://scenes/mini_game_1.tscn" id="8_6u1mn"]
 [ext_resource type="Texture2D" uid="uid://dd1dqtcsj8kes" path="res://assets/SpaceMap/planet4.png" id="9_bcnxi"]
 [ext_resource type="Texture2D" uid="uid://cwvo7liefqklt" path="res://assets/SpaceMap/planet 5.png" id="10_7nt27"]
 
@@ -81,13 +80,12 @@ expand_mode = 1
 
 [node name="Button" type="Button" parent="Planet 3 - MG 1"]
 layout_mode = 0
-offset_left = 416.0
-offset_top = 157.0
-offset_right = 536.0
-offset_bottom = 275.0
+offset_left = 27.0
+offset_top = 20.0
+offset_right = 147.0
+offset_bottom = 138.0
 flat = true
 script = ExtResource("7_01n6w")
-lesson_scene = ExtResource("8_6u1mn")
 
 [node name="Planet 4 - L2" type="TextureRect" parent="."]
 layout_mode = 1
