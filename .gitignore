@@ -9,8 +9,19 @@ export_presets.cfg
 # Mono-specific ignores
 .mono/
 data_*/
-.godot/editor/
-.godot/shader_cache/
-
-# VSCode-specifc ignores
-.vscode/
+.godot/editor/BackgroundSpaceMap.tscn-editstate-e69fa900b77a573f1cfd4ca5150ec5c8.cfg
+.godot/editor/character.tscn-editstate-a8cf13c19ca9a53941619a83d1bafc3c.cfg
+.godot/editor/editor_layout.cfg
+.godot/editor/filesystem_cache10
+.godot/editor/lesson_1.tscn-editstate-20933fdc2b6bcc2d20443b16c07244aa.cfg
+.godot/editor/mini-game_1.tscn-editstate-762438c6eaf58ffdba886017910f8ac9.cfg
+.godot/editor/project_metadata.cfg
+.godot/editor/quick_open_dialog_cache.cfg
+.godot/editor/BackgroundSpaceMap.tscn-editstate-e69fa900b77a573f1cfd4ca5150ec5c8.cfg
+.godot/editor/character.tscn-editstate-a8cf13c19ca9a53941619a83d1bafc3c.cfg
+.godot/editor/editor_layout.cfg
+.godot/editor/filesystem_cache10
+.godot/editor/lesson_1.tscn-editstate-20933fdc2b6bcc2d20443b16c07244aa.cfg
+.godot/editor/mini-game_1.tscn-editstate-762438c6eaf58ffdba886017910f8ac9.cfg
+.godot/editor/project_metadata.cfg
+.godot/editor/quick_open_dialog_cache.cfg
