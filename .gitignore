@@ -1,13 +1,17 @@
-# Godot-specific ignores
-.import/
-export.cfg
+# Godot-specific files and folders
+.godot/
+*.import
 export_presets.cfg
+bin/
+lib/
 
-# Imported translations (automatically generated from CSV files)
-*.translation
+# User settings
+*.cfg
+*.autosave
 
-# Mono-specific ignores
+# Mono build artifacts (if using C#)
 .mono/
+<<<<<<< HEAD
 data_*/
 <<<<<<< HEAD
 *.cfg
@@ -17,4 +21,24 @@ data_*/
 
 # VSCode-specifc ignores
 .vscode/
+>>>>>>> develop
+=======
+*.csproj.user
+*.sln
+*.pidb
+*.pdb
+*.mdb
+obj/
+Packages/
+Packages.dgml
+Temp/
+
+# Editor-related files
+/._*
+.godot/editor/*.cfg
+.godot/editor/filesystem_cache*
+.godot/editor/filesystem_update*
+
+# Miscellaneous
+.DS_Store
 >>>>>>> develop
