@@ -96,4 +96,8 @@ z_index = 1
 position = Vector2(254, 119)
 mouse_mode = false
 
+[node name="Spaceshipsrz-0" type="Sprite2D" parent="Character"]
+position = Vector2(-351, 406)
+rotation = 1.90764
+
 [connection signal="coin_collected" from="Coins/CoinBase" to="." method="_on_coin_base_coin_collected"]
