@@ -1,9 +1,9 @@
 [gd_scene load_steps=2 format=3 uid="uid://xt4cfjayvkvf"]
 
-[ext_resource type="Script" uid="uid://b56ovlsk24j8t" path="res://scripts/tetrimino.gd" id="1_6124e"]
+[ext_resource type="Script" uid="uid://b56ovlsk24j8t" path="res://scripts/mini_game_1/tetrimino.gd" id="1_6124e"]
 
 [node name="Tetrimino" type="Node2D"]
 script = ExtResource("1_6124e")
-block_size = 64.0
 
 [node name="Blocks" type="Node2D" parent="."]
+rotation = -4.71239

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cc88mlmwct3qq"]
 
 [ext_resource type="PackedScene" uid="uid://cjirkqh35qrve" path="res://scenes/main_scene.tscn" id="1_243bm"]
-[ext_resource type="Script" uid="uid://b0nyjd35uoqm8" path="res://scenes/main_scene_1.gd" id="1_ngauo"]
+[ext_resource type="Script" path="res://scenes/main_scene_1.gd" id="1_ngauo"]
 [ext_resource type="PackedScene" uid="uid://dhau8u44q7blp" path="res://scenes/character.tscn" id="2_ngauo"]
 [ext_resource type="PackedScene" uid="uid://ccfutgtg1xdbq" path="res://scenes/coin_base.tscn" id="3_bxx46"]
 
