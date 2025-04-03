@@ -26,7 +26,7 @@ const BLOCK_SIZE := Vector2(32.0, 32.0)	# all blocks must be 32x32
 # tetrmino related
 const TETRIMINO_SCENE_PATH := "res://scenes/mini_game_1/tetrimino.tscn"
 const TETRIMINO_SCENE := preload(TETRIMINO_SCENE_PATH)
-const SPAWN_POS := Vector2(GRID_WIDTH, 3)
+const SPAWN_POS := Vector2(GRID_WIDTH / 2, 0)
 
 # instance variables
 var grid: Node2D
