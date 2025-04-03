@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://cc88mlmwct3qq"]
+[gd_scene load_steps=6 format=3 uid="uid://cc88mlmwct3qq"]
 
 [ext_resource type="PackedScene" uid="uid://cjirkqh35qrve" path="res://scenes/main_scene.tscn" id="1_243bm"]
 [ext_resource type="Script" uid="uid://b0nyjd35uoqm8" path="res://scenes/main_scene_1.gd" id="1_ngauo"]
 [ext_resource type="PackedScene" uid="uid://dhau8u44q7blp" path="res://scenes/character.tscn" id="2_ngauo"]
 [ext_resource type="PackedScene" uid="uid://ccfutgtg1xdbq" path="res://scenes/coin_base.tscn" id="3_bxx46"]
+[ext_resource type="PackedScene" uid="uid://cen8goii1hogk" path="res://scenes/pause_menu_1.tscn" id="5_bxx46"]
 
 [node name="MainScene1" type="Node2D"]
 script = ExtResource("1_ngauo")
@@ -96,8 +97,14 @@ z_index = 1
 position = Vector2(254, 119)
 mouse_mode = false
 
+<<<<<<< HEAD
 [node name="Spaceshipsrz-0" type="Sprite2D" parent="Character"]
 position = Vector2(-351, 406)
 rotation = 1.90764
+=======
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PauseMenu1" parent="CanvasLayer" instance=ExtResource("5_bxx46")]
+>>>>>>> f53fedbeab2209d619fabd175a9b62e7c24baa7b
 
 [connection signal="coin_collected" from="Coins/CoinBase" to="." method="_on_coin_base_coin_collected"]
