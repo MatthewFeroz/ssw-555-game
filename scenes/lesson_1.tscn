@@ -1,9 +1,9 @@
 [gd_scene load_steps=9 format=3 uid="uid://brj04gfmi1l7l"]
 
-[ext_resource type="Texture2D" uid="uid://bkuo4uepajlr1" path="res://assets/SpaceMap/galaxy.jpg" id="1_esa40"]
-[ext_resource type="Texture2D" uid="uid://ke1tf78qgip1" path="res://assets/Lesson1/quantum_computer.jpg" id="2_8m4ky"]
+[ext_resource type="Texture2D" uid="uid://bl6n6xca07q2w" path="res://assets/SpaceMap/galaxy.jpg" id="1_esa40"]
+[ext_resource type="Texture2D" uid="uid://c40mh86415jk4" path="res://assets/Lesson1/quantum_computer.jpg" id="2_8m4ky"]
 [ext_resource type="Script" uid="uid://b4vvakap8k7vu" path="res://scripts/understandButton.gd" id="3_bs7th"]
-[ext_resource type="Texture2D" uid="uid://dwgc8itjyrrcs" path="res://assets/Lesson1/quibit.jpg" id="3_nqqdn"]
+[ext_resource type="Texture2D" uid="uid://dpi55dm4cco57" path="res://assets/Lesson1/quibit.jpg" id="3_nqqdn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_esa40"]
 bg_color = Color(1, 1, 1, 1)
@@ -34,8 +34,11 @@ offset_bottom = 40.0
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 0
-offset_right = 1159.0
-offset_bottom = 663.0
+offset_left = -12.0
+offset_top = 17.0
+offset_right = 1147.0
+offset_bottom = 680.0
+scale = Vector2(1.67028, 1.61557)
 texture = ExtResource("1_esa40")
 
 [node name="Panel" type="Panel" parent="."]
@@ -45,6 +48,7 @@ offset_left = 25.0
 offset_top = 33.0
 offset_right = 1125.0
 offset_bottom = 633.0
+scale = Vector2(1.6664, 1.69879)
 theme_override_styles/panel = SubResource("StyleBoxFlat_esa40")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Panel"]
@@ -53,6 +57,7 @@ offset_left = 22.0
 offset_top = 17.0
 offset_right = 1087.0
 offset_bottom = 571.0
+scale = Vector2(0.999269, 1.01914)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel/ScrollContainer"]
 layout_mode = 2
