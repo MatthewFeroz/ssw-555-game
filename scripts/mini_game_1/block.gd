@@ -79,7 +79,6 @@ func add_block_collision(new_size: float) -> void:
 		var rect_collision = RectangleShape2D.new()
 		rect_collision.size = Vector2(new_size, new_size)
 		collision.shape = rect_collision
-	#return collision
 		
 func remove_block_collision() -> void:
 	collision.disabled = true
