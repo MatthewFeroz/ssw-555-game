@@ -1,11 +1,11 @@
 """TODO:
-	- add function that initializes the grid with blocks
+	- (4/3/25): add function that initializes the grid with blocks
 		- find a way to save this array of blocks elsewhere later on
-	- add function that forces the tetrmino to obey gravity
-	- add function that clears lines
+	- (4/3/25): add function that forces the tetrmino to obey gravity
+	- (4/3/25): add function that clears lines
 		- needs to remove all blocks
-	- add function that resets the grid
-	- ensure a signal is emitted when the entire grid is cleared out
+	- (4/3/25): add function that resets the grid
+	- (4/3/25): ensure a signal is emitted when the entire grid is cleared out
 """
 
 class_name Grid
@@ -219,6 +219,8 @@ func _on_Tetrimino_out_of_bounds(
 	var top = bbox.z
 	var bottom = bbox.w
 	
+
+	# TODO: place this in <oob-detect>.gd
 	var diff
 	match direction:
 		Vector2.LEFT:
@@ -238,5 +240,7 @@ func _on_Tetrimino_out_of_bounds(
 			diff = grid_origin.y - top
 			tetrimino.global_position.y += diff
 	
+
+	# TODO: place this in <oob-debug>.gd
 	print("grid_container.gd: Updated the Tetrimino's position.")
 	print("grid_container.gd: Tetrimino's current position: " + str(tetrimino.global_position))
