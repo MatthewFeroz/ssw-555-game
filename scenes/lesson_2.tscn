@@ -1,9 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://cy6rudqvsaxor"]
+[gd_scene load_steps=7 format=3 uid="uid://cy6rudqvsaxor"]
 
-[ext_resource type="Texture2D" uid="uid://bl6n6xca07q2w" path="res://assets/SpaceMap/galaxy.jpg" id="1_6nsm3"]
-[ext_resource type="Texture2D" uid="uid://b5nwfxjv3bpap" path="res://assets/Lesson 2/entanglement-intro.webp" id="2_0bo75"]
-[ext_resource type="Texture2D" uid="uid://jq5apsl7ehjt" path="res://assets/Lesson 2/Entanglement1.jpg" id="3_6nsm3"]
-[ext_resource type="Script" uid="uid://b4vvakap8k7vu" path="res://scripts/understandButton.gd" id="4_ol4qu"]
+[ext_resource type="Texture2D" uid="uid://cwdkbiwbifu8j" path="res://assets/SpaceMap/galaxy.jpg" id="1_6nsm3"]
+[ext_resource type="Script" uid="uid://qyfufpy04xno" path="res://scripts/lesson_2.gd" id="1_onjyn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3rwue"]
 bg_color = Color(1, 1, 1, 1)
@@ -27,6 +25,7 @@ bg_color = Color(0.14862, 0.461209, 0.214876, 1)
 bg_color = Color(0.266667, 0.839216, 0.419608, 1)
 
 [node name="Lesson2" type="Node2D"]
+script = ExtResource("1_onjyn")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -76,7 +75,7 @@ layout_mode = 2
 size_flags_vertical = 6
 size_flags_stretch_ratio = 0.0
 theme_override_font_sizes/font_size = 26
-text = "Lesson 2:  What is Quantum Entanglement?
+text = "Quantum Entanglement
 "
 
 [node name="Intro" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer"]
@@ -95,7 +94,6 @@ layout_direction = 4
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("2_0bo75")
 expand_mode = 1
 
 [node name="fig_desc" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer"]
@@ -130,7 +128,6 @@ custom_minimum_size = Vector2(500, 300)
 layout_direction = 4
 layout_mode = 2
 size_flags_horizontal = 4
-texture = ExtResource("3_6nsm3")
 expand_mode = 1
 
 [node name="Label5" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer"]
@@ -167,6 +164,5 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_yxdph")
 text = "     I understand!     "
 icon_alignment = 2
 vertical_icon_alignment = 2
-script = ExtResource("4_ol4qu")
 
-[connection signal="pressed" from="Control/Panel/ScrollContainer/VBoxContainer/\'Next\' button" to="Control/Panel/ScrollContainer/VBoxContainer/\'Next\' button" method="_on_pressed"]
+[connection signal="pressed" from="Control/Panel/ScrollContainer/VBoxContainer/\'Next\' button" to="." method="_on_next_button_pressed"]

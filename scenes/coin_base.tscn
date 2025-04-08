@@ -1,24 +1,31 @@
 [gd_scene load_steps=7 format=3 uid="uid://ccfutgtg1xdbq"]
 
 [ext_resource type="Script" uid="uid://ccv60yxsrktcf" path="res://scripts/coin_base.gd" id="1_d3ku6"]
+[ext_resource type="Texture2D" uid="uid://b0y6jmd52ibls" path="res://assets/sprites/power-up.png" id="1_xm30w"]
 [ext_resource type="Texture2D" uid="uid://dmpw87qx228ue" path="res://assets/sprites/power-up.png" id="1_xm30w"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_c66gq"]
 atlas = ExtResource("1_xm30w")
 region = Rect2(0, 0, 16, 16)
 
+[ext_resource type="Texture2D" uid="uid://bn87kv1m51loa" path="res://assets/sprites/power-up.png" id="1_xm30w"]
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_e4iij"]
 atlas = ExtResource("1_xm30w")
 region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c66gq"]
+atlas = ExtResource("1_xm30w")
+region = Rect2(0, 0, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_1t06h"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_c66gq")
+"texture": SubResource("AtlasTexture_e4iij")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_e4iij")
+"texture": SubResource("AtlasTexture_c66gq")
 }],
 "loop": true,
 "name": &"spin",

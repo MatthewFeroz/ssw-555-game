@@ -1,9 +1,16 @@
 [gd_scene load_steps=9 format=3 uid="uid://brj04gfmi1l7l"]
 
-[ext_resource type="Texture2D" uid="uid://bl6n6xca07q2w" path="res://assets/SpaceMap/galaxy.jpg" id="1_esa40"]
-[ext_resource type="Texture2D" uid="uid://c40mh86415jk4" path="res://assets/Lesson1/quantum_computer.jpg" id="2_8m4ky"]
+<<<<<<< HEAD
+[ext_resource type="Texture2D" uid="uid://b8scaqgdm32dx" path="res://assets/SpaceMap/galaxy.jpg" id="1_esa40"]
+[ext_resource type="Texture2D" uid="uid://ct2a833j62o3s" path="res://assets/Lesson1/quantum_computer.jpg" id="2_8m4ky"]
 [ext_resource type="Script" uid="uid://b4vvakap8k7vu" path="res://scripts/understandButton.gd" id="3_bs7th"]
-[ext_resource type="Texture2D" uid="uid://dpi55dm4cco57" path="res://assets/Lesson1/quibit.jpg" id="3_nqqdn"]
+[ext_resource type="Texture2D" uid="uid://4h5q52t23ejc" path="res://assets/Lesson1/quibit.jpg" id="3_nqqdn"]
+=======
+[ext_resource type="Script" uid="uid://ee2unrrnqua6" path="res://scripts/lesson_1.gd" id="1_5b4sy"]
+[ext_resource type="Texture2D" uid="uid://cwdkbiwbifu8j" path="res://assets/SpaceMap/galaxy.jpg" id="1_esa40"]
+[ext_resource type="Texture2D" uid="uid://be2f3gemfrqdq" path="res://assets/Lesson1/quantum_computer.jpg" id="2_8m4ky"]
+[ext_resource type="Texture2D" uid="uid://c3mj22kb7pp17" path="res://assets/Lesson1/quibit.jpg" id="3_nqqdn"]
+>>>>>>> e9d62d48d7ccede54554636600ea5bdff6ff90e5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_esa40"]
 bg_color = Color(1, 1, 1, 1)
@@ -31,6 +38,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+script = ExtResource("1_5b4sy")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 0
@@ -47,19 +55,20 @@ layout_mode = 0
 offset_left = 25.0
 offset_top = 33.0
 offset_right = 1125.0
-offset_bottom = 633.0
+offset_bottom = 609.0
 scale = Vector2(1.6664, 1.69879)
 theme_override_styles/panel = SubResource("StyleBoxFlat_esa40")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Panel"]
 layout_mode = 0
-offset_left = 22.0
+offset_left = 16.0
 offset_top = 17.0
 offset_right = 1087.0
-offset_bottom = 571.0
+offset_bottom = 553.0
 scale = Vector2(0.999269, 1.01914)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel/ScrollContainer"]
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -70,7 +79,7 @@ self_modulate = Color(0, 0, 0, 1)
 layout_mode = 2
 size_flags_stretch_ratio = 0.0
 theme_override_font_sizes/font_size = 26
-text = "Lesson 1: Quantum Computing and Superposition
+text = "Quantum Computing and Superposition
 "
 
 [node name="Label2" type="Label" parent="Panel/ScrollContainer/VBoxContainer"]
@@ -82,6 +91,7 @@ text = "Quantum computing is a special type of computing that uses the strange r
 autowrap_mode = 3
 
 [node name="TextureRect" type="TextureRect" parent="Panel/ScrollContainer/VBoxContainer"]
+clip_contents = true
 custom_minimum_size = Vector2(0, 500)
 layout_mode = 2
 texture = ExtResource("2_8m4ky")
@@ -96,16 +106,25 @@ text = "Figure 1. A physical quantum computer...much different than computers yo
 horizontal_alignment = 1
 autowrap_mode = 3
 
+[node name="Label6" type="Label" parent="Panel/ScrollContainer/VBoxContainer"]
+z_index = 1
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Superposition:"
+autowrap_mode = 3
+
 [node name="Label4" type="Label" parent="Panel/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
-text = "
-One of the coolest features of quantum computers is superposition. Superposition means that a qubit can exist in multiple states at once, rather than just being in a 0 or a 1 state like a regular bit. You can think of it like a spinning coin: while it’s spinning, it’s both heads and tails at the same time. When it lands, it’s either heads or tails. With superposition, quantum computers can explore lots of possibilities at the same time, which helps them solve really complex problems much faster than regular computers."
+text = "One of the coolest features of quantum computers is superposition. Superposition means that a qubit can exist in multiple states at once, rather than just being in a 0 or a 1 state like a regular bit. You can think of it like a spinning coin: while it’s spinning, it’s both heads and tails at the same time. When it lands, it’s either heads or tails. With superposition, quantum computers can explore lots of possibilities at the same time, which helps them solve really complex problems much faster than regular computers."
 autowrap_mode = 3
 
 [node name="TextureRect2" type="TextureRect" parent="Panel/ScrollContainer/VBoxContainer"]
+clip_contents = true
 custom_minimum_size = Vector2(20, 700)
 layout_mode = 2
 texture = ExtResource("3_nqqdn")
@@ -131,6 +150,5 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_nqqdn")
 text = "     I understand!     "
 icon_alignment = 2
 vertical_icon_alignment = 2
-script = ExtResource("3_bs7th")
 
-[connection signal="pressed" from="Panel/ScrollContainer/VBoxContainer/\'Next\' button" to="Panel/ScrollContainer/VBoxContainer/\'Next\' button" method="_on_pressed"]
+[connection signal="pressed" from="Panel/ScrollContainer/VBoxContainer/\'Next\' button" to="." method="_on_next_button_pressed"]

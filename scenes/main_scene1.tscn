@@ -1,9 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://cc88mlmwct3qq"]
+[gd_scene load_steps=9 format=3 uid="uid://cc88mlmwct3qq"]
 
 [ext_resource type="PackedScene" uid="uid://cjirkqh35qrve" path="res://scenes/main_scene.tscn" id="1_243bm"]
-[ext_resource type="Script" path="res://scenes/main_scene_1.gd" id="1_ngauo"]
+[ext_resource type="Script" uid="uid://b0nyjd35uoqm8" path="res://scripts/main_scene_1.gd" id="1_ngauo"]
 [ext_resource type="PackedScene" uid="uid://dhau8u44q7blp" path="res://scenes/character.tscn" id="2_ngauo"]
 [ext_resource type="PackedScene" uid="uid://ccfutgtg1xdbq" path="res://scenes/coin_base.tscn" id="3_bxx46"]
+[ext_resource type="PackedScene" uid="uid://cen8goii1hogk" path="res://scenes/pause_menu_1.tscn" id="5_bxx46"]
+[ext_resource type="AudioStream" uid="uid://d4dt2m5v64epm" path="res://assets/space-station-247790.mp3" id="6_63d8p"]
+[ext_resource type="FontFile" uid="uid://c75p5ia0spmhb" path="res://assets/Nasalization Rg.otf" id="7_bn0jv"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i3fto"]
 
 [node name="MainScene1" type="Node2D"]
 script = ExtResource("1_ngauo")
@@ -29,25 +34,7 @@ theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
 theme_override_colors/selection_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
-text = "Lesson 1: 
-Quantum Computing and Superposition"
-fit_content = true
-tab_size = 3
-horizontal_alignment = 1
-
-[node name="Mini Game 1" type="RichTextLabel" parent="Coins"]
-offset_left = 1307.0
-offset_top = 308.0
-offset_right = 1515.0
-offset_bottom = 373.0
-scale = Vector2(1.29025, 1.67036)
-theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
-theme_override_colors/selection_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/normal_font_size = 20
-bbcode_enabled = true
-text = "Mini-Game 1: 
-Superposition Tetris"
+text = "Superposition"
 fit_content = true
 tab_size = 3
 horizontal_alignment = 1
@@ -63,25 +50,7 @@ theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
 theme_override_colors/selection_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
-text = "Mini-Game 2: 
-Entanglement Memory Card "
-fit_content = true
-tab_size = 3
-horizontal_alignment = 1
-
-[node name="Lesson 2" type="RichTextLabel" parent="Coins"]
-offset_left = 245.0
-offset_top = 775.0
-offset_right = 702.0
-offset_bottom = 1014.0
-scale = Vector2(1.29025, 1.67036)
-theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
-theme_override_colors/selection_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/normal_font_size = 20
-bbcode_enabled = true
-text = "Lesson 2: 
-Entanglement"
+text = "Entanglement"
 fit_content = true
 tab_size = 3
 horizontal_alignment = 1
@@ -95,5 +64,36 @@ collision_layer = 4
 z_index = 1
 position = Vector2(254, 119)
 mouse_mode = false
+
+[node name="Spaceshipsrz-0" type="Sprite2D" parent="Character"]
+position = Vector2(-351, 406)
+rotation = 1.90764
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_63d8p")
+volume_db = -16.865
+autoplay = true
+
+[node name="music" type="CheckBox" parent="."]
+z_index = 2
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = 989.0
+offset_right = 224.0
+offset_bottom = 1046.0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("7_bn0jv")
+theme_override_font_sizes/font_size = 25
+theme_override_styles/focus = SubResource("StyleBoxEmpty_i3fto")
+text = "Mute Sound"
+
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = 1
+offset_right = 1924.0
+offset_bottom = 1093.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
 
 [connection signal="coin_collected" from="Coins/CoinBase" to="." method="_on_coin_base_coin_collected"]
