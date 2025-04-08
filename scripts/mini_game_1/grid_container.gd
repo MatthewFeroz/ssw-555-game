@@ -68,6 +68,12 @@ func _draw() -> void:
 	initialize_grid_border()
 	initialize_grid_background()
 	
+func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("ui_down"):
+		var tetrimino = get_node("Tetrimino") as Tetrimino
+		if tetrimino:
+			force_gravity_on_tetrimino(tetrimino)
+	
 # custom functions
 static func grid_to_pixel(coord: Vector2) -> Vector2:
 	return GRID_ORIGIN + (coord * BLOCK_SIZE.x)
@@ -244,3 +250,9 @@ func _on_Tetrimino_out_of_bounds(
 	# TODO: place this in <oob-debug>.gd
 	print("grid_container.gd: Updated the Tetrimino's position.")
 	print("grid_container.gd: Tetrimino's current position: " + str(tetrimino.global_position))
+
+func force_gravity_on_tetrimino(
+	tetrimino: Tetrimino
+) -> void:
+	tetrimino.global_position.y += BLOCK_SIZE.x
+	
