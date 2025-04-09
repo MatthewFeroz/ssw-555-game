@@ -5,6 +5,8 @@
 		- needs to remove all blocks
 	- (4/3/25): add function that resets the grid
 	- (4/3/25): ensure a signal is emitted when the entire grid is cleared out
+	- (4/8/25): lock the tetrimino (prevent from rotation or obeying gravity) when it reaches the bottom of the grid
+		- when the locked signal is emitted, fill the corresponding grid cells
 """
 
 class_name Grid
@@ -258,8 +260,10 @@ func _on_Tetrimino_out_of_bounds(
 func force_gravity_on_tetrimino(
 	tetrimino: Tetrimino
 ) -> void:
-	# first, move the tetrimino down a block
-	tetrimino.global_position.y += BLOCK_SIZE.x
-	# then, check if we're in bounds
-	# if so, great! if not, we'll snap to be inside the grid
-	tetrimino.check_bounds()
+	# make sure that the tetrimino isn't locked
+	if not tetrimino.locked:
+		# first, move the tetrimino down a block
+		tetrimino.global_position.y += BLOCK_SIZE.x
+		# then, check if we're in bounds
+		# if so, great! if not, we'll snap to be inside the grid
+		tetrimino.check_bounds()

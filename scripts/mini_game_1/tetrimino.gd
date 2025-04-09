@@ -1,6 +1,8 @@
 """TODO:
-	- add signal that emits everytime the tetrimino is rotated (for now, by the player)
-	- 
+	- (4/8/25): lock the tetrimino (prevent from rotation or obeying gravity) when it reaches the bottom of the grid
+		- emit signal when locked so that the grid cells can be filled
+	- (4/8/25): refactor the out-of-bounds detection so that it shifts the tetrimino all at once IF multiple sides are out of bounds
+		- add function that returns a boolean when the tetrimino is in bounds
 """
 @tool
 class_name Tetrimino
@@ -29,7 +31,8 @@ const BLOCK_SIZE = 128.0	# the original texture size is 128x128
 		if Engine.is_editor_hint():	# only update in editor
 			generate_tetrimino()
 
-## member variables
+# member variables
+var locked: bool = false
 #var __shape: Shape
 #var __block_size := Vector2(BLOCK_SIZE, BLOCK_SIZE)
 
@@ -344,6 +347,11 @@ func check_bounds() -> void:
 		out_of_bounds.emit(Vector2.LEFT, bbox)
 	elif bottom > (grid_origin.y + grid_height):
 		out_of_bounds.emit(Vector2.UP, bbox)
+		
+	# if the tetrimino is at the bottom of the grid, LOCK IT
+	if bottom >= (grid_origin.y + grid_height):
+		locked = true
+		print("tetrimino.gd: Locked the Tetrimino. It will no longer be able to move.")
 
 
 func _ready() -> void:
@@ -357,12 +365,13 @@ func _process(_delta) -> void:
 	if Engine.is_editor_hint():
 		return
 	
-	if Input.is_action_just_pressed("ui_left"):
-		#var rot_vector = Vector2.LEFT
-		handle_rotation(-90)
-	elif Input.is_action_just_pressed("ui_right"):
-		#var rot_vector = Vector2.RIGHT
-		handle_rotation(90)
+	if not locked:
+		if Input.is_action_just_pressed("ui_left"):
+			#var rot_vector = Vector2.LEFT
+			handle_rotation(-90)
+		elif Input.is_action_just_pressed("ui_right"):
+			#var rot_vector = Vector2.RIGHT
+			handle_rotation(90)
 		
 #func _draw() -> void:
 	#draw_circle(
