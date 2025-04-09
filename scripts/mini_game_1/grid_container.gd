@@ -1,7 +1,6 @@
 """TODO:
 	- (4/3/25): add function that initializes the grid with blocks
 		- find a way to save this array of blocks elsewhere later on
-	- (4/3/25): add function that forces the tetrmino to obey gravity
 	- (4/3/25): add function that clears lines
 		- needs to remove all blocks
 	- (4/3/25): add function that resets the grid
@@ -228,22 +227,27 @@ func _on_Tetrimino_out_of_bounds(
 
 	# TODO: place this in <oob-detect>.gd
 	var diff
+	var border_start
 	match direction:
 		Vector2.LEFT:
 			print("grid_container.gd: Shifting the tetrimino to the left...")
-			diff = right - (grid_origin.x + grid_width)
+			border_start = grid_origin.x + grid_width
+			diff = right - border_start
 			tetrimino.global_position.x -= diff
 		Vector2.RIGHT:
 			print("grid_container.gd: Shifting the tetrimino to the right...")
-			diff = grid_origin.x - left
+			border_start = grid_origin.x
+			diff = border_start - left
 			tetrimino.global_position.x += diff
 		Vector2.UP:
 			print("grid_container.gd: Shifting the tetrimino up...")
-			diff = bottom - (grid_origin.y + grid_height)
+			border_start = grid_origin.y + grid_height
+			diff = bottom - border_start
 			tetrimino.global_position.y -= diff
 		Vector2.DOWN:
 			print("grid_container.gd: Shifting the tetrimino down...")
-			diff = grid_origin.y - top
+			border_start = grid_origin.y
+			diff = border_start - top
 			tetrimino.global_position.y += diff
 	
 
@@ -254,5 +258,8 @@ func _on_Tetrimino_out_of_bounds(
 func force_gravity_on_tetrimino(
 	tetrimino: Tetrimino
 ) -> void:
+	# first, move the tetrimino down a block
 	tetrimino.global_position.y += BLOCK_SIZE.x
-	
+	# then, check if we're in bounds
+	# if so, great! if not, we'll snap to be inside the grid
+	tetrimino.check_bounds()

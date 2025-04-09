@@ -336,13 +336,13 @@ func check_bounds() -> void:
 	var grid_width = Grid.GRID_WIDTH * Grid.BLOCK_SIZE.x
 	var grid_height = Grid.GRID_HEIGHT * Grid.BLOCK_SIZE.x
 	
-	if left <= grid_origin.x:
+	if left < grid_origin.x:
 		out_of_bounds.emit(Vector2.RIGHT, bbox)
-	elif top <= grid_origin.y:
+	elif top < grid_origin.y:
 		out_of_bounds.emit(Vector2.DOWN, bbox)
-	elif right >= grid_origin.x + grid_width:
+	elif right > (grid_origin.x + grid_width):
 		out_of_bounds.emit(Vector2.LEFT, bbox)
-	elif bottom >= grid_origin.y + grid_height:
+	elif bottom > (grid_origin.y + grid_height):
 		out_of_bounds.emit(Vector2.UP, bbox)
 
 
