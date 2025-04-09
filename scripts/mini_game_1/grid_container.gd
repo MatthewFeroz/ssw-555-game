@@ -7,6 +7,10 @@
 	- (4/3/25): ensure a signal is emitted when the entire grid is cleared out
 	- (4/8/25): lock the tetrimino (prevent from rotation or obeying gravity) when it reaches the bottom of the grid
 		- when the locked signal is emitted, fill the corresponding grid cells
+	- (4/8/25): when the tetrimino is spawned, make sure it stays in bounds
+	- (4/9/25): when testing, pressing down should "drop" the tetrimino (AKA it obeys gravity.. until it can't anymore)
+	- (4/9/25): for testing purposes, ensure that a new tetrimino is spawned when one gets locked
+		- make it impossible to spawn new tetriminos once all blocks have been cleared
 """
 
 class_name Grid
@@ -39,6 +43,9 @@ var tetrimino_shape: Tetrimino.Shape
 # inspector variables
 @export var DEFAULT_SHAPE := Tetrimino.Shape.O
 
+# static variables
+static var num_tetriminos = 1
+
 # built-in functions
 func _ready() -> void:
 	# initialize the grid cells
@@ -60,10 +67,12 @@ func _ready() -> void:
 		#tetrimino_shape = DEFAULT_SHAPE
 	spawn_tetrimino_in_grid(TETRIMINO_SCENE, tetrimino_shape, SPAWN_POS)
 	
-	# ensure that the tetrimino is in bounds
 	var tetrimino = get_node("Tetrimino") as Tetrimino
 	if tetrimino:
+		# ensure that the tetrimino is in bounds
 		tetrimino.out_of_bounds.connect(_on_Tetrimino_out_of_bounds)
+		# add the blocks of a locked tetrimino to the grid
+		
 	
 func _draw() -> void:
 	initialize_grid_border()
@@ -72,7 +81,7 @@ func _draw() -> void:
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("ui_down"):
 		var tetrimino = get_node("Tetrimino") as Tetrimino
-		if tetrimino:
+		if tetrimino and not tetrimino.locked:
 			force_gravity_on_tetrimino(tetrimino)
 	
 # custom functions

@@ -1,8 +1,8 @@
 """TODO:
-	- (4/8/25): lock the tetrimino (prevent from rotation or obeying gravity) when it reaches the bottom of the grid
-		- emit signal when locked so that the grid cells can be filled
 	- (4/8/25): refactor the out-of-bounds detection so that it shifts the tetrimino all at once IF multiple sides are out of bounds
 		- add function that returns a boolean when the tetrimino is in bounds
+	- (4/8/25): when the tetrimino is spawned, make sure it stays in bounds
+		- emit the spawned signal whenever the tetrimino is generated
 """
 @tool
 class_name Tetrimino
@@ -11,6 +11,7 @@ extends Node2D
 # signals
 signal spawned(pos: Vector2)
 signal out_of_bounds(direction: Vector2, bbox: Vector4)
+signal locked_signal(blocks: Array[Block])
 
 # constants for block scene
 const BLOCK_SCENE_PATH = "res://scenes/mini_game_1/block.tscn"
@@ -352,6 +353,12 @@ func check_bounds() -> void:
 	if bottom >= (grid_origin.y + grid_height):
 		locked = true
 		print("tetrimino.gd: Locked the Tetrimino. It will no longer be able to move.")
+		
+		# emit the signal for locked tetriminos and send the tetrimino's blocks
+		var blocks: Array[Block] = []
+		for block in $Blocks.get_children():
+			blocks.append(block)
+		locked_signal.emit(blocks)
 
 
 func _ready() -> void:
