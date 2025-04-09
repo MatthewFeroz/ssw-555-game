@@ -1,16 +1,15 @@
 """TODO:
-	- (4/3/25): add function that initializes the grid with blocks
-		- find a way to save this array of blocks elsewhere later on
 	- (4/3/25): add function that clears lines
 		- needs to remove all blocks
 	- (4/3/25): add function that resets the grid
 	- (4/3/25): ensure a signal is emitted when the entire grid is cleared out
-	- (4/8/25): lock the tetrimino (prevent from rotation or obeying gravity) when it reaches the bottom of the grid
-		- when the locked signal is emitted, fill the corresponding grid cells
 	- (4/8/25): when the tetrimino is spawned, make sure it stays in bounds
 	- (4/9/25): when testing, pressing down should "drop" the tetrimino (AKA it obeys gravity.. until it can't anymore)
 	- (4/9/25): for testing purposes, ensure that a new tetrimino is spawned when one gets locked
 		- make it impossible to spawn new tetriminos once all blocks have been cleared
+	- (4/9/25): find a way to save the starting blocks elsewhere
+	- (4/9/25): when the locked signal is emitted, fill the corresponding grid cells
+	- (4/9/25): lock the tetrimino when it collides with a block OR reaches the bottom of the grid
 """
 
 class_name Grid
@@ -61,10 +60,13 @@ func _ready() -> void:
 	grid.name = "Grid"
 	add_child(grid)
 	
+	# initialize the grid with the starting blocks
+	initialize_grid()
+	
 	# spawn in a brand new tetrimino
 	if not tetrimino_shape:	# if the tetrmino wasn't already chosen, then pick a random one
-		tetrimino_shape = Tetrimino.Shape.values().pick_random()
-		#tetrimino_shape = DEFAULT_SHAPE
+		#tetrimino_shape = Tetrimino.Shape.values().pick_random()
+		tetrimino_shape = DEFAULT_SHAPE
 	spawn_tetrimino_in_grid(TETRIMINO_SCENE, tetrimino_shape, SPAWN_POS)
 	
 	var tetrimino = get_node("Tetrimino") as Tetrimino
@@ -128,7 +130,7 @@ func initialize_grid_border() -> void:
 					pos = Vector2(x, y)
 					pos = grid_to_pixel(pos)
 					#print("Placing block at current position: " + str(pos))
-					place_block(
+					place_bg_block(
 						side_container,
 						"BorderBlock%d" % block_num,
 						pos,
@@ -144,7 +146,7 @@ func initialize_grid_border() -> void:
 					pos = Vector2(x, y)
 					pos = grid_to_pixel(pos)
 					#print("Placing block at current position: " + str(pos))
-					place_block(
+					place_bg_block(
 						side_container,
 						"BorderBlock%d" % block_num,
 						pos,
@@ -168,7 +170,7 @@ func initialize_grid_background() -> void:
 			var pos = Vector2(x, y)
 			pos = grid_to_pixel(pos)
 			#print("initialize_grid_background: Placing block at current position: " + str(pos))
-			place_block(
+			place_bg_block(
 				grid_row,
 				"BGBlock%d" % block_num,
 				pos,
@@ -180,7 +182,10 @@ func initialize_grid_background() -> void:
 		grid_bg_container.add_child(grid_row)
 	grid.add_child(grid_bg_container)
 
-func place_block(
+"""
+Function for placing all grid blocks. These blocks will be behind the real blocks.
+"""
+func place_bg_block(
 	container: Node2D,
 	block_name: String,
 	pos: Vector2,
@@ -201,6 +206,279 @@ func place_block(
 	block.position = pos
 	
 	return block.position
+
+func initialize_grid() -> void:
+	# TODO: move this array to a different file so that we can load it here
+	var starting_blocks = [
+		[
+			{
+				"pos": Vector2(0, GRID_HEIGHT - 1),
+				"color": Color.ORANGE
+			},
+			{
+				"pos": Vector2(1, GRID_HEIGHT - 1),
+				"color": Color.CYAN
+			},
+			{
+				"pos": Vector2(2, GRID_HEIGHT - 1),
+				"color": Color.ORANGE
+			},
+			{
+				"pos": Vector2(4, GRID_HEIGHT - 1),
+				"color": Color.BLUE
+			},
+			{
+				"pos": Vector2(5, GRID_HEIGHT - 1),
+				"color": Color.RED
+			},
+			{
+				"pos": Vector2(6, GRID_HEIGHT - 1),
+				"color": Color.YELLOW
+			},
+			{
+				"pos": Vector2(7, GRID_HEIGHT - 1),
+				"color": Color.ORANGE
+			},
+			{
+				"pos": Vector2(8, GRID_HEIGHT - 1),
+				"color": Color.BLUE
+			},
+			{
+				"pos": Vector2(9, GRID_HEIGHT - 1),
+				"color": Color.CYAN
+			}
+		],
+		[
+			{
+				"pos": Vector2(0, GRID_HEIGHT - 2),
+				"color": Color.ORANGE
+			},
+			{
+				"pos": Vector2(1, GRID_HEIGHT - 2),
+				"color": Color.PURPLE
+			},
+			{
+				"pos": Vector2(2, GRID_HEIGHT - 2),
+				"color": Color.LIME
+			},
+			{
+				"pos": Vector2(4, GRID_HEIGHT - 2),
+				"color": Color.LIME
+			},
+			{
+				"pos": Vector2(5, GRID_HEIGHT - 2),
+				"color": Color.RED
+			},
+			{
+				"pos": Vector2(6, GRID_HEIGHT - 2),
+				"color": Color.YELLOW
+			},
+			{
+				"pos": Vector2(7, GRID_HEIGHT - 2),
+				"color": Color.ORANGE
+			},
+			{
+				"pos": Vector2(8, GRID_HEIGHT - 2),
+				"color": Color.RED
+			},
+			{
+				"pos": Vector2(9, GRID_HEIGHT - 2),
+				"color": Color.YELLOW
+			}
+		],
+		[
+			{
+				"pos": Vector2(0, GRID_HEIGHT - 3),
+				"color": Color.ORANGE
+			},
+			{
+				"pos": Vector2(1, GRID_HEIGHT - 3),
+				"color": Color.LIME
+			},
+			{
+				"pos": Vector2(2, GRID_HEIGHT - 3),
+				"color": Color.YELLOW
+			},
+			{
+				"pos": Vector2(4, GRID_HEIGHT - 3),
+				"color": Color.BLUE
+			},
+			{
+				"pos": Vector2(5, GRID_HEIGHT - 3),
+				"color": Color.ORANGE
+			},
+			{
+				"pos": Vector2(6, GRID_HEIGHT - 3),
+				"color": Color.ORANGE
+			},
+			{
+				"pos": Vector2(7, GRID_HEIGHT - 3),
+				"color": Color.BLUE
+			},
+			{
+				"pos": Vector2(8, GRID_HEIGHT - 3),
+				"color": Color.ORANGE
+			},
+			{
+				"pos": Vector2(9, GRID_HEIGHT - 3),
+				"color": Color.YELLOW
+			}
+		],
+		[
+			{
+				"pos": Vector2(0, GRID_HEIGHT - 4),
+				"color": Color.YELLOW
+			},
+			{
+				"pos": Vector2(1, GRID_HEIGHT - 4),
+				"color": Color.PURPLE
+			},
+			{
+				"pos": Vector2(2, GRID_HEIGHT - 4),
+				"color": Color.CYAN
+			},
+			{
+				"pos": Vector2(5, GRID_HEIGHT - 4),
+				"color": Color.PURPLE
+			},
+			{
+				"pos": Vector2(6, GRID_HEIGHT - 4),
+				"color": Color.YELLOW
+			},
+			{
+				"pos": Vector2(7, GRID_HEIGHT - 4),
+				"color": Color.PURPLE
+			},
+			{
+				"pos": Vector2(8, GRID_HEIGHT - 4),
+				"color": Color.BLUE
+			},
+			{
+				"pos": Vector2(9, GRID_HEIGHT - 4),
+				"color": Color.RED
+			}
+		],
+		[
+			{
+				"pos": Vector2(0, GRID_HEIGHT - 5),
+				"color": Color.PURPLE
+			},
+			{
+				"pos": Vector2(1, GRID_HEIGHT - 5),
+				"color": Color.RED
+			},
+			{
+				"pos": Vector2(2, GRID_HEIGHT - 5),
+				"color": Color.PURPLE
+			},
+			{
+				"pos": Vector2(5, GRID_HEIGHT - 5),
+				"color": Color.PURPLE
+			},
+			{
+				"pos": Vector2(6, GRID_HEIGHT - 5),
+				"color": Color.CYAN
+			},
+			{
+				"pos": Vector2(7, GRID_HEIGHT - 5),
+				"color": Color.CYAN
+			},
+			{
+				"pos": Vector2(8, GRID_HEIGHT - 5),
+				"color": Color.RED
+			},
+			{
+				"pos": Vector2(9, GRID_HEIGHT - 5),
+				"color": Color.LIME
+			}
+		],
+		[
+			{
+				"pos": Vector2(5, GRID_HEIGHT - 6),
+				"color": Color.CYAN
+			},
+			{
+				"pos": Vector2(6, GRID_HEIGHT - 6),
+				"color": Color.YELLOW
+			},
+			{
+				"pos": Vector2(7, GRID_HEIGHT - 6),
+				"color": Color.LIME
+			},
+			{
+				"pos": Vector2(8, GRID_HEIGHT - 6),
+				"color": Color.CYAN
+			},
+			{
+				"pos": Vector2(9, GRID_HEIGHT - 6),
+				"color": Color.BLUE
+			}
+		]
+	]
+	for row in starting_blocks:
+		for block in row:
+			place_block(block["pos"], block["color"])
+
+func place_block(
+	pos: Vector2,
+	color: Color
+) -> void:
+	# create a new block
+	var block = Block.new()
+	block.resize_block(BLOCK_SIZE.x)
+	block.add_block_collision(BLOCK_SIZE.x)
+	block.set_block_color(color)
+	block.add_to_group("blocks")	# add it to blocks group
+	
+	# add it to the screen under the LockedBlocks node
+	var locked_blocks = get_node("LockedBlocks") as Node2D
+	if not locked_blocks:
+		locked_blocks = Node2D.new()
+		locked_blocks.name = "LockedBlocks"
+		add_child(locked_blocks)
+	locked_blocks.add_child(block)
+	
+	# since the block is centered at (0,0) in its own scene (distance from the 
+	# center to a block edge is half the block size), this causes the block to 
+	# be in the wrong position when we place it. thus, we need to offset it 
+	# first before converting to grid coordinates.
+	var offset = BLOCK_SIZE / 2
+	pos = grid_to_pixel(pos)
+	pos += offset
+	
+	# BTW, if the block was placed out of bounds, we shift it
+	# TODO: keep detecting whether block is out of bounds until it's not
+	# TODO: place this in <oob-detect>.gd
+	var left = pos.x - (BLOCK_SIZE.x / 2.0)
+	var right = pos.x + (BLOCK_SIZE.x / 2.0)
+	var top = pos.y - (BLOCK_SIZE.y / 2.0)
+	var bottom = pos.y + (BLOCK_SIZE.y / 2.0)
+	
+	var border_start
+	var diff
+	if left < GRID_ORIGIN.x:
+		print("grid_container.gd: Shifting the block to the right...")
+		border_start = GRID_ORIGIN.x
+		diff = border_start - left
+		pos.x += diff
+	elif top < GRID_ORIGIN.y:
+		print("grid_container.gd: Shifting the block down...")
+		border_start = GRID_ORIGIN.y
+		diff = border_start - top
+		pos.y += diff
+	elif right > (GRID_ORIGIN.x + (GRID_WIDTH * BLOCK_SIZE.x)):
+		print("grid_container.gd: Shifting the block to the left...")
+		border_start = GRID_ORIGIN.x + GRID_WIDTH * BLOCK_SIZE.x
+		diff = right - border_start
+		pos.x -= diff
+	elif bottom > (GRID_ORIGIN.y + (GRID_HEIGHT * BLOCK_SIZE.y)):
+		print("grid_container.gd: Shifting the block up...")
+		border_start = GRID_ORIGIN.y + GRID_HEIGHT * BLOCK_SIZE.y
+		diff = bottom - border_start
+		pos.y -= diff
+	
+	block.position = pos
+	# TODO: add code to convert the block's pixel coordinates to grid coordinates
 
 func spawn_tetrimino_in_grid(
 	tetrimino_scene: PackedScene,
