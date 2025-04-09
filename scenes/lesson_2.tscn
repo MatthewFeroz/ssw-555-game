@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://cy6rudqvsaxor"]
 
 [ext_resource type="Texture2D" uid="uid://bl6n6xca07q2w" path="res://assets/SpaceMap/galaxy.jpg" id="1_6nsm3"]
-[ext_resource type="Texture2D" uid="uid://b5nwfxjv3bpap" path="res://assets/Lesson 2/entanglement-intro.webp" id="2_0bo75"]
+[ext_resource type="Texture2D" uid="uid://bnasl72e1a6fj" path="res://assets/Lesson 2/entanglemetintro.jpg" id="2_6nsm3"]
 [ext_resource type="Texture2D" uid="uid://jq5apsl7ehjt" path="res://assets/Lesson 2/Entanglement1.jpg" id="3_6nsm3"]
 [ext_resource type="Script" uid="uid://b4vvakap8k7vu" path="res://scripts/understandButton.gd" id="4_ol4qu"]
 
@@ -95,7 +95,7 @@ layout_direction = 4
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("2_0bo75")
+texture = ExtResource("2_6nsm3")
 expand_mode = 1
 
 [node name="fig_desc" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer"]
