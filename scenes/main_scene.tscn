@@ -1,20 +1,25 @@
 [gd_scene load_steps=10 format=3 uid="uid://cjirkqh35qrve"]
 
 [ext_resource type="Texture2D" uid="uid://eg2uu82u4qr0" path="res://assets/SpaceMap/galaxy1.jpg" id="1_6wevv"]
+[ext_resource type="Script" uid="uid://ckl4eghjdx58u" path="res://scripts/main_scene.gd" id="1_e1cbu"]
 [ext_resource type="Texture2D" uid="uid://xixmsgmotj0r" path="res://assets/SpaceMap/earth_png.png" id="2_e1cbu"]
+[ext_resource type="PackedScene" uid="uid://cy6rudqvsaxor" path="res://scenes/lesson_2.tscn" id="3_c1pb6"]
 [ext_resource type="Texture2D" uid="uid://chevysdkhgld1" path="res://assets/SpaceMap/planet2.png" id="3_mngbo"]
-[ext_resource type="Script" uid="uid://dyuvwc3m48ull" path="res://scripts/planet2_button.gd" id="4_4w45t"]
 [ext_resource type="PackedScene" uid="uid://brj04gfmi1l7l" path="res://scenes/lesson_1.tscn" id="5_r6p65"]
 [ext_resource type="Texture2D" uid="uid://b2e5eg6de7qql" path="res://assets/SpaceMap/planet3.png" id="6_si52b"]
-[ext_resource type="Script" uid="uid://c44p8c2gnrocp" path="res://scenes/entnglement_button.gd" id="8_c1pb6"]
 [ext_resource type="Texture2D" uid="uid://b1oxsje3xtyb" path="res://assets/SpaceMap/planet4.png" id="9_bcnxi"]
 [ext_resource type="Texture2D" uid="uid://ovubaof8xmd5" path="res://assets/SpaceMap/planet 5.png" id="10_7nt27"]
 
-[node name="Control" type="Control"]
+[node name="Control" type="Control" node_paths=PackedStringArray("button1", "button2")]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+script = ExtResource("1_e1cbu")
+lesson_scene_1 = ExtResource("5_r6p65")
+lesson_scene_2 = ExtResource("3_c1pb6")
+button1 = NodePath("Planet 2 - L1_MG1/Button L1MG1")
+button2 = NodePath("Planet 4 - L2_MG2/Button L2MG2")
 
 [node name="GalaxyBackground" type="TextureRect" parent="."]
 layout_mode = 1
@@ -40,7 +45,7 @@ texture = ExtResource("2_e1cbu")
 expand_mode = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Planet 2 - L1" type="TextureRect" parent="."]
+[node name="Planet 2 - L1_MG1" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 18.475
@@ -53,7 +58,7 @@ texture = ExtResource("3_mngbo")
 expand_mode = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Button" type="Button" parent="Planet 2 - L1"]
+[node name="Button L1MG1" type="Button" parent="Planet 2 - L1_MG1"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -65,11 +70,9 @@ offset_top = -48.5
 offset_right = 68.5
 offset_bottom = 70.5
 flat = true
-script = ExtResource("4_4w45t")
-lesson_scene = ExtResource("5_r6p65")
 metadata/_edit_use_anchors_ = true
 
-[node name="Planet 3 - MG 1" type="TextureRect" parent="."]
+[node name="Planet 3" type="TextureRect" parent="."]
 layout_mode = 0
 offset_left = 1358.0
 offset_top = 157.0
@@ -78,7 +81,7 @@ offset_bottom = 311.0
 texture = ExtResource("6_si52b")
 expand_mode = 1
 
-[node name="Planet 4 - L2" type="TextureRect" parent="."]
+[node name="Planet 4 - L2_MG2" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 27.5
@@ -89,16 +92,15 @@ texture = ExtResource("9_bcnxi")
 expand_mode = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Button" type="Button" parent="Planet 4 - L2"]
+[node name="Button L2MG2" type="Button" parent="Planet 4 - L2_MG2"]
 layout_mode = 0
 offset_left = 14.0
 offset_top = 21.0
 offset_right = 154.0
 offset_bottom = 164.0
 flat = true
-script = ExtResource("8_c1pb6")
 
-[node name="Planet 5 - MG2" type="TextureRect" parent="."]
+[node name="Planet 5" type="TextureRect" parent="."]
 layout_mode = 0
 offset_left = 455.0
 offset_top = 604.0
@@ -106,6 +108,3 @@ offset_right = 615.0
 offset_bottom = 776.0
 texture = ExtResource("10_7nt27")
 expand_mode = 1
-
-[connection signal="pressed" from="Planet 2 - L1/Button" to="Planet 2 - L1/Button" method="_on_pressed"]
-[connection signal="pressed" from="Planet 4 - L2/Button" to="Planet 4 - L2/Button" method="_on_pressed"]

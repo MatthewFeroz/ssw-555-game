@@ -63,7 +63,7 @@ self_modulate = Color(0, 0, 0, 1)
 layout_mode = 2
 size_flags_stretch_ratio = 0.0
 theme_override_font_sizes/font_size = 26
-text = "Superposition Tetris
+text = "Entanglement Memory Cards
 
 How to Play:
 "
