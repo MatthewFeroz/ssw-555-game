@@ -35,7 +35,7 @@ const SPAWN_POS := Vector2(GRID_WIDTH / 2, 0)
 
 # instance variables
 var grid: Node2D
-var grid_cells: Array
+var grid_cells: Array[Array]	# stores the block IDs
 var grid_bg_container: Node2D
 var border_container: Node2D
 var tetrimino_shape: Tetrimino.Shape
@@ -44,7 +44,7 @@ var tetrimino_shape: Tetrimino.Shape
 @export var DEFAULT_SHAPE := Tetrimino.Shape.O
 
 # static variables
-static var num_tetriminos = 1
+static var num_locked_tetriminos = 0
 
 # built-in functions
 func _ready() -> void:
@@ -72,7 +72,7 @@ func _ready() -> void:
 		# ensure that the tetrimino is in bounds
 		tetrimino.out_of_bounds.connect(_on_Tetrimino_out_of_bounds)
 		# add the blocks of a locked tetrimino to the grid
-		
+		tetrimino.locked_signal.connect(_on_Tetrimino_locked)
 	
 func _draw() -> void:
 	initialize_grid_border()
@@ -265,6 +265,23 @@ func _on_Tetrimino_out_of_bounds(
 	# TODO: place this in <oob-debug>.gd
 	print("grid_container.gd: Updated the Tetrimino's position.")
 	print("grid_container.gd: Tetrimino's current position: " + str(tetrimino.global_position))
+
+func _on_Tetrimino_locked(
+	blocks: Array[Block]
+) -> void:
+	# grab the tetrimino from the scene
+	var tetrimino = get_node("Tetrimino") as Tetrimino
+	if not tetrimino:
+		return
+		
+	# update the number of tetriminos spawned to the grid
+	num_locked_tetriminos += 1
+	# rename the tetrimino (so that it doesn't conflict with new tetriminos!)
+	var new_name = "LockedTetrimino%d" % num_locked_tetriminos
+	tetrimino.name = new_name
+	print("grid_container.gd: Renamed 'Tetrimino' to '%s'." % new_name)
+	
+	# add the IDs of each block to the internal grid cells
 
 func force_gravity_on_tetrimino(
 	tetrimino: Tetrimino
