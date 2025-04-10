@@ -5,8 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://dhau8u44q7blp" path="res://scenes/character.tscn" id="2_ngauo"]
 [ext_resource type="PackedScene" uid="uid://ccfutgtg1xdbq" path="res://scenes/coin_base.tscn" id="3_bxx46"]
 [ext_resource type="PackedScene" uid="uid://cen8goii1hogk" path="res://scenes/pause_menu_1.tscn" id="5_bxx46"]
-[ext_resource type="AudioStream" uid="uid://d4dt2m5v64epm" path="res://assets/space-station-247790.mp3" id="6_63d8p"]
-[ext_resource type="FontFile" uid="uid://c75p5ia0spmhb" path="res://assets/Nasalization Rg.otf" id="7_bn0jv"]
+[ext_resource type="AudioStream" uid="uid://cuw6qlbaefhk8" path="res://assets/space-station-247790.mp3" id="6_63d8p"]
+[ext_resource type="FontFile" uid="uid://342agxbfkdiy" path="res://assets/Nasalization Rg.otf" id="7_bn0jv"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i3fto"]
 
