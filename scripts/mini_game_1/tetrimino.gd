@@ -3,6 +3,7 @@
 		- add function that returns a boolean when the tetrimino is in bounds
 	- (4/8/25): when the tetrimino is spawned, make sure it stays in bounds
 		- emit the spawned signal whenever the tetrimino is generated
+	- (4/10/25): prevent O-shape tetriminos from rotating (it's time to tackle this!)
 """
 @tool
 class_name Tetrimino
@@ -11,7 +12,7 @@ extends Node2D
 # signals
 signal spawned(pos: Vector2)
 signal out_of_bounds(direction: Vector2, bbox: Vector4)
-signal locked_signal(blocks: Array[Block])
+signal lock_blocks(blocks: Array[Block])
 
 # constants for block scene
 const BLOCK_SCENE_PATH = "res://scenes/mini_game_1/block.tscn"
@@ -262,6 +263,9 @@ func generate_tetrimino(
 	# send out a signal that the tetrimino has been spawned
 	#spawned.emit(self.global_position)
 	return self
+	
+func get_blocks() -> Node2D:
+	return $Blocks
 
 func handle_rotation(
 	rot_angle: float
@@ -371,7 +375,7 @@ func lock(
 	var blocks: Array[Block] = []
 	for block in $Blocks.get_children():
 		blocks.append(block)
-	locked_signal.emit(blocks)
+	lock_blocks.emit(blocks)
 
 func _ready() -> void:
 	if not Engine.is_editor_hint():

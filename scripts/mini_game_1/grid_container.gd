@@ -76,7 +76,7 @@ func _ready() -> void:
 		# ensure that the tetrimino is in bounds
 		tetrimino.out_of_bounds.connect(_on_Tetrimino_out_of_bounds)
 		# add the blocks of a locked tetrimino to the grid
-		tetrimino.locked_signal.connect(_on_Tetrimino_locked)
+		tetrimino.lock_blocks.connect(_on_Tetrimino_locked)
 	
 func _draw() -> void:
 	initialize_grid_border()
@@ -91,7 +91,10 @@ func _process(_delta: float) -> void:
 # custom functions
 static func grid_to_pixel(coord: Vector2) -> Vector2:
 	return GRID_ORIGIN + (coord * BLOCK_SIZE.x)
-	
+
+static func pixel_to_grid(coord: Vector2) -> Vector2:
+	return (coord - GRID_ORIGIN) / BLOCK_SIZE.x
+
 static func get_block_size() -> Vector2:
 	return BLOCK_SIZE
 
@@ -480,7 +483,17 @@ func place_block(
 		pos.y -= diff
 	
 	block.position = pos
-	# TODO: add code to convert the block's pixel coordinates to grid coordinates
+	
+	# fill the corresponding grid cell
+	fill_grid_cell(block)
+
+func fill_grid_cell(
+	block: Block
+) -> void:
+	var cell_pos: Vector2 = pixel_to_grid(block.global_position)
+	var row_index: int = floori(cell_pos.x)
+	var col_index: int = floori(cell_pos.y)
+	grid_cells[col_index][row_index] = block.get_instance_id()
 
 func spawn_tetrimino_in_grid(
 	tetrimino_scene: PackedScene,
@@ -563,6 +576,8 @@ func _on_Tetrimino_locked(
 	print("grid_container.gd: Renamed 'Tetrimino' to '%s'." % new_name)
 	
 	# add the IDs of each block to the internal grid cells
+	for block in tetrimino.get_blocks().get_children():
+		fill_grid_cell(block)
 
 func force_gravity_on_tetrimino(
 	tetrimino: Tetrimino

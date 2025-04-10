@@ -90,5 +90,5 @@ func _on_area_entered(_area) -> void:
 	print("block.gd: Block '%s' entered." % name)
 	# if block belonging to tetrimino, then tell it should lock in place
 	var parent = get_parent()
-	if parent.get_parent().name == "Tetrimino":	# idk why can't "parse global class 'Tetrimino'"?
+	if parent.get_parent().name == "Tetrimino":	# idk why i can't "parse global class 'Tetrimino'"?
 		lock_tetrimino.emit()
