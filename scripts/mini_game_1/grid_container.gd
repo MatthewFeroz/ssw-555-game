@@ -8,10 +8,6 @@
 	- (4/9/25): for testing purposes, ensure that a new tetrimino is spawned when one gets locked
 		- make it impossible to spawn new tetriminos once all blocks have been cleared
 	- (4/9/25): find a way to save the starting blocks elsewhere
-	- (4/9/25): when the locked signal is emitted, fill the corresponding grid cells
-	- (4/9/25): lock the tetrimino when it collides with a block OR reaches the bottom of the grid
-	- (4/9/25): change all "BLOCK_WIDTH * BLOCK_SIZE.x" (and equivalent for grid height) to a const
-	- (4/9/25): when tetrimino is spawned or moved, make sure its sides align with BLOCK_SIZE increments
 """
 
 class_name Grid
@@ -28,6 +24,10 @@ const GRID_SIZE := GRID_WIDTH * GRID_HEIGHT
 const BACKGROUND_COLOR := Color.DARK_GRAY
 const BORDER_COLOR := Color.DIM_GRAY
 const BLOCK_SIZE := Vector2(32.0, 32.0)	# all blocks must be 32x32
+
+# out-of-bounds detection related(?)
+const MAX_X = GRID_WIDTH * BLOCK_SIZE.x
+const MAX_Y = GRID_HEIGHT * BLOCK_SIZE.y
 
 # tetrmino related
 const TETRIMINO_SCENE_PATH := "res://scenes/mini_game_1/tetrimino.tscn"
@@ -46,6 +46,7 @@ var tetrimino_shape: Tetrimino.Shape
 
 # static variables
 static var num_locked_tetriminos = 0
+static var total_blocks = 0
 
 # built-in functions
 func _ready() -> void:
@@ -90,6 +91,8 @@ func _process(_delta: float) -> void:
 	
 # custom functions
 static func grid_to_pixel(coord: Vector2) -> Vector2:
+	coord.x = floori(coord.x)
+	coord.y = floori(coord.y)
 	return GRID_ORIGIN + (coord * BLOCK_SIZE.x)
 
 static func pixel_to_grid(coord: Vector2) -> Vector2:
@@ -471,14 +474,14 @@ func place_block(
 		border_start = GRID_ORIGIN.y
 		diff = border_start - top
 		pos.y += diff
-	elif right > (GRID_ORIGIN.x + (GRID_WIDTH * BLOCK_SIZE.x)):
+	elif right > (GRID_ORIGIN.x + MAX_X):
 		print("grid_container.gd: Shifting the block to the left...")
-		border_start = GRID_ORIGIN.x + GRID_WIDTH * BLOCK_SIZE.x
+		border_start = GRID_ORIGIN.x + MAX_X
 		diff = right - border_start
 		pos.x -= diff
-	elif bottom > (GRID_ORIGIN.y + (GRID_HEIGHT * BLOCK_SIZE.y)):
+	elif bottom > (GRID_ORIGIN.y + MAX_Y):
 		print("grid_container.gd: Shifting the block up...")
-		border_start = GRID_ORIGIN.y + GRID_HEIGHT * BLOCK_SIZE.y
+		border_start = GRID_ORIGIN.y + MAX_Y
 		diff = bottom - border_start
 		pos.y -= diff
 	
@@ -486,6 +489,7 @@ func place_block(
 	
 	# fill the corresponding grid cell
 	fill_grid_cell(block)
+	total_blocks += 1
 
 func fill_grid_cell(
 	block: Block
@@ -503,9 +507,52 @@ func spawn_tetrimino_in_grid(
 	var tetrimino = tetrimino_scene.instantiate()
 	tetrimino.spawn_tetrimino(t_shape, BLOCK_SIZE.x)
 	pos = grid_to_pixel(pos)
+	# let's make sure it's aligned with the grid
 	tetrimino.position = pos
+	align_tetrimino(tetrimino)
 	add_child(tetrimino)
 	tetrimino.check_bounds()
+
+func is_tetrimino_aligned(
+	tetrimino: Tetrimino
+) -> bool:
+	# we shouldn't rely on the tetrimino's position (because it's centered on 
+	# the pivot point)
+	var bbox = tetrimino.get_bbox()
+	var left = bbox.x
+	var right = bbox.y
+	var top = bbox.z
+	var bottom = bbox.w
+	
+	# now, we check if it's misaligned on any of its sides
+	for side in [left, right, top, bottom]:
+		var result = side / BLOCK_SIZE.x
+		print("grid_container.gd (is_tetrimino_aligned): %f" % result)
+		var test_1 = step_decimals(result)
+		var test_2 = roundf(result)
+		var test_3 = side / BLOCK_SIZE.x
+		print("%f, %f, %f" % [test_1, test_2, test_3])
+		if step_decimals(result) != 0 or roundf(result) != side / BLOCK_SIZE.x:	# this checks if it divides evenly
+			return false
+
+	return true
+
+func align_tetrimino(
+	tetrimino: Tetrimino
+) -> void:
+	# we shouldn't rely on the tetrimino's position (because it's centered on 
+	# the pivot point)
+	var bbox = tetrimino.get_bbox()
+	var actual_left = bbox.x
+	var actual_top = bbox.z
+	
+	# now, we align the tetrimino based on its top-left corner
+	var expected_left = snappedf(actual_left, BLOCK_SIZE.x)
+	var expected_top = snappedf(actual_top, BLOCK_SIZE.y)
+	var diff = expected_left - actual_left
+	tetrimino.position.x += diff
+	diff = expected_top - actual_top
+	tetrimino.position.y += diff
 
 func _on_Tetrimino_out_of_bounds(
 	direction: Vector2,
@@ -520,7 +567,7 @@ func _on_Tetrimino_out_of_bounds(
 	
 	# determine whether or not the tetrimino is out of bounds
 	var grid_origin = grid_to_pixel(Vector2(0,0))
-	var grid_width = GRID_WIDTH * BLOCK_SIZE.x
+	var grid_width = MAX_X
 	var grid_height = GRID_HEIGHT * BLOCK_SIZE.x
 	
 	var left = bbox.x
