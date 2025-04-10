@@ -513,30 +513,6 @@ func spawn_tetrimino_in_grid(
 	add_child(tetrimino)
 	tetrimino.check_bounds()
 
-func is_tetrimino_aligned(
-	tetrimino: Tetrimino
-) -> bool:
-	# we shouldn't rely on the tetrimino's position (because it's centered on 
-	# the pivot point)
-	var bbox = tetrimino.get_bbox()
-	var left = bbox.x
-	var right = bbox.y
-	var top = bbox.z
-	var bottom = bbox.w
-	
-	# now, we check if it's misaligned on any of its sides
-	for side in [left, right, top, bottom]:
-		var result = side / BLOCK_SIZE.x
-		print("grid_container.gd (is_tetrimino_aligned): %f" % result)
-		var test_1 = step_decimals(result)
-		var test_2 = roundf(result)
-		var test_3 = side / BLOCK_SIZE.x
-		print("%f, %f, %f" % [test_1, test_2, test_3])
-		if step_decimals(result) != 0 or roundf(result) != side / BLOCK_SIZE.x:	# this checks if it divides evenly
-			return false
-
-	return true
-
 func align_tetrimino(
 	tetrimino: Tetrimino
 ) -> void:
