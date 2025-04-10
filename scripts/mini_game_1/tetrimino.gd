@@ -251,6 +251,10 @@ func generate_tetrimino(
 		# print("tetrimino.gd: Updated position of Block #" + str(block_num) + ": " + str(block.position))
 		block_num += 1
 		
+		# make sure to lock the tetrimino in place if collision with other 
+		# blocks or it reaches the grid's bottom
+		block.lock_tetrimino.connect(_on_Block_locked)
+		
 		# ensure that the blocks are selectable nodes in the editor
 		if Engine.is_editor_hint():
 			$Blocks.set_editable_instance(block, true)
@@ -351,21 +355,28 @@ func check_bounds() -> void:
 		
 	# if the tetrimino is at the bottom of the grid, LOCK IT
 	if bottom >= (grid_origin.y + grid_height):
-		locked = true
-		print("tetrimino.gd: Locked the Tetrimino. It will no longer be able to move.")
-		
-		# emit the signal for locked tetriminos and send the tetrimino's blocks
-		var blocks: Array[Block] = []
-		for block in $Blocks.get_children():
-			blocks.append(block)
-		locked_signal.emit(blocks)
+		lock()
 
+func lock(
+	block_collision: bool = false
+) -> void:
+	locked = true
+	print("tetrimino.gd: Locked the Tetrimino. It will no longer be able to move.")
+	
+	# make sure the tetrimino is not overlapping IF it collided with a block
+	if block_collision:
+		position.y -= Grid.BLOCK_SIZE.y
+	
+	# emit the signal for locked tetriminos and send the tetrimino's blocks
+	var blocks: Array[Block] = []
+	for block in $Blocks.get_children():
+		blocks.append(block)
+	locked_signal.emit(blocks)
 
 func _ready() -> void:
 	if not Engine.is_editor_hint():
 		if not get_parent() or get_parent().name == "Grid":
 			generate_tetrimino()
-			#check_bounds()
 		
 func _process(_delta) -> void:
 	# don't do anything if the game isn't actually running
@@ -386,3 +397,6 @@ func _process(_delta) -> void:
 		#4,
 		#Color.RED
 	#)
+
+func _on_Block_locked() -> void:
+	lock(true)

@@ -1,6 +1,9 @@
 @tool
 class_name Block
-extends Node2D
+extends Area2D
+
+# signals
+signal lock_tetrimino
 
 # constants
 const TEX_PATH: String = "res://assets/sprites/Tetromino_Block.svg"
@@ -82,3 +85,10 @@ func add_block_collision(new_size: float) -> void:
 		
 func remove_block_collision() -> void:
 	collision.disabled = true
+
+func _on_area_entered(_area) -> void:
+	print("block.gd: Block '%s' entered." % name)
+	# if block belonging to tetrimino, then tell it should lock in place
+	var parent = get_parent()
+	if parent.get_parent().name == "Tetrimino":	# idk why can't "parse global class 'Tetrimino'"?
+		lock_tetrimino.emit()

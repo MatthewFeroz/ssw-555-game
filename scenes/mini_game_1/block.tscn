@@ -2,5 +2,7 @@
 
 [ext_resource type="Script" uid="uid://hvtgqcpcojxl" path="res://scripts/mini_game_1/block.gd" id="1_4kun4"]
 
-[node name="Block" type="Node2D"]
+[node name="Block" type="Area2D"]
 script = ExtResource("1_4kun4")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

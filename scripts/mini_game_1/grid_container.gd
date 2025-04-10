@@ -10,6 +10,8 @@
 	- (4/9/25): find a way to save the starting blocks elsewhere
 	- (4/9/25): when the locked signal is emitted, fill the corresponding grid cells
 	- (4/9/25): lock the tetrimino when it collides with a block OR reaches the bottom of the grid
+	- (4/9/25): change all "BLOCK_WIDTH * BLOCK_SIZE.x" (and equivalent for grid height) to a const
+	- (4/9/25): when tetrimino is spawned or moved, make sure its sides align with BLOCK_SIZE increments
 """
 
 class_name Grid
@@ -30,7 +32,7 @@ const BLOCK_SIZE := Vector2(32.0, 32.0)	# all blocks must be 32x32
 # tetrmino related
 const TETRIMINO_SCENE_PATH := "res://scenes/mini_game_1/tetrimino.tscn"
 const TETRIMINO_SCENE := preload(TETRIMINO_SCENE_PATH)
-const SPAWN_POS := Vector2(GRID_WIDTH / 2, 0)
+const SPAWN_POS := Vector2(floor(GRID_WIDTH / 2), 0)
 
 # instance variables
 var grid: Node2D
@@ -65,8 +67,8 @@ func _ready() -> void:
 	
 	# spawn in a brand new tetrimino
 	if not tetrimino_shape:	# if the tetrmino wasn't already chosen, then pick a random one
-		#tetrimino_shape = Tetrimino.Shape.values().pick_random()
-		tetrimino_shape = DEFAULT_SHAPE
+		tetrimino_shape = Tetrimino.Shape.values().pick_random()
+		#tetrimino_shape = DEFAULT_SHAPE
 	spawn_tetrimino_in_grid(TETRIMINO_SCENE, tetrimino_shape, SPAWN_POS)
 	
 	var tetrimino = get_node("Tetrimino") as Tetrimino
@@ -82,7 +84,7 @@ func _draw() -> void:
 	
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("ui_down"):
-		var tetrimino = get_node("Tetrimino") as Tetrimino
+		var tetrimino = get_node_or_null("Tetrimino") as Tetrimino
 		if tetrimino and not tetrimino.locked:
 			force_gravity_on_tetrimino(tetrimino)
 	
@@ -431,7 +433,7 @@ func place_block(
 	block.add_to_group("blocks")	# add it to blocks group
 	
 	# add it to the screen under the LockedBlocks node
-	var locked_blocks = get_node("LockedBlocks") as Node2D
+	var locked_blocks = get_node_or_null("LockedBlocks") as Node2D
 	if not locked_blocks:
 		locked_blocks = Node2D.new()
 		locked_blocks.name = "LockedBlocks"
@@ -545,13 +547,14 @@ func _on_Tetrimino_out_of_bounds(
 	print("grid_container.gd: Tetrimino's current position: " + str(tetrimino.global_position))
 
 func _on_Tetrimino_locked(
-	blocks: Array[Block]
+	blocks: Array[Block],
+	block_collision: bool = false
 ) -> void:
 	# grab the tetrimino from the scene
 	var tetrimino = get_node("Tetrimino") as Tetrimino
 	if not tetrimino:
 		return
-		
+
 	# update the number of tetriminos spawned to the grid
 	num_locked_tetriminos += 1
 	# rename the tetrimino (so that it doesn't conflict with new tetriminos!)
