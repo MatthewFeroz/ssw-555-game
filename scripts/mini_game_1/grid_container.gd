@@ -7,7 +7,6 @@
 	- (4/9/25): when testing, pressing down should "drop" the tetrimino (AKA it obeys gravity.. until it can't anymore)
 	- (4/9/25): for testing purposes, ensure that a new tetrimino is spawned when one gets locked
 		- make it impossible to spawn new tetriminos once all blocks have been cleared
-	- (4/9/25): find a way to save the starting blocks elsewhere
 """
 
 class_name Grid
@@ -19,6 +18,7 @@ const GRID_ORIGIN := Vector2(BLOCK_SIZE)
 const GRID_WIDTH := 10
 const GRID_HEIGHT := 20
 const GRID_SIZE := GRID_WIDTH * GRID_HEIGHT
+const DEFAULT_PUZZLE_PATH := "res://resources/puzzle_1.res"	# the default path to puzzle #1 resource
 
 # block related
 const BACKGROUND_COLOR := Color.DARK_GRAY
@@ -37,6 +37,7 @@ const SPAWN_POS := Vector2(floor(GRID_WIDTH / 2), 0)
 # instance variables
 var grid: Node2D
 var grid_cells: Array[Array]	# stores the block IDs
+var puzzle: PuzzleResource
 var grid_bg_container: Node2D
 var border_container: Node2D
 var tetrimino_shape: Tetrimino.Shape
@@ -215,214 +216,11 @@ func place_bg_block(
 	
 	return block.position
 
-func initialize_grid() -> void:
-	# TODO: move this array to a different file so that we can load it here
-	var starting_blocks = [
-		[
-			{
-				"pos": Vector2(0, GRID_HEIGHT - 1),
-				"color": Color.ORANGE
-			},
-			{
-				"pos": Vector2(1, GRID_HEIGHT - 1),
-				"color": Color.CYAN
-			},
-			{
-				"pos": Vector2(2, GRID_HEIGHT - 1),
-				"color": Color.ORANGE
-			},
-			{
-				"pos": Vector2(4, GRID_HEIGHT - 1),
-				"color": Color.BLUE
-			},
-			{
-				"pos": Vector2(5, GRID_HEIGHT - 1),
-				"color": Color.RED
-			},
-			{
-				"pos": Vector2(6, GRID_HEIGHT - 1),
-				"color": Color.YELLOW
-			},
-			{
-				"pos": Vector2(7, GRID_HEIGHT - 1),
-				"color": Color.ORANGE
-			},
-			{
-				"pos": Vector2(8, GRID_HEIGHT - 1),
-				"color": Color.BLUE
-			},
-			{
-				"pos": Vector2(9, GRID_HEIGHT - 1),
-				"color": Color.CYAN
-			}
-		],
-		[
-			{
-				"pos": Vector2(0, GRID_HEIGHT - 2),
-				"color": Color.ORANGE
-			},
-			{
-				"pos": Vector2(1, GRID_HEIGHT - 2),
-				"color": Color.PURPLE
-			},
-			{
-				"pos": Vector2(2, GRID_HEIGHT - 2),
-				"color": Color.LIME
-			},
-			{
-				"pos": Vector2(4, GRID_HEIGHT - 2),
-				"color": Color.LIME
-			},
-			{
-				"pos": Vector2(5, GRID_HEIGHT - 2),
-				"color": Color.RED
-			},
-			{
-				"pos": Vector2(6, GRID_HEIGHT - 2),
-				"color": Color.YELLOW
-			},
-			{
-				"pos": Vector2(7, GRID_HEIGHT - 2),
-				"color": Color.ORANGE
-			},
-			{
-				"pos": Vector2(8, GRID_HEIGHT - 2),
-				"color": Color.RED
-			},
-			{
-				"pos": Vector2(9, GRID_HEIGHT - 2),
-				"color": Color.YELLOW
-			}
-		],
-		[
-			{
-				"pos": Vector2(0, GRID_HEIGHT - 3),
-				"color": Color.ORANGE
-			},
-			{
-				"pos": Vector2(1, GRID_HEIGHT - 3),
-				"color": Color.LIME
-			},
-			{
-				"pos": Vector2(2, GRID_HEIGHT - 3),
-				"color": Color.YELLOW
-			},
-			{
-				"pos": Vector2(4, GRID_HEIGHT - 3),
-				"color": Color.BLUE
-			},
-			{
-				"pos": Vector2(5, GRID_HEIGHT - 3),
-				"color": Color.ORANGE
-			},
-			{
-				"pos": Vector2(6, GRID_HEIGHT - 3),
-				"color": Color.ORANGE
-			},
-			{
-				"pos": Vector2(7, GRID_HEIGHT - 3),
-				"color": Color.BLUE
-			},
-			{
-				"pos": Vector2(8, GRID_HEIGHT - 3),
-				"color": Color.ORANGE
-			},
-			{
-				"pos": Vector2(9, GRID_HEIGHT - 3),
-				"color": Color.YELLOW
-			}
-		],
-		[
-			{
-				"pos": Vector2(0, GRID_HEIGHT - 4),
-				"color": Color.YELLOW
-			},
-			{
-				"pos": Vector2(1, GRID_HEIGHT - 4),
-				"color": Color.PURPLE
-			},
-			{
-				"pos": Vector2(2, GRID_HEIGHT - 4),
-				"color": Color.CYAN
-			},
-			{
-				"pos": Vector2(5, GRID_HEIGHT - 4),
-				"color": Color.PURPLE
-			},
-			{
-				"pos": Vector2(6, GRID_HEIGHT - 4),
-				"color": Color.YELLOW
-			},
-			{
-				"pos": Vector2(7, GRID_HEIGHT - 4),
-				"color": Color.PURPLE
-			},
-			{
-				"pos": Vector2(8, GRID_HEIGHT - 4),
-				"color": Color.BLUE
-			},
-			{
-				"pos": Vector2(9, GRID_HEIGHT - 4),
-				"color": Color.RED
-			}
-		],
-		[
-			{
-				"pos": Vector2(0, GRID_HEIGHT - 5),
-				"color": Color.PURPLE
-			},
-			{
-				"pos": Vector2(1, GRID_HEIGHT - 5),
-				"color": Color.RED
-			},
-			{
-				"pos": Vector2(2, GRID_HEIGHT - 5),
-				"color": Color.PURPLE
-			},
-			{
-				"pos": Vector2(5, GRID_HEIGHT - 5),
-				"color": Color.PURPLE
-			},
-			{
-				"pos": Vector2(6, GRID_HEIGHT - 5),
-				"color": Color.CYAN
-			},
-			{
-				"pos": Vector2(7, GRID_HEIGHT - 5),
-				"color": Color.CYAN
-			},
-			{
-				"pos": Vector2(8, GRID_HEIGHT - 5),
-				"color": Color.RED
-			},
-			{
-				"pos": Vector2(9, GRID_HEIGHT - 5),
-				"color": Color.LIME
-			}
-		],
-		[
-			{
-				"pos": Vector2(5, GRID_HEIGHT - 6),
-				"color": Color.CYAN
-			},
-			{
-				"pos": Vector2(6, GRID_HEIGHT - 6),
-				"color": Color.YELLOW
-			},
-			{
-				"pos": Vector2(7, GRID_HEIGHT - 6),
-				"color": Color.LIME
-			},
-			{
-				"pos": Vector2(8, GRID_HEIGHT - 6),
-				"color": Color.CYAN
-			},
-			{
-				"pos": Vector2(9, GRID_HEIGHT - 6),
-				"color": Color.BLUE
-			}
-		]
-	]
+func initialize_grid(
+	path_to_puzzle: String = DEFAULT_PUZZLE_PATH
+) -> void:
+	puzzle = load(path_to_puzzle)
+	var starting_blocks = puzzle.starting_blocks
 	for row in starting_blocks:
 		for block in row:
 			place_block(block["pos"], block["color"])
