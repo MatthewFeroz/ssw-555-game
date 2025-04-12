@@ -328,6 +328,14 @@ func align_tetrimino(
 	diff = expected_top - actual_top
 	tetrimino.position.y += diff
 
+func _connect_new_tetrimino_signals():
+	var tetrimino = get_node_or_null("Tetrimino") as Tetrimino
+	if tetrimino:
+		# ensure that the tetrimino is in bounds
+		tetrimino.out_of_bounds.connect(_on_Tetrimino_out_of_bounds)
+		# add the blocks of a locked tetrimino to the grid
+		tetrimino.lock_blocks.connect(_on_Tetrimino_locked)
+
 func _on_Tetrimino_out_of_bounds(
 	direction: Vector2,
 	bbox: Vector4
@@ -399,6 +407,11 @@ func _on_Tetrimino_locked(
 	# add the IDs of each block to the internal grid cells
 	for block in tetrimino.get_blocks().get_children():
 		fill_grid_cell(block)
+		
+	# spawn a new tetrimino (for testing, delete later)
+	tetrimino_shape = Tetrimino.Shape.values().pick_random()
+	call_deferred("spawn_tetrimino_in_grid", TETRIMINO_SCENE, tetrimino_shape, SPAWN_POS)
+	call_deferred("_connect_new_tetrimino_signals")
 
 func force_gravity_on_tetrimino(
 	tetrimino: Tetrimino
