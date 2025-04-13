@@ -33,6 +33,7 @@ const MAX_Y = GRID_HEIGHT * BLOCK_SIZE.y
 const TETRIMINO_SCENE_PATH := "res://scenes/mini_game_1/tetrimino.tscn"
 const TETRIMINO_SCENE := preload(TETRIMINO_SCENE_PATH)
 const SPAWN_POS := Vector2(floor(GRID_WIDTH / 2), 0)
+#const SPAWN_POS := Vector2(4, 0)
 
 # instance variables
 var grid: Node2D
@@ -57,7 +58,6 @@ func _ready() -> void:
 		for x in range(GRID_WIDTH):
 			grid_row.append(null)
 		grid_cells.append(grid_row)
-	#print(grid_cells)
 	
 	# display the grid
 	grid = Node2D.new()
@@ -68,17 +68,11 @@ func _ready() -> void:
 	initialize_grid()
 	
 	# spawn in a brand new tetrimino
-	if not tetrimino_shape:	# if the tetrmino wasn't already chosen, then pick a random one
-		tetrimino_shape = Tetrimino.Shape.values().pick_random()
-		#tetrimino_shape = DEFAULT_SHAPE
-	spawn_tetrimino_in_grid(TETRIMINO_SCENE, tetrimino_shape, SPAWN_POS)
-	
-	var tetrimino = get_node("Tetrimino") as Tetrimino
-	if tetrimino:
-		# ensure that the tetrimino is in bounds
-		tetrimino.out_of_bounds.connect(_on_Tetrimino_out_of_bounds)
-		# add the blocks of a locked tetrimino to the grid
-		tetrimino.lock_blocks.connect(_on_Tetrimino_locked)
+	#tetrimino_shape = DEFAULT_SHAPE
+	#tetrimino_shape = Tetrimino.Shape.T
+	# if the tetrmino wasn't already chosen, then pick a random one
+	tetrimino_shape = Tetrimino.Shape.values().pick_random()
+	spawn_new_tetrimino(tetrimino_shape)
 	
 func _draw() -> void:
 	initialize_grid_border()
@@ -89,16 +83,6 @@ func _process(_delta: float) -> void:
 		var tetrimino = get_node_or_null("Tetrimino") as Tetrimino
 		if tetrimino and not tetrimino.falling:
 			tetrimino.falling = true
-
-func _physics_process(_delta: float) -> void:
-	var tetrimino = get_node_or_null("Tetrimino") as Tetrimino
-	# force the tetrimino to fall until it becomes locked
-	if tetrimino and tetrimino.falling:
-		# first, move the tetrimino down a block
-		tetrimino.global_position.y += BLOCK_SIZE.y
-		# then, check if we're in bounds
-		# if so, great! if not, we'll snap to be inside the grid
-		tetrimino.check_bounds()
 
 # custom functions
 static func grid_to_pixel(coord: Vector2) -> Vector2:
@@ -307,12 +291,19 @@ func fill_grid_cell(
 	var col_index: int = floori(cell_pos.y)
 	grid_cells[col_index][row_index] = block.get_instance_id()
 
+func spawn_new_tetrimino(
+	t_shape: Tetrimino.Shape
+) -> void:
+	spawn_tetrimino_in_grid(TETRIMINO_SCENE, t_shape, SPAWN_POS)
+	_connect_new_tetrimino_signals()
+
 func spawn_tetrimino_in_grid(
 	tetrimino_scene: PackedScene,
 	t_shape: Tetrimino.Shape,
 	pos: Vector2 = SPAWN_POS
 ) -> void:
 	var tetrimino = tetrimino_scene.instantiate()
+	tetrimino.name = "Tetrimino"
 	tetrimino.spawn_tetrimino(t_shape, BLOCK_SIZE.x)
 	pos = grid_to_pixel(pos)
 	# let's make sure it's aligned with the grid
@@ -338,13 +329,27 @@ func align_tetrimino(
 	diff = expected_top - actual_top
 	tetrimino.position.y += diff
 
+# internal functions
+func _free_and_spawn(tetrimino: Tetrimino) -> void:
+	# first, free the old tetrimino
+	if is_instance_valid(tetrimino):
+		tetrimino.queue_free()
+
+	# then, spawn a new tetrimino
+	# if the tetrmino shape wasn't already chosen, then pick a random one	
+	if not tetrimino_shape:
+		tetrimino_shape = Tetrimino.Shape.values().pick_random()
+	spawn_new_tetrimino(tetrimino_shape)
+
 func _connect_new_tetrimino_signals():
 	var tetrimino = get_node_or_null("Tetrimino") as Tetrimino
 	if tetrimino:
 		# ensure that the tetrimino is in bounds
-		tetrimino.out_of_bounds.connect(_on_Tetrimino_out_of_bounds)
+		if not tetrimino.is_connected("out_of_bounds", _on_Tetrimino_out_of_bounds):
+			tetrimino.out_of_bounds.connect(_on_Tetrimino_out_of_bounds)
 		# add the blocks of a locked tetrimino to the grid
-		tetrimino.lock_blocks.connect(_on_Tetrimino_locked)
+		if not tetrimino.is_connected("lock_blocks", _on_Tetrimino_locked):
+			tetrimino.lock_blocks.connect(_on_Tetrimino_locked)
 
 func _on_Tetrimino_out_of_bounds(
 	direction: Vector2,
@@ -409,27 +414,22 @@ func _on_Tetrimino_locked(
 
 	# update the number of tetriminos spawned to the grid
 	num_locked_tetriminos += 1
-	# rename the tetrimino (so that it doesn't conflict with new tetriminos!)
-	var new_name = "LockedTetrimino%d" % num_locked_tetriminos
-	tetrimino.name = new_name
-	print("grid_container.gd: Renamed 'Tetrimino' to '%s'." % new_name)
-	
-	# add the IDs of each block to the internal grid cells
-	for block in tetrimino.get_blocks().get_children():
-		fill_grid_cell(block)
-		
-	# spawn a new tetrimino (for testing, delete later)
-	tetrimino_shape = Tetrimino.Shape.values().pick_random()
-	call_deferred("spawn_tetrimino_in_grid", TETRIMINO_SCENE, tetrimino_shape, SPAWN_POS)
-	call_deferred("_connect_new_tetrimino_signals")
 
-#func force_gravity_on_tetrimino(
-	#tetrimino: Tetrimino
-#) -> void:
-	## force the tetrimino to fall until it becomes locked
-	#while tetrimino.falling and not tetrimino.locked:
-		## first, move the tetrimino down a block
-		#tetrimino.global_position.y += BLOCK_SIZE.x
-		## then, check if we're in bounds
-		## if so, great! if not, we'll snap to be inside the grid
-		#tetrimino.check_bounds()
+	# a bit of a hacky solution: replace the tetrimino's blocks with new ones.
+	# why? unfortunately we can't just add the tetrimino's blocks to the 
+	# "blocks" group without causing issues with the collision detection code
+	for block in blocks:
+		call_deferred("place_block", pixel_to_grid(block.global_position), block.color)
+		block.queue_free()
+
+	# now that the tetrimino's blocks are removed, free the tetrimino too (and disconnect its signals!)
+	if tetrimino.is_connected("out_of_bounds", _on_Tetrimino_out_of_bounds):
+		tetrimino.disconnect("out_of_bounds", _on_Tetrimino_out_of_bounds)
+	if tetrimino.is_connected("lock_blocks", _on_Tetrimino_locked):
+		tetrimino.disconnect("lock_blocks", _on_Tetrimino_locked)
+
+	# spawn a new tetrimino (for testing, delete later)
+	#call_deferred("_free_and_spawn", tetrimino)
+	#tetrimino_shape = Tetrimino.Shape.values().pick_random()
+	#call_deferred("spawn_tetrimino_in_grid", TETRIMINO_SCENE, tetrimino_shape, SPAWN_POS)
+	#call_deferred("_connect_new_tetrimino_signals")

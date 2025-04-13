@@ -192,31 +192,55 @@ const TETRIMINOS: Dictionary = {
 	Shape.Z: Z_SHAPE
 }
 
+# built-in functions
+func _ready() -> void:
+	if not Engine.is_editor_hint():
+		if not get_parent() or get_parent().name == "Grid":
+			generate_tetrimino()
+		
+func _process(_delta) -> void:
+	# don't do anything if the game isn't actually running
+	if Engine.is_editor_hint():
+		return
+	
+	if not locked:
+		if Input.is_action_just_pressed("ui_left"):
+			#var rot_vector = Vector2.LEFT
+			handle_rotation(-90)
+		elif Input.is_action_just_pressed("ui_right"):
+			#var rot_vector = Vector2.RIGHT
+			handle_rotation(90)
+
+func _physics_process(_delta: float) -> void:
+	if falling and not locked:
+		# check if it's possible to move the tetrimino down a block
+		# if so, move it!
+		if can_move_down():
+			# first, move the tetrimino down a block
+			global_position.y += Grid.BLOCK_SIZE.y
+			# then, check if we're in bounds
+			# if so, great! if not, we'll snap to be inside the grid
+			check_bounds()
+		# if not, we should lock the tetrimino in place
+		else:
+			lock()
+
+#func _draw() -> void:
+	#draw_circle(
+		#Vector2.ZERO,
+		#4,
+		#Color.RED
+	#)
+
+# custom functions
+
+# creating tetriminos
 func spawn_tetrimino(
 	t_shape: Shape = tetrimino_shape,
 	block_size: float = tetrimino_block_size
 ) -> void:	
 	generate_tetrimino(t_shape, block_size)
 	check_bounds()
-
-func get_shape_data() -> Dictionary:
-	var shape
-	match tetrimino_shape:
-		Shape.O:
-			shape = O_SHAPE
-		Shape.I:
-			shape = I_SHAPE
-		Shape.T:
-			shape = T_SHAPE
-		Shape.J:
-			shape = J_SHAPE
-		Shape.L:
-			shape = L_SHAPE
-		Shape.S:
-			shape = S_SHAPE
-		Shape.Z:
-			shape = Z_SHAPE
-	return shape
 
 func generate_tetrimino(
 	t_shape: Shape = tetrimino_shape,
@@ -264,21 +288,29 @@ func generate_tetrimino(
 	# send out a signal that the tetrimino has been spawned
 	#spawned.emit(self.global_position)
 	return self
-	
+
+# getter functions
+func get_shape_data() -> Dictionary:
+	var shape
+	match tetrimino_shape:
+		Shape.O:
+			shape = O_SHAPE
+		Shape.I:
+			shape = I_SHAPE
+		Shape.T:
+			shape = T_SHAPE
+		Shape.J:
+			shape = J_SHAPE
+		Shape.L:
+			shape = L_SHAPE
+		Shape.S:
+			shape = S_SHAPE
+		Shape.Z:
+			shape = Z_SHAPE
+	return shape
+
 func get_blocks() -> Node2D:
 	return $Blocks
-
-func handle_rotation(
-	rot_angle: float
-) -> void:
-	print("tetrimino.gd: Current rotation: %.2f°" % $Blocks.rotation_degrees)
-	print("tetrimino.gd: Current position: (%.1f, %.1f)" % [$Blocks.global_position.x, $Blocks.global_position.y])
-	print("tetrimino.gd: New angle: %.2f" % ($Blocks.rotation_degrees + rot_angle))
-	
-	$Blocks.rotation_degrees = (int)($Blocks.rotation_degrees + rot_angle) % 360
-	print("tetrimino.gd: Current rotation: %.2f°" % $Blocks.rotation_degrees)
-	check_bounds()
-	print("tetrimino.gd: Current position: (%.1f, %.1f)" % [$Blocks.global_position.x, $Blocks.global_position.y])
 
 func get_bbox() -> Vector4:
 	# find the bounding box of the tetrimino
@@ -324,7 +356,78 @@ func get_bbox() -> Vector4:
 	)
 	print("Bounding box: ", bbox)
 	return bbox
+
+# property modification functions
+func handle_rotation(
+	rot_angle: float
+) -> void:
+	print("tetrimino.gd: Current rotation: %.2f°" % $Blocks.rotation_degrees)
+	print("tetrimino.gd: Current position: (%.1f, %.1f)" % [$Blocks.global_position.x, $Blocks.global_position.y])
+	print("tetrimino.gd: New angle: %.2f" % ($Blocks.rotation_degrees + rot_angle))
 	
+	$Blocks.rotation_degrees = (int)($Blocks.rotation_degrees + rot_angle) % 360
+	print("tetrimino.gd: Current rotation: %.2f°" % $Blocks.rotation_degrees)
+	check_bounds()
+	print("tetrimino.gd: Current position: (%.1f, %.1f)" % [$Blocks.global_position.x, $Blocks.global_position.y])
+
+func lock(
+	block_collision: bool = false
+) -> void:
+	locked = true
+	falling = false
+	print("tetrimino.gd: Locked the Tetrimino. It will no longer be able to move.")
+	
+	# make sure the tetrimino is not overlapping IF it collided with a block
+	if block_collision:
+		position.y -= Grid.BLOCK_SIZE.y
+	
+	# emit the signal for locked tetriminos and send the tetrimino's blocks
+	var blocks: Array[Block] = []
+	for block in $Blocks.get_children():
+		blocks.append(block)
+	lock_blocks.emit(blocks)
+
+# collision detection functions
+func can_move_down() -> bool:
+	# by testing if it's possible to move the tetrimino down, we'll determine 
+	# if it would theoretically overlap the blocks already on the grid
+	var test_move = Vector2(0, Grid.BLOCK_SIZE.y)
+	for block in $Blocks.get_children():
+		#var curr_pos = block.global_position	# uncomment this for debugging if needed
+		#var new_pos = curr_pos + test_move	# uncomment this for debugging if needed
+		var new_pos = block.global_position + test_move
+		var other_blocks = get_tree().get_nodes_in_group("blocks")
+		"""
+		the only blocks we need to check are blocks which border any of the tetrimino's
+		check if any of the tetrimino's blocks overlap with these blocks we're testing, then return false
+		or, in other words, if the bottoms of any tetrimino block would be touching the top of any locked blocks, return false
+		
+		how do we solve this issue?
+		we need to use the x,y position of the tetrimino block AFTER the test move, for starters
+		we need to determine if the locked blocks have the same y position as one of the tetrimino's post-test move blocks
+		if they do, then they'll be in the row of the tetrimino block we're checking collision for
+		next, we need to see if any of those blocks have the same x position as of one of the post-test move blocks
+		if so, then they're overlapping; thus, the tetrimino cannot move
+		else, it can move down
+		"""
+		for other in other_blocks:
+			# if the other block doesn't belong to the same row as the 
+			# tetrimino's block AFTER the test move, then it probably won't have
+			# any effect on its collision detection at all
+			if other.global_position.y != new_pos.y:
+				continue
+
+			# assuming the only blocks left are the ones in the same row of the 
+			# tetrimino's block, all we need to do is see if they share the same
+			# position. if so, they're overlapping, meaning that the tetrimino 
+			# cannot move down.
+			#var other_pos = other.global_position	# uncomment this for debugging if needed
+			#print("grid_container.gd: Other Block's Position: (%f, %f)" % [other_pos.x, other_pos.y])
+			#print("grid_container.gd: Test Move Position: (%f, %f)" % [new_pos.x, new_pos.y])
+			if is_equal_approx(other.global_position.x, new_pos.x):
+				return false
+
+	return true
 
 func check_bounds() -> void:
 	# use the grid node to check if the tetrimino is in bounds
@@ -362,47 +465,6 @@ func check_bounds() -> void:
 	if bottom >= (grid_origin.y + grid_height):
 		lock()
 
-func lock(
-	block_collision: bool = false
-) -> void:
-	locked = true
-	falling = false
-	print("tetrimino.gd: Locked the Tetrimino. It will no longer be able to move.")
-	
-	# make sure the tetrimino is not overlapping IF it collided with a block
-	if block_collision:
-		position.y -= Grid.BLOCK_SIZE.y
-	
-	# emit the signal for locked tetriminos and send the tetrimino's blocks
-	var blocks: Array[Block] = []
-	for block in $Blocks.get_children():
-		blocks.append(block)
-	lock_blocks.emit(blocks)
-
-func _ready() -> void:
-	if not Engine.is_editor_hint():
-		if not get_parent() or get_parent().name == "Grid":
-			generate_tetrimino()
-		
-func _process(_delta) -> void:
-	# don't do anything if the game isn't actually running
-	if Engine.is_editor_hint():
-		return
-	
-	if not locked:
-		if Input.is_action_just_pressed("ui_left"):
-			#var rot_vector = Vector2.LEFT
-			handle_rotation(-90)
-		elif Input.is_action_just_pressed("ui_right"):
-			#var rot_vector = Vector2.RIGHT
-			handle_rotation(90)
-		
-#func _draw() -> void:
-	#draw_circle(
-		#Vector2.ZERO,
-		#4,
-		#Color.RED
-	#)
-
+# internal functions
 func _on_Block_locked() -> void:
 	lock(true)
