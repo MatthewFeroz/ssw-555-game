@@ -70,7 +70,7 @@ func _ready() -> void:
 	
 	# spawn in a brand new tetrimino
 	#tetrimino_shape = DEFAULT_SHAPE
-	#tetrimino_shape = Tetrimino.Shape.T
+	#tetrimino_shape = Tetrimino.Shape.I
 	# if the tetrmino wasn't already chosen, then pick a random one
 	tetrimino_shape = Tetrimino.Shape.values().pick_random()
 	spawn_new_tetrimino(tetrimino_shape)
@@ -80,6 +80,11 @@ func _draw() -> void:
 	initialize_grid_background()
 
 func _process(_delta: float) -> void:
+	# check if it's possible to clear any lines
+	while can_line_clear():
+		var rows = find_clearable_rows()
+		clear_grid_rows(rows)
+
 	if Input.is_action_just_pressed("ui_down"):
 		var tetrimino = get_node_or_null("Tetrimino") as Tetrimino
 		if tetrimino and not tetrimino.falling:
@@ -341,10 +346,45 @@ func align_tetrimino(
 	tetrimino.position.y += diff
 
 func can_line_clear() -> bool:
+	# look through all of the locked blocks
+	var locked_blocks = get_node_or_null("LockedBlocks")
+	if not locked_blocks:	# if there aren't any blocks, then return false
+		return false
+
 	# go through each row in the grid cells and check if any of the rows are full
-	
-	return true
-	
+	for row_index in range(GRID_HEIGHT - 1, 0, -1):	# all the full rows will be at the botttom
+		var grid_row_name = "BlockRow%d" % row_index
+		var grid_row = locked_blocks.get_node_or_null(grid_row_name)
+		if not grid_row:
+			continue
+
+		# if the number of Nodes in this row is equal to the grid width, then 
+		# the row is full; thus, we can line clear
+		if grid_row.get_children().size() == GRID_WIDTH:
+			return true
+
+	return false
+
+func find_clearable_rows() -> Array[int]:
+	var rows: Array[int] = []
+	var locked_blocks = get_node_or_null("LockedBlocks")
+	if not locked_blocks:	# if there aren't any blocks, then return nothing
+		return rows
+
+	# go through each row in the grid cells and add the row index of the full rows
+	for row_index in range(GRID_HEIGHT - 1, 0, -1):	# all the full rows will be at the botttom
+		var grid_row_name = "BlockRow%d" % row_index
+		var grid_row = locked_blocks.get_node_or_null(grid_row_name)
+		if not grid_row:
+			continue
+
+		# if the number of Nodes in this row is equal to the grid width, then 
+		# the row is full; thus, we can line clear
+		if grid_row.get_children().size() == GRID_WIDTH:
+			rows.append(row_index)
+
+	return rows
+
 func clear_grid_rows(
 	rows: Array[int]
 ) -> void:
