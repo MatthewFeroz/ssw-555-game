@@ -7,6 +7,7 @@
 	- (4/9/25): for testing purposes, ensure that a new tetrimino is spawned when one gets locked
 	- (4/12/25): make it impossible to spawn new tetriminos once there is no more space to spawn blocks
 	- (4/12/25): make it impossible to spawn new tetriminos once all blocks have been cleared
+	- (4/13/25): ensure that it will reset the grid when the user restarts the puzzle via the pause menu
 """
 
 class_name Grid
@@ -32,8 +33,8 @@ const MAX_Y = GRID_HEIGHT * BLOCK_SIZE.y
 # tetrmino related
 const TETRIMINO_SCENE_PATH := "res://scenes/mini_game_1/tetrimino.tscn"
 const TETRIMINO_SCENE := preload(TETRIMINO_SCENE_PATH)
-const SPAWN_POS := Vector2(floor(GRID_WIDTH / 2), 0)
-#const SPAWN_POS := Vector2(4, 0)
+#const SPAWN_POS := Vector2(floor(GRID_WIDTH / 2), 0)
+const SPAWN_POS := Vector2(4, 0)
 
 # instance variables
 var grid: Node2D
@@ -230,14 +231,6 @@ func place_block(
 	block.set_block_color(color)
 	block.add_to_group("blocks")	# add it to blocks group
 	
-	# add it to the screen under the LockedBlocks node
-	var locked_blocks = get_node_or_null("LockedBlocks") as Node2D
-	if not locked_blocks:
-		locked_blocks = Node2D.new()
-		locked_blocks.name = "LockedBlocks"
-		add_child(locked_blocks)
-	locked_blocks.add_child(block)
-	
 	# since the block is centered at (0,0) in its own scene (distance from the 
 	# center to a block edge is half the block size), this causes the block to 
 	# be in the wrong position when we place it. thus, we need to offset it 
@@ -286,10 +279,28 @@ func place_block(
 func fill_grid_cell(
 	block: Block
 ) -> void:
+	# add the Block's id to the internal grid cells
 	var cell_pos: Vector2 = pixel_to_grid(block.global_position)
-	var row_index: int = floori(cell_pos.x)
-	var col_index: int = floori(cell_pos.y)
-	grid_cells[col_index][row_index] = block.get_instance_id()
+	var row_index: int = floori(cell_pos.y)
+	var col_index: int = floori(cell_pos.x)
+	grid_cells[row_index][col_index] = block.get_instance_id()
+
+	# add the Block to the screen under the LockedBlocks node
+	var locked_blocks = get_node_or_null("LockedBlocks") as Node2D
+	if not locked_blocks:
+		locked_blocks = Node2D.new()
+		locked_blocks.name = "LockedBlocks"
+		add_child(locked_blocks)
+
+	# now, we need to add the Block to the corresponding Node that represents the row
+	block.name = "Block[%d][%d]" % [row_index, col_index]
+	var grid_row_name = "BlockRow%d" % row_index
+	var grid_row = locked_blocks.get_node_or_null(grid_row_name)
+	if not grid_row:
+		grid_row = Node2D.new()
+		grid_row.name = "BlockRow%d" % row_index
+		locked_blocks.add_child(grid_row)
+	grid_row.add_child(block)
 
 func spawn_new_tetrimino(
 	t_shape: Tetrimino.Shape
@@ -328,6 +339,16 @@ func align_tetrimino(
 	tetrimino.position.x += diff
 	diff = expected_top - actual_top
 	tetrimino.position.y += diff
+
+func can_line_clear() -> bool:
+	# go through each row in the grid cells and check if any of the rows are full
+	
+	return true
+	
+func clear_grid_rows(
+	rows: Array[int]
+) -> void:
+	pass
 
 # internal functions
 func _free_and_spawn(tetrimino: Tetrimino) -> void:
