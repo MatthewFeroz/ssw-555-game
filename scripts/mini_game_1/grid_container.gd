@@ -4,9 +4,9 @@
 	- (4/3/25): add function that resets the grid
 	- (4/3/25): ensure a signal is emitted when the entire grid is cleared out
 	- (4/8/25): when the tetrimino is spawned, make sure it stays in bounds
-	- (4/9/25): when testing, pressing down should "drop" the tetrimino (AKA it obeys gravity.. until it can't anymore)
 	- (4/9/25): for testing purposes, ensure that a new tetrimino is spawned when one gets locked
-		- make it impossible to spawn new tetriminos once all blocks have been cleared
+	- (4/12/25): make it impossible to spawn new tetriminos once there is no more space to spawn blocks
+	- (4/12/25): make it impossible to spawn new tetriminos once all blocks have been cleared
 """
 
 class_name Grid
@@ -83,13 +83,23 @@ func _ready() -> void:
 func _draw() -> void:
 	initialize_grid_border()
 	initialize_grid_background()
-	
+
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("ui_down"):
 		var tetrimino = get_node_or_null("Tetrimino") as Tetrimino
-		if tetrimino and not tetrimino.locked:
-			force_gravity_on_tetrimino(tetrimino)
-	
+		if tetrimino and not tetrimino.falling:
+			tetrimino.falling = true
+
+func _physics_process(_delta: float) -> void:
+	var tetrimino = get_node_or_null("Tetrimino") as Tetrimino
+	# force the tetrimino to fall until it becomes locked
+	if tetrimino and tetrimino.falling:
+		# first, move the tetrimino down a block
+		tetrimino.global_position.y += BLOCK_SIZE.y
+		# then, check if we're in bounds
+		# if so, great! if not, we'll snap to be inside the grid
+		tetrimino.check_bounds()
+
 # custom functions
 static func grid_to_pixel(coord: Vector2) -> Vector2:
 	coord.x = floori(coord.x)
@@ -413,13 +423,13 @@ func _on_Tetrimino_locked(
 	call_deferred("spawn_tetrimino_in_grid", TETRIMINO_SCENE, tetrimino_shape, SPAWN_POS)
 	call_deferred("_connect_new_tetrimino_signals")
 
-func force_gravity_on_tetrimino(
-	tetrimino: Tetrimino
-) -> void:
-	# make sure that the tetrimino isn't locked
-	if not tetrimino.locked:
-		# first, move the tetrimino down a block
-		tetrimino.global_position.y += BLOCK_SIZE.x
-		# then, check if we're in bounds
-		# if so, great! if not, we'll snap to be inside the grid
-		tetrimino.check_bounds()
+#func force_gravity_on_tetrimino(
+	#tetrimino: Tetrimino
+#) -> void:
+	## force the tetrimino to fall until it becomes locked
+	#while tetrimino.falling and not tetrimino.locked:
+		## first, move the tetrimino down a block
+		#tetrimino.global_position.y += BLOCK_SIZE.x
+		## then, check if we're in bounds
+		## if so, great! if not, we'll snap to be inside the grid
+		#tetrimino.check_bounds()

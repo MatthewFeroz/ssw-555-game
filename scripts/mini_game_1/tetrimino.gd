@@ -35,6 +35,7 @@ const BLOCK_SIZE = 128.0	# the original texture size is 128x128
 
 # member variables
 var locked: bool = false
+var falling: bool = false
 #var __shape: Shape
 #var __block_size := Vector2(BLOCK_SIZE, BLOCK_SIZE)
 
@@ -365,6 +366,7 @@ func lock(
 	block_collision: bool = false
 ) -> void:
 	locked = true
+	falling = false
 	print("tetrimino.gd: Locked the Tetrimino. It will no longer be able to move.")
 	
 	# make sure the tetrimino is not overlapping IF it collided with a block
