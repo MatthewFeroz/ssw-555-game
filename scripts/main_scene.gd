@@ -20,7 +20,9 @@ func _change_to_lesson(scene: PackedScene, button_name: String):
 
 
 func _on_button1_pressed():
+	SaveGlobal.save_progress(lesson_scene_1.resource_path)
 	_change_to_lesson(lesson_scene_1, "Button 1")
 
 func _on_button2_pressed():
+	SaveGlobal.save_progress(lesson_scene_2.resource_path)
 	_change_to_lesson(lesson_scene_2, "Button 2")
