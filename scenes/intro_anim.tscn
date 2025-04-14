@@ -1,10 +1,10 @@
 [gd_scene load_steps=13 format=3 uid="uid://bwqx2rr8bbny0"]
 
-[ext_resource type="Script" path="res://scripts/intro_anim.gd" id="1_ljbp6"]
-[ext_resource type="Texture2D" uid="uid://ddbi7pyoo58e" path="res://assets/SpaceMap/photo-1610296669228-602fa827fc1f.jpg" id="1_pmp6g"]
-[ext_resource type="Texture2D" uid="uid://bqojx3k8h0vbk" path="res://assets/sprites/spaceshipsrz-0.png" id="2_ljbp6"]
-[ext_resource type="AudioStream" uid="uid://dmlbqngg5v8ve" path="res://assets/space-station-247790.mp3" id="4_mmwkr"]
-[ext_resource type="FontFile" uid="uid://dpnoym8oyxvy" path="res://assets/Nasalization Rg.otf" id="5_tjkwf"]
+[ext_resource type="Script" uid="uid://bgw41cpf2u6wm" path="res://scripts/intro_anim.gd" id="1_ljbp6"]
+[ext_resource type="Texture2D" uid="uid://dbcj3nkgldar8" path="res://assets/SpaceMap/photo-1610296669228-602fa827fc1f.jpg" id="1_pmp6g"]
+[ext_resource type="Texture2D" uid="uid://b1ycsm3t1xluh" path="res://assets/sprites/spaceshipsrz-0.png" id="2_ljbp6"]
+[ext_resource type="AudioStream" uid="uid://cuw6qlbaefhk8" path="res://assets/space-station-247790.mp3" id="4_mmwkr"]
+[ext_resource type="FontFile" uid="uid://342agxbfkdiy" path="res://assets/Nasalization Rg.otf" id="5_tjkwf"]
 
 [sub_resource type="Animation" id="Animation_mmwkr"]
 length = 0.001
@@ -32,6 +32,18 @@ tracks/1/keys = {
 "update": 0,
 "values": [1.90764]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Spaceshipsrz-0:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(2038, 526)]
+}
 
 [sub_resource type="Animation" id="Animation_c00rd"]
 resource_name = "animation"
@@ -43,10 +55,10 @@ tracks/0/path = NodePath("Spaceshipsrz-0:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 10.5333, 30),
+"times": PackedFloat32Array(0, 11.3333, 30),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(-97, 525), Vector2(1950, 521.97), Vector2(1920, 519)]
+"values": [Vector2(-97, 525), Vector2(2025.02, 521.97), Vector2(1920, 519)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -55,10 +67,10 @@ tracks/1/path = NodePath("Spaceshipsrz-0:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.63333, 1.73333, 1.83333, 1.93333, 2.06667, 2.16667, 2.26667, 2.36667, 2.5, 2.6, 2.7, 2.8, 3, 3.1, 3.2, 3.3, 3.46667, 3.56667, 3.66667, 3.76667, 3.9, 4, 4.1, 4.26667, 4.36667, 4.46667, 4.56667, 4.8, 4.9, 5, 5.16667, 5.26667, 5.36667, 5.46667, 5.63333, 5.73333, 5.83333, 6, 6.1, 6.2, 6.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.63333, 1.73333, 1.83333, 1.93333, 2.06667, 2.16667, 2.26667, 2.36667, 2.5, 2.6, 2.7, 2.8, 3, 3.1, 3.2, 3.3, 3.46667, 3.56667, 3.66667, 3.76667, 3.9, 4, 4.1, 4.26667, 4.36667, 4.46667, 4.56667, 4.8, 4.9, 5, 5.16667, 5.26667, 5.36667, 5.46667, 5.63333, 5.73333, 5.83333, 6, 6.1, 6.2, 6.3, 11.3508),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [1.5708, 1.65806, 1.48353, 1.65806, 1.5708, 1.65806, 1.48353, 1.65806, 1.5708, 1.65806, 1.48353, 1.65806, 1.5708, 1.65806, 1.48353, 1.65806, 1.5708, 1.65806, 1.48353, 1.65806, 1.5708, 1.65806, 1.48353, 1.65806, 1.5708, 1.65806, 1.48353, 1.65806, 1.5708, 1.65806, 1.48353, 1.65806, 1.5708, 1.65806, 1.48353, 1.65806, 1.65806, 1.48353, 1.65806, 1.5708, 1.65806, 1.48353, 1.65806, 1.65806, 1.48353, 1.65806, 1.5708, 1.65806, 1.48353, 1.65806, 1.65806, 1.48353, 1.65806, 1.5708, 1.65806, 1.48353, 1.65806]
+"values": [1.5708, 1.65806, 1.48353, 1.65806, 1.5708, 1.65806, 1.48353, 1.65806, 1.5708, 1.65806, 1.48353, 1.65806, 1.5708, 1.65806, 1.48353, 1.65806, 1.5708, 1.65806, 1.48353, 1.65806, 1.5708, 1.65806, 1.48353, 1.65806, 1.5708, 1.65806, 1.48353, 1.65806, 1.5708, 1.65806, 1.48353, 1.65806, 1.5708, 1.65806, 1.48353, 1.65806, 1.65806, 1.48353, 1.65806, 1.5708, 1.65806, 1.48353, 1.65806, 1.65806, 1.48353, 1.65806, 1.5708, 1.65806, 1.48353, 1.65806, 1.65806, 1.48353, 1.65806, 1.5708, 1.65806, 1.48353, 1.65806, -3.43655]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_tjkwf"]
@@ -132,7 +144,7 @@ scale = Vector2(1.39309, 1.04369)
 transform = Transform2D(1.39309, 0, 0, 1.04369, 0, 0)
 
 [node name="Spaceshipsrz-0" type="Sprite2D" parent="."]
-position = Vector2(-97, 525)
+position = Vector2(2038, 526)
 rotation = 1.90764
 texture = ExtResource("2_ljbp6")
 

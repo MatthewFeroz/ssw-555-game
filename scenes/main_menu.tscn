@@ -1,10 +1,10 @@
 [gd_scene load_steps=12 format=3 uid="uid://dh2nhxtcj3f4f"]
 
-[ext_resource type="Texture2D" uid="uid://6swhyqgdbiaa" path="res://assets/SpaceMap/space.png" id="1_7vrkn"]
+[ext_resource type="Texture2D" uid="uid://cdk2pf2c00yxx" path="res://assets/SpaceMap/space.png" id="1_7vrkn"]
 [ext_resource type="Script" uid="uid://vu1fhmkq4cnd" path="res://scripts/main_menu.gd" id="1_glbon"]
-[ext_resource type="FontFile" uid="uid://dh8eu61b81dre" path="res://assets/Adventure.otf" id="2_fu7sn"]
-[ext_resource type="FontFile" uid="uid://dpnoym8oyxvy" path="res://assets/Nasalization Rg.otf" id="3_glbon"]
-[ext_resource type="AudioStream" uid="uid://dmlbqngg5v8ve" path="res://assets/space-station-247790.mp3" id="4_jix8l"]
+[ext_resource type="FontFile" uid="uid://u528hqebmaui" path="res://assets/Adventure.otf" id="2_fu7sn"]
+[ext_resource type="FontFile" uid="uid://342agxbfkdiy" path="res://assets/Nasalization Rg.otf" id="3_glbon"]
+[ext_resource type="AudioStream" uid="uid://cuw6qlbaefhk8" path="res://assets/space-station-247790.mp3" id="4_jix8l"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jix8l"]
 texture = ExtResource("1_7vrkn")
