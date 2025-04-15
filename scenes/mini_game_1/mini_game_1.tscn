@@ -27,3 +27,4 @@ text = "Mini-Game 1: Superposition"
 script = ExtResource("3_jbqk3")
 
 [connection signal="grid_clear" from="Game/GridContainer" to="." method="reset_game"]
+[connection signal="spawn_tetrimino" from="Game/GridContainer" to="." method="spawn_next_tetrimino"]

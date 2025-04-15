@@ -20,24 +20,24 @@ const BLOCK_SCENE = preload(BLOCK_SCENE_PATH)
 
 # inspector variables
 enum Shape {O, I, T, L, J, S, Z}
-@export var tetrimino_shape = Shape.O:
+@export var TETRIMINO_SHAPE = Shape.O:
 	set(new_shape):
-		tetrimino_shape = new_shape
+		TETRIMINO_SHAPE = new_shape
 		if Engine.is_editor_hint():	# only update in editor
 			generate_tetrimino()
 
 const BLOCK_SIZE = 128.0	# the original texture size is 128x128
-@export var tetrimino_block_size = BLOCK_SIZE:
+@export var TETRIMINO_BLOCK_SIZE = BLOCK_SIZE:
 	set(new_size):
-		tetrimino_block_size = new_size
+		TETRIMINO_BLOCK_SIZE = new_size
 		if Engine.is_editor_hint():	# only update in editor
 			generate_tetrimino()
 
 # member variables
 var locked: bool = false
 var falling: bool = false
-#var __shape: Shape
-#var __block_size := Vector2(BLOCK_SIZE, BLOCK_SIZE)
+var _shape: Shape = TETRIMINO_SHAPE
+var _block_size: float = TETRIMINO_BLOCK_SIZE
 
 # below are the shapes in unit form (as in, not scaled)
 # to understand coordinates, imagine each shape is in a 3x3 cell
@@ -206,7 +206,7 @@ func _process(_delta) -> void:
 	if not locked:
 		if Input.is_action_just_pressed("ui_left"):
 			#var rot_vector = Vector2.LEFT
-			handle_rotation(-90)
+			handle_rotation(270)	# equivalent to -90°
 		elif Input.is_action_just_pressed("ui_right"):
 			#var rot_vector = Vector2.RIGHT
 			handle_rotation(90)
@@ -236,16 +236,19 @@ func _physics_process(_delta: float) -> void:
 
 # creating tetriminos
 func spawn_tetrimino(
-	t_shape: Shape = tetrimino_shape,
-	block_size: float = tetrimino_block_size
-) -> void:	
+	t_shape: Shape = _shape,
+	block_size: float = _block_size
+) -> void:
 	generate_tetrimino(t_shape, block_size)
 	check_bounds()
 
 func generate_tetrimino(
-	t_shape: Shape = tetrimino_shape,
-	block_size: float = tetrimino_block_size
+	t_shape: Shape = _shape,
+	block_size: float = _block_size
 ) -> Tetrimino:
+	self._shape = t_shape
+	self._block_size = block_size
+
 	# get rid of existing blocks first
 	for block in $Blocks.get_children():
 		block.queue_free()
@@ -264,7 +267,7 @@ func generate_tetrimino(
 		# change the block's color and size
 		# print("tetrimino.gd: Calling set_block_color() on block " + str(block) + ", with argument " + str(color))
 		block.set_block_color(color)
-		# print("tetrimino.gd: Calling resize_block() on block " + str(block) + ", with argument " + str(tetrimino_block_size))
+		# print("tetrimino.gd: Calling resize_block() on block " + str(block) + ", with argument " + str(TETRIMINO_BLOCK_SIZE))
 		block.resize_block(block_size)
 		
 		# add the block to the Blocks node
@@ -284,7 +287,8 @@ func generate_tetrimino(
 		# ensure that the blocks are selectable nodes in the editor
 		if Engine.is_editor_hint():
 			$Blocks.set_editable_instance(block, true)
-	
+
+	$Blocks.rotation_degrees = 0
 	# send out a signal that the tetrimino has been spawned
 	#spawned.emit(self.global_position)
 	return self
@@ -292,7 +296,7 @@ func generate_tetrimino(
 # getter functions
 func get_shape_data() -> Dictionary:
 	var shape
-	match tetrimino_shape:
+	match TETRIMINO_SHAPE:
 		Shape.O:
 			shape = O_SHAPE
 		Shape.I:
@@ -311,6 +315,10 @@ func get_shape_data() -> Dictionary:
 
 func get_blocks() -> Node2D:
 	return $Blocks
+
+# helper functions
+static func get_shape_from_index(index: int) -> Tetrimino.Shape:
+	return Tetrimino.Shape.values()[index]
 
 func get_bbox() -> Vector4:
 	# find the bounding box of the tetrimino
@@ -363,9 +371,21 @@ func handle_rotation(
 ) -> void:
 	print("tetrimino.gd: Current rotation: %.2f°" % $Blocks.rotation_degrees)
 	print("tetrimino.gd: Current position: (%.1f, %.1f)" % [$Blocks.global_position.x, $Blocks.global_position.y])
-	print("tetrimino.gd: New angle: %.2f" % ($Blocks.rotation_degrees + rot_angle))
-	
-	$Blocks.rotation_degrees = (int)($Blocks.rotation_degrees + rot_angle) % 360
+	# depending on the shape, you might have a limited number of orientations available to you
+	match _shape:
+		Shape.O:
+			# there is only 1 possible orientation for this shape
+			$Blocks.rotation_degrees = 0
+			print("tetrimino.gd: New angle: %.2f°" % $Blocks.rotation_degrees)
+		Shape.I, Shape.S, Shape.Z:
+			# there's only 2 possible orientations for these shapes
+			$Blocks.rotation_degrees = (int)($Blocks.rotation_degrees + rot_angle) % 180
+			print("tetrimino.gd: New angle: %.2f°" % $Blocks.rotation_degrees)
+		_:
+			# this shape has 4 possible orientations
+			$Blocks.rotation_degrees = (int)($Blocks.rotation_degrees + rot_angle) % 360
+			print("tetrimino.gd: New angle: %.2f°" % $Blocks.rotation_degrees)
+
 	print("tetrimino.gd: Current rotation: %.2f°" % $Blocks.rotation_degrees)
 	check_bounds()
 	print("tetrimino.gd: Current position: (%.1f, %.1f)" % [$Blocks.global_position.x, $Blocks.global_position.y])

@@ -13,6 +13,7 @@ extends Node2D
 # signals
 signal line_clear(cleared_row_index: int)
 signal grid_clear
+signal spawn_tetrimino(remaining_tetriminos: int)
 
 # constants
 # grid related
@@ -47,6 +48,7 @@ var total_blocks = 0
 #var puzzle_path: String
 var puzzle: Array
 var puzzle_num = 1
+var tetrimino_count = 3	# typically, there's only 3 tetriminos for a given solution
 # tetrimino related
 var tetrimino_shape: Tetrimino.Shape
 
@@ -80,14 +82,17 @@ func _ready() -> void:
 	if not puzzle_manager:
 		var puzzle_res = load(DEFAULT_PUZZLE_PATH)
 		initialize_grid(puzzle_res.starting_blocks)
-		puzzle = puzzle_manager.get_puzzle_by_name()
 
 	# spawn in a brand new tetrimino
-	tetrimino_shape = DEFAULT_SHAPE
-	#tetrimino_shape = Tetrimino.Shape.T
-	# if the tetrmino wasn't already chosen, then pick a random one
-	#tetrimino_shape = Tetrimino.Shape.values().pick_random()
-	spawn_new_tetrimino(tetrimino_shape)
+	# if we're running this in the main game, then the Puzzle Manager will spawn
+	# in the tetrimino for us
+	if not puzzle_manager:
+		# otherwise, we'll use the default tetrimino shape
+		tetrimino_shape = DEFAULT_SHAPE
+		#tetrimino_shape = Tetrimino.Shape.T
+		# if the tetrmino wasn't already chosen, then pick a random one
+		#tetrimino_shape = Tetrimino.Shape.values().pick_random()
+		spawn_new_tetrimino(tetrimino_shape)
 
 func _draw() -> void:
 	initialize_grid_border()
@@ -324,15 +329,18 @@ func fill_grid_cell(
 	grid_row.add_child(block)
 
 func spawn_new_tetrimino(
-	t_shape: Tetrimino.Shape
+	t_shape: Tetrimino.Shape,
+	spawn_pos: Vector2 = SPAWN_POS,
+	t_rotation: int = 0
 ) -> void:
-	spawn_tetrimino_in_grid(TETRIMINO_SCENE, t_shape, SPAWN_POS)
+	spawn_tetrimino_in_grid(TETRIMINO_SCENE, t_shape, spawn_pos, t_rotation)
 	_connect_new_tetrimino_signals()
 
 func spawn_tetrimino_in_grid(
 	tetrimino_scene: PackedScene,
 	t_shape: Tetrimino.Shape,
-	pos: Vector2 = SPAWN_POS
+	pos: Vector2 = SPAWN_POS,
+	rot: int = 0
 ) -> void:
 	var tetrimino = tetrimino_scene.instantiate()
 	tetrimino.name = "Tetrimino"
@@ -341,6 +349,7 @@ func spawn_tetrimino_in_grid(
 	# let's make sure it's aligned with the grid
 	tetrimino.position = pos
 	align_tetrimino(tetrimino)
+	tetrimino.rotation_degrees = rot
 	add_child(tetrimino)
 	tetrimino.check_bounds()
 
@@ -373,6 +382,10 @@ func clear_lines() -> void:
 	# been cleared
 	if total_blocks == 0:
 		grid_clear.emit()
+	# else, for testing purposes, spawn the next tetrimino in the solution
+	else:
+		tetrimino_count -= 1
+		spawn_tetrimino.emit(tetrimino_count)
 
 func can_line_clear() -> bool:
 	# look through all of the locked blocks
@@ -492,7 +505,8 @@ func reset_grid() -> void:
 	# finally, free the old tetrimino and spawn in a new one
 	var tetrimino = get_node_or_null("Tetrimino") as Tetrimino
 	if tetrimino:
-		call_deferred("_free_and_spawn", tetrimino)
+		# pick a random tetrimino shape
+		call_deferred("_free_and_spawn", tetrimino, Tetrimino.Shape.values().pick_random())
 		call_deferred("_connect_new_tetrimino_signals")
 
 
@@ -541,17 +555,23 @@ func _on_Grid_line_clear(
 			total_blocks -= 1
 			deleted_block_count += 1
 
-func _free_and_spawn(tetrimino: Tetrimino) -> void:
+func _free_and_spawn(
+	tetrimino: Tetrimino,
+	new_t_shape = tetrimino_shape,
+	new_spawn_pos = SPAWN_POS,
+	new_rot_angle = 0
+) -> void:
 	# first, free the old tetrimino
 	if is_instance_valid(tetrimino):
 		tetrimino.name = "DeletedTetrimino"
 		tetrimino.queue_free()
 
 	# then, spawn a new tetrimino
-	# if the tetrmino shape wasn't already chosen, then pick a random one	
-	if not tetrimino_shape:
-		tetrimino_shape = Tetrimino.Shape.values().pick_random()
-	spawn_new_tetrimino(tetrimino_shape)
+	spawn_new_tetrimino(
+		new_t_shape,
+		new_spawn_pos,
+		new_rot_angle
+	)
 
 func _connect_new_tetrimino_signals():
 	var tetrimino = get_node_or_null("Tetrimino") as Tetrimino
