@@ -15,7 +15,14 @@ class_name MiniGame1
 extends Node
 
 @onready var grid_container = $Game/GridContainer
+@onready var puzzle_manager = $Game/PuzzleManager
 
+func _ready() -> void:
+	# for now, let's just get a random puzzle
+	#var puzzle = puzzle_manager.get_random_puzzle()
+	var puzzle = puzzle_manager.get_puzzle_by_name("puzzle_1")
+	if puzzle:
+		grid_container.initialize_grid(puzzle.starting_blocks)
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_accept"):

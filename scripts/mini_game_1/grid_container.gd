@@ -44,8 +44,8 @@ var grid_bg_container: Node2D
 var border_container: Node2D
 var total_blocks = 0
 # puzzle related
-var puzzle_path: String
-var puzzle: PuzzleResource
+#var puzzle_path: String
+var puzzle: Array
 var puzzle_num = 1
 # tetrimino related
 var tetrimino_shape: Tetrimino.Shape
@@ -73,14 +73,14 @@ func _ready() -> void:
 	add_child(grid)
 
 	# initialize the grid with the starting blocks
-	# if we're running this in the main game, then use the puzzle manager to fetch the puzzle data
-	var puzzle_manager = get_node_or_null("Game/PuzzleManager")
-	if puzzle_manager:
-		pass
-	else:
-		# otherwise, we use the testing line clear puzzle as the default
+	# if we're running this in the main game, then the Puzzle Manager will get 
+	# and set the puzzle data for us
+	var puzzle_manager = get_parent().get_node_or_null("PuzzleManager")
+	# otherwise, we use the testing line clear puzzle as the default
+	if not puzzle_manager:
 		var puzzle_res = load(DEFAULT_PUZZLE_PATH)
 		initialize_grid(puzzle_res.starting_blocks)
+		puzzle = puzzle_manager.get_puzzle_by_name()
 
 	# spawn in a brand new tetrimino
 	tetrimino_shape = DEFAULT_SHAPE
@@ -228,6 +228,10 @@ func place_bg_block(
 func initialize_grid(
 	puzzle_data: Array
 ) -> void:
+	# if the puzzle hasn't been set yet, then set it!
+	if not puzzle:
+		puzzle = puzzle_data
+
 	for row in puzzle_data:
 		for block in row:
 			if block.has("color"):
@@ -483,7 +487,7 @@ func reset_grid() -> void:
 
 	# reinitialize the grid with the most recent puzzle
 	#var puzzle_path	# TODO: generate the puzzle path based on the current puzzle number
-	call_deferred("initialize_grid")
+	call_deferred("initialize_grid", puzzle)
 
 	# finally, free the old tetrimino and spawn in a new one
 	var tetrimino = get_node_or_null("Tetrimino") as Tetrimino

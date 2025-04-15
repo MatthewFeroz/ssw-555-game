@@ -4,6 +4,102 @@
 
 [resource]
 script = ExtResource("1_vf1e1")
-starting_blocks = [[{}, {}, {}, {}, {}, {}, {}, {}, {}], [], [], [], [], []]
+starting_blocks = [[{
+"pos": Vector2(0, 19)
+}, {
+"pos": Vector2(1, 19)
+}, {
+"pos": Vector2(2, 19)
+}, {
+"pos": Vector2(4, 19)
+}, {
+"pos": Vector2(5, 19)
+}, {
+"pos": Vector2(6, 19)
+}, {
+"pos": Vector2(7, 19)
+}, {
+"pos": Vector2(8, 19)
+}, {
+"pos": Vector2(9, 19)
+}], [{
+"pos": Vector2(0, 18)
+}, {
+"pos": Vector2(1, 18)
+}, {
+"pos": Vector2(2, 18)
+}, {
+"pos": Vector2(4, 18)
+}, {
+"pos": Vector2(5, 18)
+}, {
+"pos": Vector2(6, 18)
+}, {
+"pos": Vector2(7, 18)
+}, {
+"pos": Vector2(8, 18)
+}, {
+"pos": Vector2(9, 18)
+}], [{
+"pos": Vector2(0, 17)
+}, {
+"pos": Vector2(1, 17)
+}, {
+"pos": Vector2(2, 17)
+}, {
+"pos": Vector2(4, 17)
+}, {
+"pos": Vector2(5, 17)
+}, {
+"pos": Vector2(6, 17)
+}, {
+"pos": Vector2(7, 17)
+}, {
+"pos": Vector2(8, 17)
+}, {
+"pos": Vector2(9, 17)
+}], [{
+"pos": Vector2(0, 16)
+}, {
+"pos": Vector2(1, 16)
+}, {
+"pos": Vector2(2, 16)
+}, {
+"pos": Vector2(5, 16)
+}, {
+"pos": Vector2(6, 16)
+}, {
+"pos": Vector2(7, 16)
+}, {
+"pos": Vector2(8, 16)
+}, {
+"pos": Vector2(9, 16)
+}], [{
+"pos": Vector2(0, 15)
+}, {
+"pos": Vector2(1, 15)
+}, {
+"pos": Vector2(2, 15)
+}, {
+"pos": Vector2(5, 15)
+}, {
+"pos": Vector2(6, 15)
+}, {
+"pos": Vector2(7, 15)
+}, {
+"pos": Vector2(8, 15)
+}, {
+"pos": Vector2(9, 15)
+}], [{
+"pos": Vector2(5, 14)
+}, {
+"pos": Vector2(6, 14)
+}, {
+"pos": Vector2(7, 14)
+}, {
+"pos": Vector2(8, 14)
+}, {
+"pos": Vector2(9, 14)
+}]]
 puzzle_name = "puzzle_1"
 metadata/_custom_type_script = "uid://drqhcu1xobeiv"
