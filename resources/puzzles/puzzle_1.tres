@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="PuzzleResource" load_steps=2 format=3 uid="uid://banav1ehr6xjn"]
+
+[ext_resource type="Script" uid="uid://drqhcu1xobeiv" path="res://resources/puzzle_resource.gd" id="1_vf1e1"]
+
+[resource]
+script = ExtResource("1_vf1e1")
+starting_blocks = [[{}, {}, {}, {}, {}, {}, {}, {}, {}], [], [], [], [], []]
+puzzle_name = "puzzle_1"
+metadata/_custom_type_script = "uid://drqhcu1xobeiv"

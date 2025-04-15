@@ -53,7 +53,7 @@ var tetrimino_shape: Tetrimino.Shape
 # inspector variables
 @export var DEFAULT_SHAPE := Tetrimino.Shape.O
 #const DEFAULT_PUZZLE_PATH := "res://resources/puzzle_1.res"	# the default path to puzzle #1 resource
-@export_file("*.res") var DEFAULT_PUZZLE_PATH := "res://resources/test_grid_clear.res"
+@export_file("*.tres") var DEFAULT_PUZZLE_PATH := "res://resources/puzzles/test_grid_clear_puzzle.tres"
 
 # built-in functions
 func _ready() -> void:
@@ -73,7 +73,14 @@ func _ready() -> void:
 	add_child(grid)
 
 	# initialize the grid with the starting blocks
-	initialize_grid()
+	# if we're running this in the main game, then use the puzzle manager to fetch the puzzle data
+	var puzzle_manager = get_node_or_null("Game/PuzzleManager")
+	if puzzle_manager:
+		pass
+	else:
+		# otherwise, we use the testing line clear puzzle as the default
+		var puzzle_res = load(DEFAULT_PUZZLE_PATH)
+		initialize_grid(puzzle_res.starting_blocks)
 
 	# spawn in a brand new tetrimino
 	tetrimino_shape = DEFAULT_SHAPE
@@ -219,13 +226,16 @@ func place_bg_block(
 	return block.position
 
 func initialize_grid(
-	path_to_puzzle: String = DEFAULT_PUZZLE_PATH
+	puzzle_data: Array
 ) -> void:
-	puzzle = load(path_to_puzzle)
-	var starting_blocks = puzzle.starting_blocks
-	for row in starting_blocks:
+	for row in puzzle_data:
 		for block in row:
-			place_block(block["pos"], block["color"])
+			if block.has("color"):
+				place_block(block["pos"], block["color"])
+			else:
+				# choose a random color if one wasn't provided
+				var random_color = Block.VALID_COLORS[randi() % Block.VALID_COLORS.size()]
+				place_block(block["pos"], random_color)
 
 func place_block(
 	pos: Vector2,

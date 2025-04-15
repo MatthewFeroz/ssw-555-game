@@ -7,6 +7,15 @@ signal lock_tetrimino
 
 # constants
 const TEX_PATH: String = "res://assets/sprites/Tetromino_Block.svg"
+const VALID_COLORS: Array = [
+	Color.YELLOW,
+	Color.CYAN,
+	Color.PURPLE,
+	Color.ORANGE,
+	Color.BLUE,
+	Color.LIME,
+	Color.RED
+]
 
 # exported variables
 @export var block_size: float = 128.0: # the original texture size is 128x128
