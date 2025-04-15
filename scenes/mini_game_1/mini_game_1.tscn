@@ -1,13 +1,25 @@
-[gd_scene format=3 uid="uid://liywc0r121p5"]
+[gd_scene load_steps=3 format=3 uid="uid://liywc0r121p5"]
 
-[node name="Control" type="Control"]
+[ext_resource type="Script" uid="uid://cdg4spfqn2q02" path="res://scripts/mini_game_1/mini_game_1.gd" id="1_wbkql"]
+[ext_resource type="PackedScene" uid="uid://b8x0sy0ke6wfl" path="res://scenes/mini_game_1/grid.tscn" id="2_jbqk3"]
+
+[node name="Node" type="Node"]
+script = ExtResource("1_wbkql")
+
+[node name="Control" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Label" type="Label" parent="."]
+[node name="Label" type="Label" parent="Control"]
 layout_mode = 0
-offset_right = 40.0
+offset_right = 215.0
 offset_bottom = 23.0
 text = "Mini-Game 1: Superposition"
+
+[node name="Game" type="Node2D" parent="."]
+
+[node name="GridContainer" parent="Game" instance=ExtResource("2_jbqk3")]
+
+[connection signal="grid_clear" from="Game/GridContainer" to="." method="reset_game"]
