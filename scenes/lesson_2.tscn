@@ -1,0 +1,172 @@
+[gd_scene load_steps=9 format=3 uid="uid://cy6rudqvsaxor"]
+
+[ext_resource type="Texture2D" uid="uid://cwdkbiwbifu8j" path="res://assets/SpaceMap/galaxy.jpg" id="1_6nsm3"]
+[ext_resource type="Script" uid="uid://qyfufpy04xno" path="res://scripts/lesson_2.gd" id="1_onjyn"]
+[ext_resource type="Texture2D" uid="uid://d0xulma8ftf8r" path="res://assets/Lesson 2/entanglemetintro.jpg" id="2_6nsm3"]
+[ext_resource type="Texture2D" uid="uid://dqg4aicvdpcmt" path="res://assets/Lesson 2/Entanglement1.jpg" id="4_6nsm3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3rwue"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.373477, 0.000499597, 0.47786, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+corner_detail = 16
+
+[sub_resource type="Theme" id="Theme_slpw3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8kwoo"]
+bg_color = Color(0.14862, 0.461209, 0.214876, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yxdph"]
+bg_color = Color(0.266667, 0.839216, 0.419608, 1)
+
+[node name="Lesson2" type="Node2D"]
+script = ExtResource("1_onjyn")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+layout_mode = 1
+offset_right = 604.0
+offset_bottom = 360.0
+scale = Vector2(3.17384, 3.00934)
+texture = ExtResource("1_6nsm3")
+
+[node name="Panel" type="Panel" parent="Control"]
+custom_minimum_size = Vector2(1100, 555)
+layout_mode = 0
+offset_left = 25.0
+offset_top = 33.0
+offset_right = 1125.0
+offset_bottom = 633.0
+scale = Vector2(1.69476, 1.70917)
+theme_override_styles/panel = SubResource("StyleBoxFlat_3rwue")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/Panel"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 17.0
+offset_right = 1087.0
+offset_bottom = 571.0
+scale = Vector2(0.999251, 1.01924)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/Panel/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Heading" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer"]
+modulate = Color(0, 0, 0, 1)
+self_modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(10, 10)
+layout_direction = 1
+layout_mode = 2
+size_flags_vertical = 6
+size_flags_stretch_ratio = 0.0
+theme_override_font_sizes/font_size = 26
+text = "Quantum Entanglement
+"
+
+[node name="Intro" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer"]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(100, 100)
+layout_direction = 4
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 22
+text = "Quantum entanglement is a phenomenon where two or more particles become linked, sharing information instantly, no matter how far apart they are. If you measure one particle, the state of the other changes immediately, even across vast distances. Scientists call this “spooky action at a distance.”"
+autowrap_mode = 3
+
+[node name="TextureRect" type="TextureRect" parent="Control/Panel/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(500, 300)
+layout_direction = 4
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_6nsm3")
+expand_mode = 1
+
+[node name="fig_desc" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Figure 1. A Quantum Entanglement"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Side heading" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 25
+text = "Let us know, how Entanglement does Work:"
+
+[node name="Content" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Why is Quantum Entanglement cool?
+When two particles interact and become entangled, their states will be connected.
+If one particle’s state is measured, the other changes instantly, no matter the distance.
+This challenges classical physics, proving that quantum mechanics operates beyond our usual understanding of space and time!"
+autowrap_mode = 3
+
+[node name="TextureRect2" type="TextureRect" parent="Control/Panel/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(500, 300)
+layout_direction = 4
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("4_6nsm3")
+expand_mode = 1
+
+[node name="Label5" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Figure 2. Spooky action at a distance
+"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="side heading" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Here are some cool Applications of Quantum Entanglement:"
+
+[node name="Content2" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "1. Quantum Cryptography – Ultra-secure communication using entangled particles.
+2.Quantum Teleportation – Transmitting quantum information instantly.
+3.Quantum Computing – Using entangled qubits for superfast calculations."
+
+[node name="\'Next\' button" type="Button" parent="Control/Panel/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme = SubResource("Theme_slpw3")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/hover = SubResource("StyleBoxFlat_8kwoo")
+theme_override_styles/normal = SubResource("StyleBoxFlat_yxdph")
+text = "     I understand!     "
+icon_alignment = 2
+vertical_icon_alignment = 2
+
+[connection signal="pressed" from="Control/Panel/ScrollContainer/VBoxContainer/\'Next\' button" to="." method="_on_next_button_pressed"]
