@@ -1,4 +1,9 @@
-[gd_scene format=3 uid="uid://liywc0r121p5"]
+[gd_scene load_steps=5 format=3 uid="uid://liywc0r121p5"]
+
+[ext_resource type="AudioStream" uid="uid://cuc8qvdp2qapm" path="res://assets/Audio/Decision.wav" id="1_0gacd"]
+[ext_resource type="Script" uid="uid://coqy7ptdu5hc7" path="res://scenes/background_music.gd" id="2_lhg0r"]
+[ext_resource type="AudioStream" uid="uid://dshkfwdfxec00" path="res://assets/Audio/Button Selection.wav" id="3_vcumb"]
+[ext_resource type="AudioStream" uid="uid://eqi602u06tcv" path="res://assets/Audio/Line Clearance.wav" id="4_ax874"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -10,4 +15,25 @@ offset_bottom = 40.0
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
+<<<<<<< Updated upstream
 text = "Mini-Game 1: Entanglement"
+=======
+text = "Mini-Game 1: Superposition"
+
+[node name="Decision_bgm" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_0gacd")
+autoplay = true
+script = ExtResource("2_lhg0r")
+
+[node name="Piece Selection" type="Button" parent="."]
+layout_mode = 0
+offset_right = 12.0
+offset_bottom = 10.0
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Piece Selection"]
+stream = ExtResource("3_vcumb")
+autoplay = true
+
+[node name="Line_clearance" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_ax874")
+>>>>>>> Stashed changes
