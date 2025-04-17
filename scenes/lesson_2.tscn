@@ -1,9 +1,9 @@
 [gd_scene load_steps=9 format=3 uid="uid://cy6rudqvsaxor"]
 
-[ext_resource type="Texture2D" uid="uid://cwdkbiwbifu8j" path="res://assets/SpaceMap/galaxy.jpg" id="1_6nsm3"]
-[ext_resource type="Script" uid="uid://qyfufpy04xno" path="res://scripts/lesson_2.gd" id="1_onjyn"]
-[ext_resource type="Texture2D" uid="uid://d0xulma8ftf8r" path="res://assets/Lesson 2/entanglemetintro.jpg" id="2_6nsm3"]
-[ext_resource type="Texture2D" uid="uid://dqg4aicvdpcmt" path="res://assets/Lesson 2/Entanglement1.jpg" id="4_6nsm3"]
+[ext_resource type="Texture2D" uid="uid://3imq7wg120uc" path="res://assets/SpaceMap/galaxy.jpg" id="1_6nsm3"]
+[ext_resource type="Script" path="res://scripts/lesson_2.gd" id="1_onjyn"]
+[ext_resource type="Texture2D" uid="uid://db5te2nmqx3l1" path="res://assets/Lesson 2/entanglemetintro.jpg" id="2_6nsm3"]
+[ext_resource type="Texture2D" uid="uid://b1rwolmj6rhaj" path="res://assets/Lesson 2/Entanglement1.jpg" id="4_6nsm3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3rwue"]
 bg_color = Color(1, 1, 1, 1)
