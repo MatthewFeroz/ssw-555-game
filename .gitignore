@@ -21,6 +21,8 @@ Packages/
 Packages.dgml
 Temp/
 
+# VSCode-specifc ignores
+.vscode/
 # Editor-related files
 /._*
 .godot/editor/*.cfg

@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://b8x0sy0ke6wfl"]
+
+[ext_resource type="Script" uid="uid://dyyynqqjdup0" path="res://scripts/mini_game_1/grid_container.gd" id="1_t5fjg"]
+
+[node name="GridContainer" type="Node2D"]
+script = ExtResource("1_t5fjg")
+DEFAULT_SHAPE = "J"
+DEFAULT_SPAWN_POS = Vector2(3, 0)
+DEFAULT_ROTATION = 3
+DEFAULT_PUZZLE_PATH = "uid://banav1ehr6xjn"
