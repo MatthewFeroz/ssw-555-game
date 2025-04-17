@@ -1,11 +1,19 @@
-[gd_scene load_steps=8 format=3 uid="uid://cc88mlmwct3qq"]
+[gd_scene load_steps=12 format=3 uid="uid://cc88mlmwct3qq"]
 
 [ext_resource type="PackedScene" uid="uid://cjirkqh35qrve" path="res://scenes/main_scene.tscn" id="1_243bm"]
 [ext_resource type="Script" uid="uid://b0nyjd35uoqm8" path="res://scripts/main_scene_1.gd" id="1_ngauo"]
 [ext_resource type="PackedScene" uid="uid://dhau8u44q7blp" path="res://scenes/character.tscn" id="2_ngauo"]
+[ext_resource type="Script" uid="uid://dlorlepvjwyob" path="res://scenes/lesson_1.gd" id="3_63d8p"]
 [ext_resource type="PackedScene" uid="uid://ccfutgtg1xdbq" path="res://scenes/coin_base.tscn" id="3_bxx46"]
-[ext_resource type="AudioStream" uid="uid://d4dt2m5v64epm" path="res://assets/space-station-247790.mp3" id="6_63d8p"]
-[ext_resource type="FontFile" uid="uid://c75p5ia0spmhb" path="res://assets/Nasalization Rg.otf" id="7_bn0jv"]
+[ext_resource type="Script" uid="uid://cvfpg5ub7apao" path="res://scenes/mini_game_2.gd" id="4_bn0jv"]
+[ext_resource type="AudioStream" uid="uid://b26b5ftxuffvk" path="res://assets/space-station-247790.mp3" id="6_63d8p"]
+[ext_resource type="FontFile" uid="uid://xgw2i6lafy88" path="res://assets/Nasalization Rg.otf" id="7_bn0jv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bn0jv"]
+size = Vector2(110.056, 82.0182)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i3fto"]
+size = Vector2(104.806, 78.4262)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i3fto"]
 
@@ -22,37 +30,39 @@ offset_bottom = 42.0
 [node name="Coins" type="Node2D" parent="."]
 z_index = 1
 
-[node name="Lesson 1" type="RichTextLabel" parent="Coins"]
-offset_left = 641.0
-offset_top = 290.0
-offset_right = 914.0
-offset_bottom = 385.0
+[node name="Lesson 1" type="Area2D" parent="Coins"]
 scale = Vector2(1.29025, 1.67036)
-theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
-theme_override_colors/selection_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/normal_font_size = 20
-bbcode_enabled = true
-text = "Superposition"
-fit_content = true
-tab_size = 3
-horizontal_alignment = 1
+script = ExtResource("3_63d8p")
+scene_path = "res://scenes/lesson_1.tscn"
 
-[node name="Mini Game 2" type="RichTextLabel" parent="Coins"]
-offset_left = 1006.0
-offset_top = 752.0
-offset_right = 1290.0
-offset_bottom = 892.0
+[node name="Label" type="Label" parent="Coins/Lesson 1"]
+offset_left = 574.307
+offset_top = 177.207
+offset_right = 709.307
+offset_bottom = 205.207
+theme_override_font_sizes/font_size = 20
+text = "Superposition"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Coins/Lesson 1"]
+position = Vector2(636.311, 130.511)
+shape = SubResource("RectangleShape2D_bn0jv")
+
+[node name="Mini Game 2" type="Area2D" parent="Coins"]
 scale = Vector2(1.29025, 1.67036)
-theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
-theme_override_colors/selection_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/normal_font_size = 20
-bbcode_enabled = true
+script = ExtResource("4_bn0jv")
+scene_path = "res://scenes/lesson_2.tscn"
+
+[node name="Label" type="Label" parent="Coins/Mini Game 2"]
+offset_left = 856.423
+offset_top = 448.406
+offset_right = 992.423
+offset_bottom = 476.406
+theme_override_font_sizes/font_size = 20
 text = "Entanglement"
-fit_content = true
-tab_size = 3
-horizontal_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Coins/Mini Game 2"]
+position = Vector2(918.127, 402.009)
+shape = SubResource("RectangleShape2D_i3fto")
 
 [node name="CoinBase" parent="Coins" instance=ExtResource("3_bxx46")]
 z_index = 1
@@ -95,4 +105,6 @@ offset_bottom = 1093.0
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
+[connection signal="body_entered" from="Coins/Lesson 1" to="Coins/Lesson 1" method="_on_body_entered"]
+[connection signal="body_entered" from="Coins/Mini Game 2" to="Coins/Mini Game 2" method="_on_body_entered"]
 [connection signal="coin_collected" from="Coins/CoinBase" to="." method="_on_coin_base_coin_collected"]
