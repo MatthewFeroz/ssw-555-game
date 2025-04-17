@@ -1,0 +1,39 @@
+[gd_scene load_steps=4 format=3 uid="uid://d00jws3x7podf"]
+
+[ext_resource type="Script" uid="uid://cxje61uix6p8h" path="res://scripts/mini_game_1/tetrimino_slot.gd" id="1_uxrvk"]
+
+[sub_resource type="Theme" id="Theme_uxrvk"]
+HBoxContainer/constants/separation = 128
+PanelContainer/styles/panel = null
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uxrvk"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 1, 0, 1)
+
+[node name="TetriminoSlot" type="CenterContainer"]
+offset_right = 104.0
+offset_bottom = 104.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+script = ExtResource("1_uxrvk")
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 2
+theme = SubResource("Theme_uxrvk")
+theme_override_styles/panel = SubResource("StyleBoxFlat_uxrvk")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Panel"]
+layout_mode = 2
+
+[node name="SubViewport" type="SubViewport" parent="Panel/SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(128, 128)
+render_target_update_mode = 4
+
+[node name="TetriminoPreview" type="Node2D" parent="Panel/SubViewportContainer/SubViewport"]
+position = Vector2(64, 64)

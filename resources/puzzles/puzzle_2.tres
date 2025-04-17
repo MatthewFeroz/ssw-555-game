@@ -1,0 +1,87 @@
+[gd_resource type="Resource" script_class="PuzzleResource" load_steps=2 format=3 uid="uid://ch0aufoho887u"]
+
+[ext_resource type="Script" uid="uid://drqhcu1xobeiv" path="res://resources/puzzle_resource.gd" id="1_ce2v4"]
+
+[resource]
+script = ExtResource("1_ce2v4")
+starting_blocks = [[{
+"pos": Vector2i(0, 19)
+}, {
+"pos": Vector2i(1, 19)
+}, {
+"pos": Vector2i(2, 19)
+}, {
+"pos": Vector2i(3, 19)
+}, {
+"pos": Vector2i(4, 19)
+}, {
+"pos": Vector2i(5, 19)
+}, {
+"pos": Vector2i(7, 19)
+}, {
+"pos": Vector2i(9, 19)
+}], [{
+"pos": Vector2i(0, 18)
+}, {
+"pos": Vector2i(1, 18)
+}, {
+"pos": Vector2i(2, 18)
+}, {
+"pos": Vector2i(3, 18)
+}, {
+"pos": Vector2i(4, 18)
+}, {
+"pos": Vector2i(5, 18)
+}, {
+"pos": Vector2i(6, 18)
+}, {
+"pos": Vector2i(7, 18)
+}, {
+"pos": Vector2i(9, 18)
+}], [{
+"pos": Vector2i(0, 17)
+}, {
+"pos": Vector2i(1, 17)
+}, {
+"pos": Vector2i(2, 17)
+}, {
+"pos": Vector2i(3, 17)
+}, {
+"pos": Vector2i(4, 17)
+}, {
+"pos": Vector2i(5, 17)
+}, {
+"pos": Vector2i(7, 17)
+}, {
+"pos": Vector2i(9, 17)
+}], [{
+"pos": Vector2i(0, 16)
+}, {
+"pos": Vector2i(1, 16)
+}, {
+"pos": Vector2i(2, 16)
+}, {
+"pos": Vector2i(3, 16)
+}, {
+"pos": Vector2i(4, 16)
+}, {
+"pos": Vector2i(5, 16)
+}, {
+"pos": Vector2i(9, 16)
+}], [{
+"pos": Vector2i(0, 15)
+}, {
+"pos": Vector2i(1, 15)
+}, {
+"pos": Vector2i(2, 15)
+}, {
+"pos": Vector2i(3, 15)
+}, {
+"pos": Vector2i(4, 15)
+}, {
+"pos": Vector2i(5, 15)
+}, {
+"pos": Vector2i(9, 15)
+}]]
+puzzle_name = "puzzle_2"
+metadata/_custom_type_script = "uid://drqhcu1xobeiv"
