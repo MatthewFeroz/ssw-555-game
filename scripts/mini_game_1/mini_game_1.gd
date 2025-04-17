@@ -28,9 +28,11 @@ const TETRIMINO_SCENE = preload(TETRIMINO_SCENE_PATH)
 const DEFAULT_PUZZLE_NAME = "puzzle_1"
 
 func _ready() -> void:
-	# for now, let's just get a random puzzle
-	#var puzzle = puzzle_manager.get_random_puzzle()
-	puzzle = puzzle_manager.get_puzzle_by_name("puzzle_1")
+	# for now, let's just get a random puzzle (unless it's a test puzzle)
+	puzzle = puzzle_manager.get_random_puzzle()
+	while puzzle.puzzle_name.begins_with("test"):
+		puzzle = puzzle_manager.get_random_puzzle()
+	#puzzle = puzzle_manager.get_puzzle_by_name("puzzle_1")
 	solution = puzzle_manager.get_puzzle_solution_by_name(puzzle.puzzle_name)
 	# for testing purposes, let's also randomize the tetriminos in the solution
 	temp_solution_list = get_randomized_solution(solution)
@@ -40,7 +42,9 @@ func _ready() -> void:
 		# for the solution, we'll always grab the first element
 		var t_shape = temp_solution_list[0]["shape"]
 		var rot_angle: int
-		# if the current tetrimino is the correct one, then use the solution's spawn position and rotation. otherwise, dynamically determine the best one
+		# if the current tetrimino is the correct one, then use the solution's
+		# spawn position and rotation. otherwise, dynamically determine the best
+		# one
 		var spawn_pos: Vector2
 		if is_correct_solution_piece(t_shape):
 			spawn_pos = temp_solution_list[0]["spawn_pos"]
@@ -49,7 +53,6 @@ func _ready() -> void:
 			var result = determine_spawn_pos_and_rotation(t_shape) 
 			spawn_pos = result[0]
 			rot_angle = result[1]
-		#var spawn_pos = temp_solution_list[0]["spawn_pos"]
 		grid_container.spawn_new_tetrimino(t_shape, spawn_pos, (rot_angle / 90) % 4)
 
 func _input(event: InputEvent) -> void:
@@ -62,8 +65,20 @@ func spawn_next_tetrimino(remaining_tetriminos: int) -> void:
 		# for the solution, we'll always grab the first element
 		temp_solution_list.pop_front()
 		var t_shape = temp_solution_list[0]["shape"]
-		var spawn_pos = temp_solution_list[0]["spawn_pos"]
-		var rot_angle = temp_solution_list[0]["rotation"]
+		var spawn_pos: Vector2
+		var rot_angle: int
+
+		# if the current tetrimino is the correct one, then use the solution's
+		# spawn position and rotation. otherwise, dynamically determine the best
+		# one
+		if is_correct_solution_piece(t_shape):
+			spawn_pos = temp_solution_list[0]["spawn_pos"]
+			rot_angle = temp_solution_list[0]["rotation"]
+		else:
+			var result = determine_spawn_pos_and_rotation(t_shape) 
+			spawn_pos = result[0]
+			rot_angle = result[1]
+
 		# make sure to free the current tetrimino and spawn in a new one
 		var tetrimino_manager = grid_container.get_node_or_null("TetriminoManager")
 		if tetrimino_manager:
@@ -76,7 +91,7 @@ func reset_game() -> void:
 
 func get_randomized_solution(sol: PuzzleSolution) -> Array:
 	var solution_list = sol.solution_list.duplicate(true)
-	#solution_list.shuffle()
+	solution_list.shuffle()
 	return solution_list
 
 """
@@ -85,11 +100,11 @@ Returns an Array with the best spawn position and best rotation as its elements.
 func determine_spawn_pos_and_rotation(
 	t_shape: String
 ) -> Array:
-	if not is_correct_solution_piece(t_shape):
+	if is_correct_solution_piece(t_shape):
 		return solution.solution_list[0]["spawn_pos"]
 
 	# we need to determine the best spawn first
-	var best_score = -1
+	var best_score = INF
 	var best_spawn = Vector2.ZERO	# fallback spawn position
 	var best_rot_angle = 0	# fallback rotation
 
@@ -108,7 +123,7 @@ func determine_spawn_pos_and_rotation(
 			var score = result[0]
 			var rot_angle = result[1]
 			# update spawn position if a better one was found
-			if score > best_score:
+			if score < best_score:
 				best_score = score
 				best_spawn = spawn_pos
 				best_rot_angle = rot_angle
@@ -157,21 +172,24 @@ func evaluate_spawn_pos_and_rotation(
 	rot_angle: int
 ) -> int:
 	var block_count = 0
-	# create a "ghost" tetrimino
-	var ghost_tetrimino = TETRIMINO_SCENE.instantiate()
-	ghost_tetrimino.spawn_tetrimino(t_shape, Grid.BLOCK_SIZE.x)
-	ghost_tetrimino.name = "GhostTetrimino"
-	ghost_tetrimino.t_shape = t_shape
-	ghost_tetrimino.block_size = Grid.BLOCK_SIZE.x
-	ghost_tetrimino.rotation_index = (rot_angle / 90) % 4
-	ghost_tetrimino.position = Grid.grid_to_pixel(spawn_pos)
-	
-	# add in a parent node and add that to the scene
-	var tetrimino_test = Node2D.new()
-	tetrimino_test.name = "TetriminoTest"
-	tetrimino_test.visible = false	# make sure it's invisible
-	tetrimino_test.add_child(ghost_tetrimino)
+	# create a "ghost" tetrimino manager
+	var tetrimino_test = TETRIMINO_SCENE.instantiate()
+	tetrimino_test.name = "GhostTetrimino"
+	tetrimino_test.t_shape = t_shape
+	tetrimino_test.block_size = Grid.BLOCK_SIZE.x
+	tetrimino_test.rotation_index = (rot_angle / 90) % 4
 	grid_container.add_child(tetrimino_test)
+
+	# update the tetrimino's position and ensure it fits in the grid
+	var ghost_tetrimino = tetrimino_test.get_tetrimino()
+	ghost_tetrimino.visible = false	# make sure it's invisible
+	# BTW, we need to shift the spawn position in the x position down by 1
+	# because the spawn position of the Tetrimino node and the top-left block
+	# are a block-width apart, meaning that the spawn position will always be
+	# off by 1 without correction
+	spawn_pos.x -= 1
+	spawn_pos = Grid.grid_to_pixel(spawn_pos)
+	ghost_tetrimino.position = spawn_pos
 	grid_container.align_tetrimino(ghost_tetrimino)
 	
 	# simulate the tetrimino drop and get back the score (number of blocks in grid)
@@ -193,8 +211,6 @@ func simulate_and_evaluate_drop(
 	# drop one grid cell at a time until we *would* have to lock the tetrimino
 	while tetrimino.can_move_down():
 		tetrimino.global_position.y += grid_container.BLOCK_SIZE.y
-	# before we move on, let's move the tetrimino up (so it's not out of bounds)
-	tetrimino.global_position.y -= grid_container.BLOCK_SIZE.y
 	# fill the grid cells with the "locked" "ghost" tetrimino
 	simulate_tetrimino_lock(tetrimino)
 
@@ -253,7 +269,6 @@ func simulate_tetrimino_lock(
 	var block_coordinates: Array
 	for block in tetrimino.get_blocks().get_children():
 		var block_pos = block.global_position
-		#block_pos.y += Grid.BLOCK_SIZE.y / 2
 		block_coordinates.append(block_pos)
 
 	# convert them to grid coordinates
@@ -261,30 +276,10 @@ func simulate_tetrimino_lock(
 
 	# for each block coordinate, fill the grid cell with a random integer
 	for coord in block_coordinates:
-		print("Locked block at grid coord: ", coord)
-
-		var row_index = clampi(round(coord.y), 0, Grid.GRID_HEIGHT)
-		var col_index = clampi(round(coord.x), 0, Grid.GRID_WIDTH)
+		var row_index = clampi(floori(coord.y), 0, Grid.GRID_HEIGHT)
+		var col_index = clampi(floori(coord.x), 0, Grid.GRID_WIDTH)
 		grid_container.grid_cells[row_index][col_index] = randi()
-	## Place a copy of the piece virtually at 'pos', then simulate the grid and count full rows.
-	## This is where you decide what "score" means.
-	#var temp_grid = grid_container.grid_cells.duplicate()
-	#tetrimino.rotation_degrees = rot_angle
-	#var block_positions = tetrimino.get_block_positions()
-#
-	#for rel_block_pos in block_positions:
-		#if rel_block_pos.y >= 0 and rel_block_pos.y < Grid.MAX_Y and rel_block_pos.x >= 0 and rel_block_pos.x < Grid.MAX_X:
-			#temp_grid[rel_block_pos.y][rel_block_pos.x] = 1
-#
-	## count up the full rows
-	#var full_lines = 0
-	#for y in range(Grid.GRID_HEIGHT):
-		#if not temp_grid[y].has(null):	# row is full
-			#full_lines += 1
-	#
-	#return Grid.GRID_WIDTH * full_lines
 
-# Optionally, implement a helper function to decide if the piece is the one expected by the solution.
 func is_correct_solution_piece(t_shape: String) -> bool:
 	# Compare t_shape with the solution's first element.
 	var sol = solution.solution_list[0]
