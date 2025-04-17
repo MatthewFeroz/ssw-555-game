@@ -1,7 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://cy6rudqvsaxor"]
+[gd_scene load_steps=9 format=3 uid="uid://cy6rudqvsaxor"]
 
 [ext_resource type="Texture2D" uid="uid://cwdkbiwbifu8j" path="res://assets/SpaceMap/galaxy.jpg" id="1_6nsm3"]
 [ext_resource type="Script" uid="uid://qyfufpy04xno" path="res://scripts/lesson_2.gd" id="1_onjyn"]
+[ext_resource type="Texture2D" uid="uid://d0xulma8ftf8r" path="res://assets/Lesson 2/entanglemetintro.jpg" id="2_6nsm3"]
+[ext_resource type="Texture2D" uid="uid://dqg4aicvdpcmt" path="res://assets/Lesson 2/Entanglement1.jpg" id="4_6nsm3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3rwue"]
 bg_color = Color(1, 1, 1, 1)
@@ -94,6 +96,7 @@ layout_direction = 4
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+texture = ExtResource("2_6nsm3")
 expand_mode = 1
 
 [node name="fig_desc" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer"]
@@ -117,8 +120,8 @@ custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
-text = "But Why is Quantum Entanglement cool?
-Because,  when Two particles interact and become entangled, their states will be connected.
+text = "Why is Quantum Entanglement cool?
+When two particles interact and become entangled, their states will be connected.
 If one particle’s state is measured, the other changes instantly, no matter the distance.
 This challenges classical physics, proving that quantum mechanics operates beyond our usual understanding of space and time!"
 autowrap_mode = 3
@@ -128,6 +131,7 @@ custom_minimum_size = Vector2(500, 300)
 layout_direction = 4
 layout_mode = 2
 size_flags_horizontal = 4
+texture = ExtResource("4_6nsm3")
 expand_mode = 1
 
 [node name="Label5" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer"]
@@ -144,7 +148,7 @@ custom_minimum_size = Vector2(10, 10)
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
-text = "Here are some cool Applications of Quantum Entanglement,"
+text = "Here are some cool Applications of Quantum Entanglement:"
 
 [node name="Content2" type="Label" parent="Control/Panel/ScrollContainer/VBoxContainer"]
 layout_mode = 2

@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="SSW-555-Game"
-run/main_scene="uid://cc88mlmwct3qq"
+run/main_scene="uid://dh2nhxtcj3f4f"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[autoload]
+
+SaveGlobal="*res://scripts/SaveGlobal.gd"
 
 [display]
 

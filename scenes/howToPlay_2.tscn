@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://qxt267hnoh5h"]
+[gd_scene load_steps=7 format=3 uid="uid://uogp14ox436t"]
 
 [ext_resource type="Script" uid="uid://rmv5p533grpb" path="res://scripts/how_to_play_2.gd" id="1_aa7aq"]
 [ext_resource type="Texture2D" uid="uid://cwdkbiwbifu8j" path="res://assets/SpaceMap/galaxy.jpg" id="2_m7gth"]
@@ -63,7 +63,7 @@ self_modulate = Color(0, 0, 0, 1)
 layout_mode = 2
 size_flags_stretch_ratio = 0.0
 theme_override_font_sizes/font_size = 26
-text = "Superposition Tetris
+text = "Entanglement Memory Cards
 
 How to Play:
 "

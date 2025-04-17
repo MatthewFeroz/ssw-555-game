@@ -1,0 +1,44 @@
+[gd_scene load_steps=3 format=3 uid="uid://dipjhysck4nyg"]
+
+[ext_resource type="Texture2D" uid="uid://buesipx4iyuqi" path="res://assets/Certificate/certificatebg.jpg" id="1_iuj6c"]
+[ext_resource type="Script" uid="uid://c5ssbmwubs6at" path="res://scenes/certificate.gd" id="1_lin34"]
+
+[node name="Certificate" type="Node2D"]
+script = ExtResource("1_lin34")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Background" type="TextureRect" parent="Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_iuj6c")
+
+[node name="Title" type="Label" parent="Control"]
+layout_mode = 0
+offset_right = 9.0
+offset_bottom = 29.0
+
+[node name="Name" type="Label" parent="Control"]
+layout_mode = 0
+offset_right = 9.0
+offset_bottom = 29.0
+
+[node name="Date" type="Label" parent="Control"]
+layout_mode = 0
+offset_right = 9.0
+offset_bottom = 29.0
+
+[node name="Message" type="Label" parent="Control"]
+layout_mode = 0
+offset_right = 9.0
+offset_bottom = 29.0
+
+[node name="Button" type="Button" parent="Control"]
+layout_mode = 0
+offset_right = 12.0
+offset_bottom = 10.0
