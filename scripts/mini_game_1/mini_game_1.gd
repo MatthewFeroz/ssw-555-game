@@ -16,6 +16,7 @@ extends Node
 
 @onready var grid_container = $Game/GridContainer
 @onready var puzzle_manager = $Game/PuzzleManager
+@onready var tetrimino_selector = $UI/TetriminoSelector
 
 # member variables
 var puzzle: PuzzleResource
@@ -53,6 +54,8 @@ func _ready() -> void:
 			var result = determine_spawn_pos_and_rotation(t_shape) 
 			spawn_pos = result[0]
 			rot_angle = result[1]
+		if tetrimino_selector:
+			initialize_tetrimino_selector()
 		grid_container.spawn_new_tetrimino(t_shape, spawn_pos, (rot_angle / 90) % 4)
 
 func _input(event: InputEvent) -> void:
@@ -93,6 +96,14 @@ func get_randomized_solution(sol: PuzzleSolution) -> Array:
 	var solution_list = sol.solution_list.duplicate(true)
 	solution_list.shuffle()
 	return solution_list
+
+func initialize_tetrimino_selector() -> void:
+	for i in range(temp_solution_list.size()):
+		#var slot = TetriminoSlot.new()
+		tetrimino_selector.set_tetrimino_slot(i, temp_solution_list[i]["shape"])
+	tetrimino_selector._refresh_slots()
+		#pass
+		#tetrimino_selector.slots[i] = 
 
 """
 Returns an Array with the best spawn position and best rotation as its elements.

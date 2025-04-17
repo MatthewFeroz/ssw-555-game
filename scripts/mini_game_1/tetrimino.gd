@@ -1,3 +1,4 @@
+@tool
 class_name Tetrimino
 extends Node2D
 
@@ -20,20 +21,11 @@ func _ready() -> void:
 	_shape = tetrimino_manager.t_shape
 	_block_size = tetrimino_manager.block_size
 	_rotation_index = tetrimino_manager.rotation_index
-	#pass
-	#spawn_tetrimino(
-		#_shape,
-		#_block_size,
-		#_rotation_index
-	#)
-	#if not Engine.is_editor_hint():
-		#if not get_parent() or get_parent().name == "Grid":
-			#spawn_tetrimino()
 		
 func _process(_delta) -> void:
-	## don't do anything if the game isn't actually running
-	#if Engine.is_editor_hint():
-		#return
+	# don't do anything if the game isn't actually running
+	if Engine.is_editor_hint():
+		return
 
 	if not locked:
 		if Input.is_action_just_pressed("ui_left"):
@@ -42,6 +34,10 @@ func _process(_delta) -> void:
 			handle_rotation(90)
 
 func _physics_process(_delta: float) -> void:
+	# don't do anything if the game isn't actually running
+	if Engine.is_editor_hint():
+		return
+
 	if falling and not locked:
 		# check if it's possible to move the tetrimino down a block
 		# if so, move it!
@@ -50,9 +46,11 @@ func _physics_process(_delta: float) -> void:
 			global_position.y += Grid.BLOCK_SIZE.y
 			# then, check if we're in bounds
 			# if so, great! if not, we'll snap to be inside the grid
-			force_in_bounds()
+			if not is_in_bounds():
+				force_in_bounds()
 		# if not, we should lock the tetrimino in place
 		else:
+			#global_position.y -= Grid.BLOCK_SIZE.y
 			lock()
 
 # custom functions
@@ -167,14 +165,21 @@ func can_move_down() -> bool:
 		
 	var test_move = Vector2(0, Grid.BLOCK_SIZE.y)
 	for block in $Blocks.get_children():
-		#var curr_pos = block.global_position	# uncomment this for debugging if needed
-		#var new_pos = curr_pos + test_move	# uncomment this for debugging if needed
-		var new_pos = block.global_position + test_move
+		var curr_pos = block.global_position	# uncomment this for debugging if needed
+		var new_pos = curr_pos + test_move	# uncomment this for debugging if needed
+		new_pos = Grid.pixel_to_grid(new_pos)
+		var new_row_index = floori(new_pos.y)
+		var new_col_index = floori(new_pos.x)
+		#var new_pos = block.global_position + test_move
 		var other_blocks = get_tree().get_nodes_in_group("blocks")
 		for other in other_blocks:
 			# if the other block doesn't belong to the same row as the 
 			# tetrimino's block AFTER the test move, then it probably won't have
 			# any effect on its collision detection at all
+			var other_pos = other.global_position	# uncomment this for debugging if needed
+			other_pos = Grid.pixel_to_grid(other_pos)
+			var other_row_index = floori(other_pos.y)
+			var other_col_index = floori(other_pos.x)
 			if other.global_position.y != new_pos.y:
 				continue
 
@@ -182,9 +187,8 @@ func can_move_down() -> bool:
 			# tetrimino's block, all we need to do is see if they share the same
 			# position. if so, they're overlapping, meaning that the tetrimino 
 			# cannot move down.
-			#var other_pos = other.global_position	# uncomment this for debugging if needed
-			#print("grid_container.gd: Other Block's Position: (%f, %f)" % [other_pos.x, other_pos.y])
-			#print("grid_container.gd: Test Move Position: (%f, %f)" % [new_pos.x, new_pos.y])
+			print("grid_container.gd: Other Block's Position: (%f, %f)" % [other_pos.x, other_pos.y])
+			print("grid_container.gd: Test Move Position: (%f, %f)" % [new_pos.x, new_pos.y])
 			if is_equal_approx(other.global_position.x, new_pos.x):
 				return false
 

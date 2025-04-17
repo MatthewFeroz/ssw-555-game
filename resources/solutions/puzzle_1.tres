@@ -7,15 +7,15 @@ script = ExtResource("1_pvqru")
 solution_list = [{
 "rotation": 90,
 "shape": "J",
-"spawn_pos": Vector2(3, 0)
+"spawn_pos": Vector2i(3, 0)
 }, {
 "rotation": 90,
 "shape": "Z",
-"spawn_pos": Vector2(3, 0)
+"spawn_pos": Vector2i(3, 0)
 }, {
 "rotation": 0,
 "shape": "I",
-"spawn_pos": Vector2(0, 0)
+"spawn_pos": Vector2i(0, 0)
 }]
 puzzle_name = "puzzle_1"
 metadata/_custom_type_script = "uid://bold8u112ekxs"

@@ -7,19 +7,20 @@
 [node name="Node" type="Node"]
 script = ExtResource("1_wbkql")
 
-[node name="Control" type="Control" parent="."]
+[node name="UI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Label" type="Label" parent="Control"]
+[node name="Label" type="Label" parent="UI"]
 layout_mode = 0
 offset_right = 215.0
 offset_bottom = 23.0
 text = "Mini-Game 1: Superposition"
 
 [node name="Game" type="Node2D" parent="."]
+position = Vector2(0, -2)
 
 [node name="GridContainer" parent="Game" instance=ExtResource("2_jbqk3")]
 

@@ -16,16 +16,25 @@ const BLOCK_SCENE = preload(BLOCK_SCENE_PATH)
 	set(new_shape):
 		t_shape = new_shape
 		tetrimino_shape = new_shape
+		if Engine.is_editor_hint():
+			call_deferred("spawn_tetrimino")
+			#add_child(tetrimino)
 
-@export var tetrimino_block_size = block_size:
+@export var tetrimino_block_size = 128.0:
 	set(new_size):
 		block_size = new_size
 		tetrimino_block_size = new_size
+		if Engine.is_editor_hint():
+			call_deferred("spawn_tetrimino")
+			#add_child(tetrimino)
 
 @export_enum("0°", "90°", "180°", "270°") var rotation_angle: int = 0:
 	set(new_angle):
 		rotation_index = new_angle
 		rotation_angle = new_angle
+		if Engine.is_editor_hint():
+			call_deferred("spawn_tetrimino")
+			#add_child(tetrimino)
 
 # member variables
 var tetrimino: Tetrimino
@@ -35,7 +44,8 @@ var rotation_index: int = 0
 
 # built-in functions
 func _ready() -> void:
-	tetrimino = spawn_tetrimino()
+	if not Engine.is_editor_hint():
+		tetrimino = spawn_tetrimino()
 
 # custom functions
 
@@ -66,13 +76,23 @@ func spawn_tetrimino(
 	# rid of its blocks and updating it through this function
 	# TODO: you're probably gonna remove this code eventually if you can confirm that this will always have a Tetrimino as its child
 	var existing = get_node_or_null("Tetrimino") as Tetrimino
+	if existing and existing is InstancePlaceholder:
+		existing = existing.create_instance(true)
+		existing.name = "Tetrimino"
 	if existing:
 		existing.clear_blocks()
 		tetrimino = existing
 	else:
+		print("Here we created a new tetrimino!")
 		tetrimino = Tetrimino.new()
+		if tetrimino.get_child_count() == 0:
+			var blocks = Node2D.new()
+			blocks.name = "Blocks"
+			tetrimino.add_child(blocks)
+		print(tetrimino.get_children())
 
 	var blocks = tetrimino.get_blocks()
+	#print(blocks)
 	var shape_data = TETRIMINO_DATA.shapes[shape_name]
 	var coords = shape_data["coords"][rotation_index]
 	var color = shape_data["color"]
@@ -92,6 +112,10 @@ func spawn_tetrimino(
 		
 		# add the block to the Blocks node
 		blocks.add_child(block)
+		# makes the blocks visible in the editor
+		if Engine.is_editor_hint():
+			print("Adding " + block.name + " to the editor's scene tree.")
+			block.owner = owner
 		# print("tetrimino_manager.gd: Adding Block #" + str(block_num) + " to the scene")
 		
 		# position the block in the right place for the shape
@@ -101,8 +125,9 @@ func spawn_tetrimino(
 		block_num += 1
 
 		# ensure that the blocks are selectable nodes in the editor
-		if Engine.is_editor_hint():
-			blocks.set_editable_instance(block, true)
+		#if Engine.is_editor_hint():
+			#add_child(tetrimino)
+			#tetrimino.owner = self
 
 	blocks.rotation_degrees = 0
 	# send out a signal that the tetrimino has been spawned

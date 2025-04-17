@@ -1,0 +1,42 @@
+[gd_scene load_steps=4 format=3 uid="uid://ce660yeaqdu28"]
+
+[ext_resource type="Script" uid="uid://bw8cu4var6s1f" path="res://scripts/mini_game_1/tetrimino_selector.gd" id="1_1ewgr"]
+[ext_resource type="PackedScene" uid="uid://d00jws3x7podf" path="res://scenes/mini_game_1/tetrimino_slot.tscn" id="1_af3ie"]
+
+[sub_resource type="Theme" id="Theme_1ewgr"]
+HBoxContainer/constants/separation = 256
+
+[node name="TetriminoSelector" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -682.0
+offset_right = -682.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_1ewgr")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme = SubResource("Theme_1ewgr")
+alignment = 1
+
+[node name="TetriminoSlot1" parent="HBoxContainer" instance=ExtResource("1_af3ie")]
+layout_mode = 2
+shape_name = "L"
+rotation_angle = 0
+
+[node name="TetriminoSlot2" parent="HBoxContainer" instance=ExtResource("1_af3ie")]
+layout_mode = 2
+shape_name = "J"
+rotation_angle = 0
+
+[node name="TetriminoSlot3" parent="HBoxContainer" instance=ExtResource("1_af3ie")]
+layout_mode = 2
+shape_name = "Z"
+rotation_angle = 0
