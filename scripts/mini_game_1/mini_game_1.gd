@@ -14,26 +14,43 @@
 class_name MiniGame1
 extends Node
 
-# ...
 @onready var grid_container = $Game/GridContainer
 @onready var puzzle_manager = $Game/PuzzleManager
 
 # member variables
-var puzzle
-var solution
+var puzzle: PuzzleResource
+var solution: PuzzleSolution
+var temp_solution_list: Array
+
+# constants
+const TETRIMINO_SCENE_PATH = "res://scenes/mini_game_1/tetrimino.tscn"
+const TETRIMINO_SCENE = preload(TETRIMINO_SCENE_PATH)
+const DEFAULT_PUZZLE_NAME = "puzzle_1"
 
 func _ready() -> void:
 	# for now, let's just get a random puzzle
 	#var puzzle = puzzle_manager.get_random_puzzle()
 	puzzle = puzzle_manager.get_puzzle_by_name("puzzle_1")
 	solution = puzzle_manager.get_puzzle_solution_by_name(puzzle.puzzle_name)
+	# for testing purposes, let's also randomize the tetriminos in the solution
+	temp_solution_list = get_randomized_solution(solution)
+	#temp_solution_list = solution.solution_list.duplicate(true)
 	if puzzle:
 		grid_container.initialize_grid(puzzle.starting_blocks)
 		# for the solution, we'll always grab the first element
-		var t_shape = Tetrimino.get_shape_from_index(solution.solution_list[0]["shape"])
-		var spawn_pos = solution.solution_list[0]["spawn_pos"]
-		var rot_angle = solution.solution_list[0]["rotation"]
-		grid_container.spawn_new_tetrimino(t_shape, spawn_pos, rot_angle)
+		var t_shape = temp_solution_list[0]["shape"]
+		var rot_angle: int
+		# if the current tetrimino is the correct one, then use the solution's spawn position and rotation. otherwise, dynamically determine the best one
+		var spawn_pos: Vector2
+		if is_correct_solution_piece(t_shape):
+			spawn_pos = temp_solution_list[0]["spawn_pos"]
+			rot_angle = temp_solution_list[0]["rotation"]
+		else:
+			var result = determine_spawn_pos_and_rotation(t_shape) 
+			spawn_pos = result[0]
+			rot_angle = result[1]
+		#var spawn_pos = temp_solution_list[0]["spawn_pos"]
+		grid_container.spawn_new_tetrimino(t_shape, spawn_pos, (rot_angle / 90) % 4)
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_accept"):
@@ -43,15 +60,232 @@ func _input(event: InputEvent) -> void:
 func spawn_next_tetrimino(remaining_tetriminos: int) -> void:
 	if remaining_tetriminos > 0:
 		# for the solution, we'll always grab the first element
-		solution.solution_list.pop_front()
-		var t_shape = Tetrimino.get_shape_from_index(solution.solution_list[0]["shape"])
-		var spawn_pos = solution.solution_list[0]["spawn_pos"]
-		var rot_angle = solution.solution_list[0]["rotation"]
+		temp_solution_list.pop_front()
+		var t_shape = temp_solution_list[0]["shape"]
+		var spawn_pos = temp_solution_list[0]["spawn_pos"]
+		var rot_angle = temp_solution_list[0]["rotation"]
 		# make sure to free the current tetrimino and spawn in a new one
-		var tetrimino = get_node_or_null("Game/GridContainer/Tetrimino")
-		if tetrimino:
-			grid_container._free_and_spawn(tetrimino, t_shape, spawn_pos, rot_angle)
+		var tetrimino_manager = grid_container.get_node_or_null("TetriminoManager")
+		if tetrimino_manager:
+			grid_container._free_and_spawn(tetrimino_manager, t_shape, spawn_pos, (rot_angle / 90) % 4, true)
 
 func reset_game() -> void:
 	print("mini_game_1.gd: Restarting the game!")
+	temp_solution_list = get_randomized_solution(solution)
 	grid_container.reset_grid()
+
+func get_randomized_solution(sol: PuzzleSolution) -> Array:
+	var solution_list = sol.solution_list.duplicate(true)
+	#solution_list.shuffle()
+	return solution_list
+
+"""
+Returns an Array with the best spawn position and best rotation as its elements.
+"""
+func determine_spawn_pos_and_rotation(
+	t_shape: String
+) -> Array:
+	if not is_correct_solution_piece(t_shape):
+		return solution.solution_list[0]["spawn_pos"]
+
+	# we need to determine the best spawn first
+	var best_score = -1
+	var best_spawn = Vector2.ZERO	# fallback spawn position
+	var best_rot_angle = 0	# fallback rotation
+
+	# if there are any open gaps in the grid, then we'll be able to find an 
+	# ideal spawn position
+	if grid_container.has_open_gaps():
+		# there might be multiple valid spawning positions, so let's figure out which one is the best
+		var spawn_candidates = grid_container.find_open_gaps()
+		# we'll do this by simulating dropping the tetrimino shape in each one 
+		# of the spawning positions and calculating the score. whichever 
+		# spawning position has the best score will be the one we use.
+		for spawn_col in spawn_candidates:
+			# the spawn position will be (spawn_col, 0)
+			var spawn_pos = Vector2(spawn_col, 0)
+			var result = evaluate_spawn_pos(t_shape, spawn_pos)
+			var score = result[0]
+			var rot_angle = result[1]
+			# update spawn position if a better one was found
+			if score > best_score:
+				best_score = score
+				best_spawn = spawn_pos
+				best_rot_angle = rot_angle
+
+	return [best_spawn, best_rot_angle]
+
+"""
+Returns an Array of the best score and the best rotation.
+"""
+func evaluate_spawn_pos(
+	t_shape: String,
+	spawn_pos: Vector2
+) -> Array:
+	var best_score = INF	# the lower the score, the better
+	var best_rot_angle = 0
+
+	# find the valid rotations for the tetrimino
+	var valid_rotations = []
+	for rot_angle in [0, 90, 180, 270]:	# at most, there's 4 different rotations
+		match t_shape:
+			# O-shape has only 1 rotation
+			"O":
+				if rot_angle == 0:
+					valid_rotations.append(rot_angle)
+			# these shapes only have 2 rotations, 0° or 90°
+			"I", "S", "Z":
+				if rot_angle == 0 or rot_angle == 90:
+					valid_rotations.append(rot_angle)
+			# these can have all 4 rotations
+			"T", "L", "J":
+				valid_rotations.append(rot_angle)
+
+	# for each of the valid rotations, simulate dropping a tetrimino (a "ghost")
+	# at the given spawn position and calculate the number of blocks in the grid
+	# after line clearing
+	for rot_angle in valid_rotations:
+		var score = evaluate_spawn_pos_and_rotation(t_shape, spawn_pos, rot_angle)
+		if score < best_score:
+			best_score = score
+			best_rot_angle = rot_angle
+	return [best_score, best_rot_angle]
+
+func evaluate_spawn_pos_and_rotation(
+	t_shape: String,
+	spawn_pos: Vector2,
+	rot_angle: int
+) -> int:
+	var block_count = 0
+	# create a "ghost" tetrimino
+	var ghost_tetrimino = TETRIMINO_SCENE.instantiate()
+	ghost_tetrimino.spawn_tetrimino(t_shape, Grid.BLOCK_SIZE.x)
+	ghost_tetrimino.name = "GhostTetrimino"
+	ghost_tetrimino.t_shape = t_shape
+	ghost_tetrimino.block_size = Grid.BLOCK_SIZE.x
+	ghost_tetrimino.rotation_index = (rot_angle / 90) % 4
+	ghost_tetrimino.position = Grid.grid_to_pixel(spawn_pos)
+	
+	# add in a parent node and add that to the scene
+	var tetrimino_test = Node2D.new()
+	tetrimino_test.name = "TetriminoTest"
+	tetrimino_test.visible = false	# make sure it's invisible
+	tetrimino_test.add_child(ghost_tetrimino)
+	grid_container.add_child(tetrimino_test)
+	grid_container.align_tetrimino(ghost_tetrimino)
+	
+	# simulate the tetrimino drop and get back the score (number of blocks in grid)
+	block_count = simulate_and_evaluate_drop(ghost_tetrimino)
+	# make sure to free the ghost tetrimino
+	tetrimino_test.queue_free()
+
+	return block_count
+
+func simulate_and_evaluate_drop(
+	tetrimino: Tetrimino
+) -> int:
+	# get the state of the grid before the drop & potential line clear
+	var initial_grid_cells = grid_container.grid_cells.duplicate(true)
+	var lines_cleared = 0
+
+	# ensure that the tetrimino is in bounds before we move anything
+	tetrimino.force_in_bounds()
+	# drop one grid cell at a time until we *would* have to lock the tetrimino
+	while tetrimino.can_move_down():
+		tetrimino.global_position.y += grid_container.BLOCK_SIZE.y
+	# before we move on, let's move the tetrimino up (so it's not out of bounds)
+	tetrimino.global_position.y -= grid_container.BLOCK_SIZE.y
+	# fill the grid cells with the "locked" "ghost" tetrimino
+	simulate_tetrimino_lock(tetrimino)
+
+	# check if it's possible to clear any lines
+	if has_full_lines():
+		for y in range(Grid.GRID_HEIGHT - 1, -1, -1):
+			var row = grid_container.grid_cells[y]
+			# if every cell in the row has a Block ID, then increment the number
+			# of possible line clears by 1
+			if row.all(func(elem): return elem != null):
+				lines_cleared += 1
+
+	# calulate the score
+	"""
+	this is how the score is calculated:
+		1. get the number of blocks currently on the grid (i.e. the block count 
+		after the tetrimino was dropped, but before the line clearing).
+		2. get the number of blocks deleted from a line clear 
+		(lines cleared * the number of blocks in a row).
+		3. subtract 2 from 1. this will return the current number of blocks in 
+		the grid after dropping the tetrimino AND line clearing.
+
+	essentially, the score corresponds to the number of blocks in the grid 
+	after simulation. the lower the better!
+	"""
+	var block_count = get_block_count()
+	var deleted_block_count = lines_cleared * Grid.GRID_WIDTH
+	var score = block_count - deleted_block_count
+
+	# make sure to reset the grid cells so that the ghost tetrimino is deleted
+	grid_container.grid_cells = initial_grid_cells
+	return score
+
+func get_block_count() -> int:
+	var block_count = 0
+	for y in range(Grid.GRID_HEIGHT - 1, -1, -1):
+		var row = grid_container.grid_cells[y]
+		block_count += row.reduce(
+			func(count, cell): return count + 1 if cell != null else count,
+			0
+		)
+	return block_count
+
+func has_full_lines() -> bool:
+	for y in range(Grid.GRID_HEIGHT - 1, -1, -1):
+		# if there's any cell where it is full of blocks, then return true
+		var row = grid_container.grid_cells[y]
+		if row.all(func(cell): return cell != null):
+			return true
+	return false
+
+func simulate_tetrimino_lock(
+	tetrimino: Tetrimino
+) -> void:
+	# determine the pixel coordinates of each block
+	var block_coordinates: Array
+	for block in tetrimino.get_blocks().get_children():
+		var block_pos = block.global_position
+		#block_pos.y += Grid.BLOCK_SIZE.y / 2
+		block_coordinates.append(block_pos)
+
+	# convert them to grid coordinates
+	block_coordinates = block_coordinates.map(Grid.pixel_to_grid)
+
+	# for each block coordinate, fill the grid cell with a random integer
+	for coord in block_coordinates:
+		print("Locked block at grid coord: ", coord)
+
+		var row_index = clampi(round(coord.y), 0, Grid.GRID_HEIGHT)
+		var col_index = clampi(round(coord.x), 0, Grid.GRID_WIDTH)
+		grid_container.grid_cells[row_index][col_index] = randi()
+	## Place a copy of the piece virtually at 'pos', then simulate the grid and count full rows.
+	## This is where you decide what "score" means.
+	#var temp_grid = grid_container.grid_cells.duplicate()
+	#tetrimino.rotation_degrees = rot_angle
+	#var block_positions = tetrimino.get_block_positions()
+#
+	#for rel_block_pos in block_positions:
+		#if rel_block_pos.y >= 0 and rel_block_pos.y < Grid.MAX_Y and rel_block_pos.x >= 0 and rel_block_pos.x < Grid.MAX_X:
+			#temp_grid[rel_block_pos.y][rel_block_pos.x] = 1
+#
+	## count up the full rows
+	#var full_lines = 0
+	#for y in range(Grid.GRID_HEIGHT):
+		#if not temp_grid[y].has(null):	# row is full
+			#full_lines += 1
+	#
+	#return Grid.GRID_WIDTH * full_lines
+
+# Optionally, implement a helper function to decide if the piece is the one expected by the solution.
+func is_correct_solution_piece(t_shape: String) -> bool:
+	# Compare t_shape with the solution's first element.
+	var sol = solution.solution_list[0]
+	return t_shape == sol["shape"]

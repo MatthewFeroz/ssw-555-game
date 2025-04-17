@@ -6,15 +6,15 @@
 script = ExtResource("1_pvqru")
 solution_list = [{
 "rotation": 90,
-"shape": 4,
+"shape": "J",
 "spawn_pos": Vector2(3, 0)
 }, {
 "rotation": 90,
-"shape": 6,
+"shape": "Z",
 "spawn_pos": Vector2(3, 0)
 }, {
-"rotation": 90,
-"shape": 1,
+"rotation": 0,
+"shape": "I",
 "spawn_pos": Vector2(0, 0)
 }]
 puzzle_name = "puzzle_1"

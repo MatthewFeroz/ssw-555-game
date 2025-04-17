@@ -4,3 +4,7 @@
 
 [node name="GridContainer" type="Node2D"]
 script = ExtResource("1_t5fjg")
+DEFAULT_SHAPE = "J"
+DEFAULT_SPAWN_POS = Vector2(3, 0)
+DEFAULT_ROTATION = 3
+DEFAULT_PUZZLE_PATH = "uid://banav1ehr6xjn"

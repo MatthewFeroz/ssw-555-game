@@ -1,11 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://xt4cfjayvkvf"]
+[gd_scene load_steps=3 format=3 uid="uid://xt4cfjayvkvf"]
 
 [ext_resource type="Script" uid="uid://b56ovlsk24j8t" path="res://scripts/mini_game_1/tetrimino.gd" id="1_6124e"]
+[ext_resource type="Script" uid="uid://r7h1dx302hv3" path="res://scripts/mini_game_1/tetrimino_manager.gd" id="1_upl67"]
 
-[node name="Tetrimino" type="Node2D"]
+[node name="TetriminoManager" type="Node"]
+script = ExtResource("1_upl67")
+tetrimino_shape = "T"
+tetrimino_block_size = 128.0
+
+[node name="Tetrimino" type="Node2D" parent="."]
 script = ExtResource("1_6124e")
-TETRIMINO_SHAPE = null
-TETRIMINO_BLOCK_SIZE = null
 
-[node name="Blocks" type="Node2D" parent="."]
-rotation = -4.71239
+[node name="Blocks" type="Node2D" parent="Tetrimino"]
+rotation = 1.5708
