@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://ccfutgtg1xdbq"]
+[gd_scene load_steps=8 format=3 uid="uid://ccfutgtg1xdbq"]
 
 [ext_resource type="Script" uid="uid://ccv60yxsrktcf" path="res://scripts/coin_base.gd" id="1_d3ku6"]
-[ext_resource type="Texture2D" uid="uid://btelnbxqjdew6" path="res://assets/sprites/power-up.png" id="1_xm30w"]
+[ext_resource type="Texture2D" uid="uid://bfg5gif46shp1" path="res://assets/sprites/power-up.png" id="1_xm30w"]
+[ext_resource type="AudioStream" uid="uid://cwun0ydhxq5dr" path="res://assets/Audio/coolant.wav" id="3_q5ih7"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_e4iij"]
 atlas = ExtResource("1_xm30w")
@@ -38,7 +39,6 @@ scale = Vector2(3.52778, 3.52778)
 sprite_frames = SubResource("SpriteFrames_1t06h")
 animation = &"spin"
 autoplay = "spin"
-frame_progress = 0.537318
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 top_level = true
@@ -46,5 +46,9 @@ z_index = 1
 position = Vector2(28.2222, 28.2222)
 scale = Vector2(3.24, 3.24)
 shape = SubResource("CircleShape2D_t3ud1")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_q5ih7")
+volume_db = -10.0
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

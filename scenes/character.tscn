@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://dhau8u44q7blp"]
 
-[ext_resource type="Texture2D" uid="uid://dmgbjhb7uwgaa" path="res://assets/sprites/spaceshipsrz-0.png" id="1_agfs1"]
+[ext_resource type="Texture2D" uid="uid://dnlcx2cg2vf1b" path="res://assets/sprites/spaceshipsrz-0.png" id="1_agfs1"]
 
 [sub_resource type="GDScript" id="GDScript_dkjbp"]
 script/source = "extends CharacterBody2D
@@ -24,6 +24,9 @@ this is fine when it's keyboard input, but it's a problem for mouse input.
 everytime we switch inputs, we need to correct the way the character is facing.
 \"\"\"
 var character_angle : float = PI / 2 # radians
+
+# score counter
+var score = 0
 
 # keyboard-only variables
 var input_vector : Vector2
