@@ -13,6 +13,7 @@ signal lock_blocks(blocks: Array[Block])
 var locked: bool = false
 var falling: bool = false
 var can_fall: bool = true	# will be false if the TetriminoManager is a child of a TetriminoPreview
+var in_superposition: bool = false
 var _shape: String
 var _block_size: float
 var _rotation_index: int
@@ -27,6 +28,11 @@ func _process(_delta) -> void:
 	# don't do anything if the game isn't actually running
 	if Engine.is_editor_hint():
 		return
+
+	if Input.is_action_just_pressed("ui_up"):
+		tetrimino_manager.toggle_superposition(false)
+	if Input.is_action_just_pressed("ui_down"):
+		tetrimino_manager.toggle_superposition(true)
 
 	if not locked:
 		if Input.is_action_just_pressed("ui_left"):
@@ -152,6 +158,9 @@ func _lock() -> void:
 func _collapse() -> void:
 	if can_fall and not falling:
 		falling = true
+
+func _toggle_superposition(state: bool) -> void:
+	in_superposition = state
 
 # collision detection functions
 func can_move_down() -> bool:

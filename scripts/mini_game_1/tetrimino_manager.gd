@@ -163,3 +163,14 @@ func lock() -> void:
 
 func collapse() -> void:
 	tetrimino._collapse()
+
+func toggle_superposition(state: bool) -> void:
+	if state:
+		if not tetrimino.in_superposition:
+			print("tetrimino_manager.gd: Putting the tetrimino in superposition!")
+			tetrimino._toggle_superposition(state)
+	else:
+		if tetrimino.in_superposition:
+			print("tetrimino_manager.gd: Stopping superposition. Returning tetrimino to defaults.")
+			tetrimino._toggle_superposition(state)
+	pass
