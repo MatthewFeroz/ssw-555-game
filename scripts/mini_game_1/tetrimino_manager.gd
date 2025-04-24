@@ -129,7 +129,10 @@ func spawn_tetrimino(
 			#add_child(tetrimino)
 			#tetrimino.owner = self
 
-	blocks.rotation_degrees = 0
+	# ensure that tetriminos in an UI element cannot fall
+	if is_child_of_preview():
+		tetrimino.can_fall = false
+	
 	# send out a signal that the tetrimino has been spawned
 	#tetrimino.spawned.emit(tetrimino.global_position)
 	tetrimino.tetrimino_manager = self	# ensure that it's not an orphan!
@@ -146,3 +149,11 @@ func free_tetrimino(
 	t_shape = "O"
 	block_size = 128.0
 	rotation_index = 0
+
+"""
+In the tetrimino_slot scene, TetriminoManager will be a child of 
+TetriminoPreview. This function simply checks if it is a child of that node.
+"""
+func is_child_of_preview() -> bool:
+	var parent = get_parent()
+	return parent.name == "TetriminoPreview"

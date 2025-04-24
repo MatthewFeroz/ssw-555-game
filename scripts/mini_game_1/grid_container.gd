@@ -104,10 +104,6 @@ func _process(_delta: float) -> void:
 	if not tetrimino.is_in_bounds():
 		tetrimino.force_in_bounds()
 
-	if Input.is_action_just_pressed("ui_down"):
-		if tetrimino and not tetrimino.falling:
-			tetrimino.falling = true
-
 # custom functions
 static func grid_to_pixel(coord: Vector2) -> Vector2:
 	coord.x = floori(coord.x)

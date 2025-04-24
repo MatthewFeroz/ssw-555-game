@@ -12,6 +12,7 @@ signal lock_blocks(blocks: Array[Block])
 # member variables
 var locked: bool = false
 var falling: bool = false
+var can_fall: bool = true	# will be false if the TetriminoManager is a child of a TetriminoPreview
 var _shape: String
 var _block_size: float
 var _rotation_index: int
@@ -26,6 +27,9 @@ func _process(_delta) -> void:
 	# don't do anything if the game isn't actually running
 	if Engine.is_editor_hint():
 		return
+
+	if Input.is_action_just_pressed("ui_down"):
+		collapse()
 
 	if not locked:
 		if Input.is_action_just_pressed("ui_left"):
@@ -147,6 +151,10 @@ func lock() -> void:
 	for block in $Blocks.get_children():
 		blocks.append(block)
 	lock_blocks.emit(blocks)
+
+func collapse() -> void:
+	if can_fall and not falling:
+		falling = true
 
 # collision detection functions
 func can_move_down() -> bool:
