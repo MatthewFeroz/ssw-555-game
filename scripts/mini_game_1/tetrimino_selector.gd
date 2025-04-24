@@ -85,7 +85,7 @@ func _show_rotation_popups(packed: PackedScene):
 		popup.add_child(pv)
 		pv.position = popup.size * 0.5   # center in popup
 
-		var tetrimino_manager = packed.instantiate()
+		var tetrimino_manager = packed.instantiate() 
 		tetrimino_manager.t_shape = tetriminos[current_index].t_shape
 		tetrimino_manager.block_size = tetriminos[current_index].block_size
 		tetrimino_manager.rotation_index = (angle / 90) % 4

@@ -22,6 +22,8 @@ extends Node
 var puzzle: PuzzleResource
 var solution: PuzzleSolution
 var temp_solution_list: Array
+var score_node: Label
+var total_score: int = 0
 
 # constants
 const TETRIMINO_SCENE_PATH = "res://scenes/mini_game_1/tetrimino.tscn"
@@ -57,6 +59,16 @@ func _ready() -> void:
 		if tetrimino_selector:
 			initialize_tetrimino_selector()
 		grid_container.spawn_new_tetrimino(t_shape, spawn_pos, (rot_angle / 90) % 4)
+
+## logic for decreasing gate use number after someone presses button
+## (rest of logic start at lines 309)
+	update_gate_count()
+	#$hgate.pressed.connect(_on_use_gate_pressed)
+	$sgate.pressed.connect(_on_use_gate_pressed)
+
+## calculating points on interface
+	score_node = $HBoxContainer2/ScoreCount
+
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_accept"):
@@ -250,7 +262,8 @@ func simulate_and_evaluate_drop(
 	var block_count = get_block_count()
 	var deleted_block_count = lines_cleared * Grid.GRID_WIDTH
 	var score = block_count - deleted_block_count
-
+	total_score += score
+	score_node.text = str(total_score)
 	# make sure to reset the grid cells so that the ghost tetrimino is deleted
 	grid_container.grid_cells = initial_grid_cells
 	return score
@@ -295,3 +308,20 @@ func is_correct_solution_piece(t_shape: String) -> bool:
 	# Compare t_shape with the solution's first element.
 	var sol = solution.solution_list[0]
 	return t_shape == sol["shape"]
+
+
+# gate uses UI logic
+var gate_uses: int = 2
+func _on_use_gate_pressed():
+	if gate_uses > 0:
+		gate_uses -= 1
+		update_gate_count()
+
+func update_gate_count():
+	$HBoxContainer/GateCount.text = str(gate_uses)
+	if gate_uses <= 0:
+		$hgate.visible = false
+		$sgate.visible = false
+		
+func _on_hgate_pressed() -> void:
+	_on_use_gate_pressed()

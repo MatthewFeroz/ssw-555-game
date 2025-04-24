@@ -3,6 +3,5 @@
 [ext_resource type="Script" uid="uid://c5lv2u65r5d8p" path="res://MiniGame/EntangledCards/Quiz_popup.gd" id="1_ta4o8"]
 
 [node name="QuizPopup" type="Window"]
-rect_min_size = Vector2(400, 200)
 title = "Quiz"
 script = ExtResource("1_ta4o8")

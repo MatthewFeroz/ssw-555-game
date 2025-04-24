@@ -3,11 +3,11 @@
 [ext_resource type="PackedScene" uid="uid://cjirkqh35qrve" path="res://scenes/main_scene.tscn" id="1_243bm"]
 [ext_resource type="Script" uid="uid://b0nyjd35uoqm8" path="res://scripts/main_scene_1.gd" id="1_ngauo"]
 [ext_resource type="PackedScene" uid="uid://dhau8u44q7blp" path="res://scenes/character.tscn" id="2_ngauo"]
-[ext_resource type="Script" uid="uid://dlorlepvjwyob" path="res://scenes/lesson_1.gd" id="3_63d8p"]
+[ext_resource type="Script" uid="uid://ipfr7ul6nk3s" path="res://scenes/lesson_1.gd" id="3_63d8p"]
 [ext_resource type="PackedScene" uid="uid://ccfutgtg1xdbq" path="res://scenes/coin_base.tscn" id="3_bxx46"]
-[ext_resource type="Script" uid="uid://cvfpg5ub7apao" path="res://scenes/mini_game_2.gd" id="4_bn0jv"]
-[ext_resource type="AudioStream" uid="uid://b26b5ftxuffvk" path="res://assets/space-station-247790.mp3" id="6_63d8p"]
-[ext_resource type="FontFile" uid="uid://xgw2i6lafy88" path="res://assets/Nasalization Rg.otf" id="7_bn0jv"]
+[ext_resource type="Script" uid="uid://pswid8oyg8ar" path="res://scenes/mini_game_2.gd" id="4_bn0jv"]
+[ext_resource type="AudioStream" uid="uid://d4dt2m5v64epm" path="res://assets/space-station-247790.mp3" id="6_63d8p"]
+[ext_resource type="FontFile" uid="uid://c75p5ia0spmhb" path="res://assets/Nasalization Rg.otf" id="7_bn0jv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bn0jv"]
 size = Vector2(110.056, 82.0182)
@@ -99,6 +99,7 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_i3fto")
 text = "Mute Sound"
 
 [node name="ColorRect" type="ColorRect" parent="."]
+visible = false
 z_index = 1
 offset_right = 1924.0
 offset_bottom = 1093.0

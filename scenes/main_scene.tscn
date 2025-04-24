@@ -1,14 +1,14 @@
 [gd_scene load_steps=10 format=3 uid="uid://cjirkqh35qrve"]
 
-[ext_resource type="Texture2D" uid="uid://dtkfbokm2n3cu" path="res://assets/SpaceMap/galaxy1.jpg" id="1_6wevv"]
+[ext_resource type="Texture2D" uid="uid://eg2uu82u4qr0" path="res://assets/SpaceMap/galaxy1.jpg" id="1_6wevv"]
 [ext_resource type="Script" uid="uid://ckl4eghjdx58u" path="res://scripts/main_scene.gd" id="1_e1cbu"]
-[ext_resource type="Texture2D" uid="uid://dfuxwiunadmqw" path="res://assets/SpaceMap/earth_png.png" id="2_e1cbu"]
+[ext_resource type="Texture2D" uid="uid://xixmsgmotj0r" path="res://assets/SpaceMap/earth_png.png" id="2_e1cbu"]
 [ext_resource type="PackedScene" uid="uid://cy6rudqvsaxor" path="res://scenes/lesson_2.tscn" id="3_c1pb6"]
-[ext_resource type="Texture2D" uid="uid://bbdw8corpy007" path="res://assets/SpaceMap/planet2.png" id="3_mngbo"]
+[ext_resource type="Texture2D" uid="uid://chevysdkhgld1" path="res://assets/SpaceMap/planet2.png" id="3_mngbo"]
 [ext_resource type="PackedScene" uid="uid://brj04gfmi1l7l" path="res://scenes/lesson_1.tscn" id="5_r6p65"]
-[ext_resource type="Texture2D" uid="uid://d0aiup7n7lvi8" path="res://assets/SpaceMap/planet3.png" id="6_si52b"]
-[ext_resource type="Texture2D" uid="uid://cbxq65h53m5oi" path="res://assets/SpaceMap/planet4.png" id="9_bcnxi"]
-[ext_resource type="Texture2D" uid="uid://dpbgl1c8oxqp" path="res://assets/SpaceMap/planet 5.png" id="10_7nt27"]
+[ext_resource type="Texture2D" uid="uid://b2e5eg6de7qql" path="res://assets/SpaceMap/planet3.png" id="6_si52b"]
+[ext_resource type="Texture2D" uid="uid://b1oxsje3xtyb" path="res://assets/SpaceMap/planet4.png" id="9_bcnxi"]
+[ext_resource type="Texture2D" uid="uid://ovubaof8xmd5" path="res://assets/SpaceMap/planet 5.png" id="10_7nt27"]
 
 [node name="Control2" type="Control" node_paths=PackedStringArray("button1", "button2")]
 layout_mode = 3
