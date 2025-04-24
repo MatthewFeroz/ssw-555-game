@@ -28,9 +28,6 @@ func _process(_delta) -> void:
 	if Engine.is_editor_hint():
 		return
 
-	if Input.is_action_just_pressed("ui_down"):
-		_collapse()
-
 	if not locked:
 		if Input.is_action_just_pressed("ui_left"):
 			handle_rotation(270)	# equivalent to -90°
