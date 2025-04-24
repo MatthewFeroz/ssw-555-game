@@ -69,12 +69,16 @@ func get_random_puzzle() -> PuzzleResource:
 		return puzzles[rand_key]
 
 	return null
+	
 
 func get_puzzle_by_name(puzzle_name: String) -> PuzzleResource:
 	return puzzles.get(puzzle_name)
 
 func get_puzzle_solution_by_name(puzzle_name: String) -> PuzzleSolution:
 	return solutions.get(puzzle_name)
+	
+	
+	
 
 func create_and_save_puzzle(
 	puzzle_data: Array,

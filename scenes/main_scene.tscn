@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://cjirkqh35qrve"]
 
 [ext_resource type="Texture2D" uid="uid://eg2uu82u4qr0" path="res://assets/SpaceMap/galaxy1.jpg" id="1_6wevv"]
-[ext_resource type="Script" uid="uid://ckl4eghjdx58u" path="res://scripts/main_scene.gd" id="1_e1cbu"]
+[ext_resource type="Script" path="res://scripts/main_scene.gd" id="1_e1cbu"]
 [ext_resource type="Texture2D" uid="uid://xixmsgmotj0r" path="res://assets/SpaceMap/earth_png.png" id="2_e1cbu"]
 [ext_resource type="PackedScene" uid="uid://cy6rudqvsaxor" path="res://scenes/lesson_2.tscn" id="3_c1pb6"]
 [ext_resource type="Texture2D" uid="uid://chevysdkhgld1" path="res://assets/SpaceMap/planet2.png" id="3_mngbo"]
