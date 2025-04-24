@@ -160,5 +160,6 @@ size_flags_stretch_ratio = 0.0
 
 [connection signal="grid_clear" from="Game/GridContainer" to="." method="reset_game"]
 [connection signal="spawn_tetrimino" from="Game/GridContainer" to="." method="spawn_next_tetrimino"]
+[connection signal="pressed" from="collapse" to="." method="_on_collapse_pressed"]
 [connection signal="pressed" from="hgate" to="." method="_on_hgate_pressed"]
 [connection signal="pressed" from="sgate" to="." method="_on_sgate_pressed"]

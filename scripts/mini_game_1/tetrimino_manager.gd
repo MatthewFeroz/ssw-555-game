@@ -157,3 +157,9 @@ TetriminoPreview. This function simply checks if it is a child of that node.
 func is_child_of_preview() -> bool:
 	var parent = get_parent()
 	return parent.name == "TetriminoPreview"
+
+func lock() -> void:
+	tetrimino._lock()
+
+func collapse() -> void:
+	tetrimino._collapse()

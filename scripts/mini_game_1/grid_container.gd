@@ -391,6 +391,13 @@ func align_tetrimino(
 	diff = expected_top - actual_top
 	tetrimino.position.y += diff
 
+"""
+This function returns the current tetrimino in the grid.
+Useful for accessing the tetrimino's functions (e.g. lock(), collapse())
+"""
+func get_current_tetrimino() -> TetriminoManager:
+	return get_node_or_null("TetriminoManager")
+
 func clear_lines() -> void:
 	var num_clearable_rows = find_num_clearable_rows()
 	# clear any lines if it's possible
@@ -626,14 +633,6 @@ func _on_Grid_line_clear(
 			total_blocks -= 1
 			deleted_block_count += 1
 
-#func _calculate_score(num_blocks: int) -> int:
-	## TODO: move "get_block_count()" into this file instead of "mini_game_1.gd". make sure to call it here.
-	#var total_num_blocks = get_tree().get_nodes_in_group("blocks").size()
-	#"""
-	#if we're clearing, then add the number of 
-	#"""
-	#return 10
-
 func _free_and_spawn(
 	tetrimino: TetriminoManager,
 	new_t_shape = DEFAULT_SHAPE,
@@ -720,7 +719,7 @@ func _on_Tetrimino_out_of_bounds(
 			# it from moving.
 			if grid_has_blocks:
 				tetrimino.global_position.y += BLOCK_SIZE.y
-			tetrimino.lock()
+			tetrimino_manager.lock()
 		Vector2.DOWN:
 			print("grid_container.gd: Shifting the tetrimino down...")
 			border_start = grid_origin.y
@@ -748,11 +747,9 @@ func _on_Tetrimino_locked(
 	# "blocks" group without causing issues with the collision detection code
 	for block in blocks:
 		call_deferred("place_block", pixel_to_grid(block.global_position), block.color)
-		"""
-		for every block from a locked piece added, we'll update the score by 1
-		"""
-		update_score.emit(1)
 		block.queue_free()
+		# for every block from a locked piece added, we'll update the score by 1
+		update_score.emit(1)
 
 	# now that the tetrimino's blocks are removed, free the tetrimino too (and
 	# disconnect its signals!)

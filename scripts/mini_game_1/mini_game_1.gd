@@ -332,3 +332,9 @@ func _on_hgate_pressed() -> void:
 func _on_score_update(new_score: int) -> void:
 	total_score += new_score
 	score_node.text = str(total_score)
+
+
+func _on_collapse_pressed() -> void:
+	var tetrimino_manager = grid_container.get_current_tetrimino()
+	if tetrimino_manager:
+		tetrimino_manager.collapse()

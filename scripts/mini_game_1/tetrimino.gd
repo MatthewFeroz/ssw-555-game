@@ -29,7 +29,7 @@ func _process(_delta) -> void:
 		return
 
 	if Input.is_action_just_pressed("ui_down"):
-		collapse()
+		_collapse()
 
 	if not locked:
 		if Input.is_action_just_pressed("ui_left"):
@@ -55,7 +55,7 @@ func _physics_process(_delta: float) -> void:
 		# if not, we should lock the tetrimino in place
 		else:
 			#global_position.y -= Grid.BLOCK_SIZE.y
-			lock()
+			_lock()
 
 # custom functions
 
@@ -141,7 +141,7 @@ func handle_rotation(
 	#force_in_bounds()
 	print("tetrimino.gd: Current position: (%.1f, %.1f)" % [$Blocks.global_position.x, $Blocks.global_position.y])
 
-func lock() -> void:
+func _lock() -> void:
 	locked = true
 	falling = false
 	print("tetrimino.gd: Locked the Tetrimino. It will no longer be able to move.")
@@ -152,7 +152,7 @@ func lock() -> void:
 		blocks.append(block)
 	lock_blocks.emit(blocks)
 
-func collapse() -> void:
+func _collapse() -> void:
 	if can_fall and not falling:
 		falling = true
 
