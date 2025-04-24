@@ -11,6 +11,7 @@ extends Node2D
 signal line_clear(cleared_row_index: int)
 signal grid_clear
 signal spawn_tetrimino(remaining_tetriminos: int)
+signal update_score(score: int)
 
 # constants for the grid
 const GRID_ORIGIN := Vector2(BLOCK_SIZE)
@@ -504,6 +505,8 @@ func clear_grid_row(
 
 	# now, emit the signal that a line has been cleared
 	line_clear.emit(row_index)
+	# also emit a signal to update the score
+	update_score.emit(GRID_WIDTH)
 	
 func reset_grid() -> void:
 	# first, we clear out our internal grid cell structure
@@ -579,6 +582,10 @@ func find_open_gaps() -> Array:
 	return spawn_col_candidates
 
 # internal functions
+"""
+This function is responsible for updating the grid after a line clear. It 
+*doesn't* clear any lines.
+"""
 func _on_Grid_line_clear(
 	cleared_row_index: int
 ) -> void:
@@ -622,6 +629,14 @@ func _on_Grid_line_clear(
 			block.queue_free()
 			total_blocks -= 1
 			deleted_block_count += 1
+
+#func _calculate_score(num_blocks: int) -> int:
+	## TODO: move "get_block_count()" into this file instead of "mini_game_1.gd". make sure to call it here.
+	#var total_num_blocks = get_tree().get_nodes_in_group("blocks").size()
+	#"""
+	#if we're clearing, then add the number of 
+	#"""
+	#return 10
 
 func _free_and_spawn(
 	tetrimino: TetriminoManager,
@@ -737,6 +752,10 @@ func _on_Tetrimino_locked(
 	# "blocks" group without causing issues with the collision detection code
 	for block in blocks:
 		call_deferred("place_block", pixel_to_grid(block.global_position), block.color)
+		"""
+		for every block from a locked piece added, we'll update the score by 1
+		"""
+		update_score.emit(1)
 		block.queue_free()
 
 	# now that the tetrimino's blocks are removed, free the tetrimino too (and

@@ -33,6 +33,9 @@ const TETRIMINO_SCENE = preload(TETRIMINO_SCENE_PATH)
 const DEFAULT_PUZZLE_NAME = "puzzle_1"
 
 func _ready() -> void:
+	# listen for score updates
+	grid_container.update_score.connect(_on_score_update)
+
 	# for now, let's just get a random puzzle (unless it's a test puzzle)
 	puzzle = puzzle_manager.get_random_puzzle()
 	while puzzle.puzzle_name.begins_with("test"):
@@ -264,8 +267,6 @@ func simulate_and_evaluate_drop(
 	var block_count = get_block_count()
 	var deleted_block_count = lines_cleared * Grid.GRID_WIDTH
 	var score = block_count - deleted_block_count
-	total_score += score
-	score_node.text = str(total_score)
 	# make sure to reset the grid cells so that the ghost tetrimino is deleted
 	grid_container.grid_cells = initial_grid_cells
 	return score
@@ -327,3 +328,7 @@ func update_gate_count():
 		
 func _on_hgate_pressed() -> void:
 	_on_use_gate_pressed()
+
+func _on_score_update(new_score: int) -> void:
+	total_score += new_score
+	score_node.text = str(total_score)
