@@ -17,8 +17,8 @@ extends Node
 @onready var grid_container = $Game/GridContainer
 @onready var puzzle_manager = $Game/PuzzleManager
 @onready var tetrimino_selector = $UI/TetriminoSelector
+@onready var score_node = $HBoxContainer2/ScoreCount
 @onready var total_score: int = 0
-@onready var score_node: Label
 
 # member variables
 var puzzle: PuzzleResource
@@ -69,7 +69,7 @@ func _ready() -> void:
 	$sgate.pressed.connect(_on_use_gate_pressed)
 
 ## calculating points on interface
-	score_node = $HBoxContainer2/ScoreCount
+	#score_node = $HBoxContainer2/ScoreCount
 
 
 func _input(event: InputEvent) -> void:
