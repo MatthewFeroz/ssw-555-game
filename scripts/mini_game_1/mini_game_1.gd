@@ -17,13 +17,15 @@ extends Node
 @onready var grid_container = $Game/GridContainer
 @onready var puzzle_manager = $Game/PuzzleManager
 @onready var tetrimino_selector = $UI/TetriminoSelector
+@onready var total_score: int = 0
+@onready var score_node: Label
 
 # member variables
 var puzzle: PuzzleResource
 var solution: PuzzleSolution
 var temp_solution_list: Array
-var score_node: Label
-var total_score: int = 0
+
+
 
 # constants
 const TETRIMINO_SCENE_PATH = "res://scenes/mini_game_1/tetrimino.tscn"
