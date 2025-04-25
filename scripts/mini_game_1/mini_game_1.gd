@@ -1,11 +1,9 @@
 """TODO:
 	- (4/15/25): add a listener that resets the game once the user selects "Restart"
-	- (4/15/25): create an UI that allows the user to select the piece
 	- (4/15/25): create an UI that allows the user to select the rotation they want to use to solve the puzzle
 	- (4/15/25): create an UI that displays the current probability distributions
 	- (4/15/25): add functions for the quantum computing gates that change the probabilities
 	- (4/15/25): ensure that the UI for selecting the rotation ONLY appears for the T/S-gate
-	- (4/15/25): add a points system (should utilize signals, BTW) that's based on the correct pieces & rotations
 	- (4/15/25): make sure to wait for user input to progress to the next puzzle!
 	- (4/15/25): create a screen transition for loading the new puzzle
 	- (4/15/25): create all of the other puzzles (maybe 5 puzzles?)
@@ -22,8 +20,14 @@ extends Node
 
 # member variables
 var puzzle: PuzzleResource
+var puzzle_num: int = 1
 var solution: PuzzleSolution
-var temp_solution_list: Array
+"""NOTE:
+	when working with the solution list, follow these rules:
+		- view the solution list as a stack. FIFO: access the 
+		- if we used up the correct tetrimino, use pop_back() so that the next correct tetrimino can be accessed at [0]
+"""
+var solution_list: Array
 var current_slot: Node = null
 var selected_shape_name: String = ""
 var selected_rotation_angle: int = 0
@@ -32,6 +36,7 @@ var selected_rotation_angle: int = 0
 const TETRIMINO_SCENE_PATH = "res://scenes/mini_game_1/tetrimino.tscn"
 const TETRIMINO_SCENE = preload(TETRIMINO_SCENE_PATH)
 const DEFAULT_PUZZLE_NAME = "puzzle_1"
+const MAX_PUZZLES: int = 3
 
 func _ready() -> void:
 # listen for score updates
@@ -40,55 +45,46 @@ func _ready() -> void:
 	for slot in get_tree().get_nodes_in_group("tetrimino_slots"):
 		slot.connect("select", Callable(self, "_on_slot_selected"))
 
+	load_puzzle(DEFAULT_PUZZLE_NAME)
+	if puzzle:
+		grid_container.initialize_grid(puzzle.starting_blocks)
+
 ## logic for decreasing gate use number after someone presses button
 # (rest of logic start at lines 309)
 	update_gate_count()
 	$sgate.pressed.connect(_on_use_gate_pressed)
-	grid_container.update_score.connect(_on_score_update)
+	#grid_container.update_score.connect(_on_score_update) # will comment out later, it's throwing an error
 
-	# for now, let's just get a random puzzle (unless it's a test puzzle)
-	puzzle = puzzle_manager.get_random_puzzle()
-	while puzzle.puzzle_name.begins_with("test"):
-		puzzle = puzzle_manager.get_random_puzzle()
-	#puzzle = puzzle_manager.get_puzzle_by_name("puzzle_1")
+	
+func load_puzzle(puzzle_name: String) -> void:
+	puzzle = puzzle_manager.get_puzzle_by_name(puzzle_name)
 	solution = puzzle_manager.get_puzzle_solution_by_name(puzzle.puzzle_name)
-	# for testing purposes, let's also randomize the tetriminos in the solution
-	temp_solution_list = get_randomized_solution(solution)
-	#temp_solution_list = solution.solution_list.duplicate(true)
-	if puzzle:
-		grid_container.initialize_grid(puzzle.starting_blocks)
-		# for the solution, we'll always grab the first element
-		var t_shape = temp_solution_list[0]["shape"]
-		var rot_angle: int
-		# if the current tetrimino is the correct one, then use the solution's
-		# spawn position and rotation. otherwise, dynamically determine the best
-		# one
-		var spawn_pos: Vector2
-		if is_correct_solution_piece(t_shape):
-			spawn_pos = temp_solution_list[0]["spawn_pos"]
-			rot_angle = temp_solution_list[0]["rotation"]
-		else:
-			var result = determine_spawn_pos_and_rotation(t_shape) 
-			spawn_pos = result[0]
-			rot_angle = result[1]
-		if tetrimino_selector:
-			initialize_tetrimino_selector()
-			grid_container.spawn_new_tetrimino(t_shape, spawn_pos, (rot_angle / 90) % 4)
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	solution_list = get_solution_list()
+	# if tetrimino_selector:
+	# 	initialize_tetrimino_selector()
 
+func get_solution_list() -> Array:
+	if solution:
+		return solution.solution_list.duplicate(true)
+	else:
+		return []
+
+func get_spawn_pos(
+	t_shape: String,
+	rot_angle: int
+) -> Vector2i:
+	# if the current tetrimino is the correct one, then use the solution's
+	# spawn position and rotation. otherwise, dynamically determine the best
+	# one
+	var spawn_pos: Vector2i
+	if is_correct_solution_piece(t_shape):
+		spawn_pos = solution_list[0]["spawn_pos"]
+		rot_angle = solution_list[0]["rotation"]
+	else:
+		var result = determine_spawn_pos_and_rotation(t_shape)
+		spawn_pos = result[0]
+		rot_angle = result[1]
+	return spawn_pos
 
 
 ## calculating points on interface
@@ -132,9 +128,23 @@ func _on_score_update(new_score: int) -> void:
 	score_node.text = str(total_score)
 
 func _on_collapse_pressed() -> void:
+	# first, get the spawn position of the selected piece
+	var spawn_pos = get_spawn_pos(selected_shape_name, selected_rotation_angle)
+	# next, spawn the tetrimino piece on the grid using the currently selected 
+	# piece
+	# BTW, we always pass in the ROTATION INDEX to the spawn function, not the 
+	# actual angle!
+	grid_container.spawn_new_tetrimino(
+		selected_shape_name,
+		spawn_pos,
+		(selected_rotation_angle / 90) % 4
+	)
 	var tetrimino_manager = grid_container.get_current_tetrimino()
 	if tetrimino_manager:
 		tetrimino_manager.collapse()
+	# finally, remove the tetrimino piece from the solution list
+	# we're gonna have to find its position in the solution list
+	var sol = solution_list
 
 
 func _input(event: InputEvent) -> void:
@@ -144,8 +154,8 @@ func _input(event: InputEvent) -> void:
 
 func spawn_next_tetrimino(remaining_tetriminos: int) -> void:
 	if remaining_tetriminos > 0:
-		var t_shape: String = ""  # Declare variables here
-		var rot_angle: int = 0    # Initialize them
+		var t_shape: String = "" # Declare variables here
+		var rot_angle: int = 0 # Initialize them
 		if selected_shape_name != "":
 			t_shape = selected_shape_name
 			rot_angle = selected_rotation_angle
@@ -156,37 +166,25 @@ func spawn_next_tetrimino(remaining_tetriminos: int) -> void:
 		grid_container.spawn_tetrimino(t_shape, spawn_pos, rot_angle)
 		
 		#### didnt touch after here 4/25 JM
-		
+
+func _on_grid_clear(puzzle_num: int) -> void:
+	load_puzzle("puzzle_%d" % puzzle_num)
+	reset_game()
+
 func reset_game() -> void:
 	print("mini_game_1.gd: Restarting the game!")
-	temp_solution_list = get_randomized_solution(solution)
-	grid_container.reset_grid()
-
-func get_randomized_solution(sol: PuzzleSolution) -> Array:
-	var solution_list = sol.solution_list.duplicate(true)
-	solution_list.shuffle()
-	return solution_list
-
-func initialize_tetrimino_selector() -> void:
-	for i in range(temp_solution_list.size()):
-		#var slot = TetriminoSlot.new()
-		tetrimino_selector.set_tetrimino_slot(i, temp_solution_list[i]["shape"])
-	tetrimino_selector._refresh_slots()
-		#pass
-		#tetrimino_selector.slots[i] = 
+	solution_list = get_solution_list()
+	grid_container.reset_grid(puzzle.starting_blocks)
 
 #Returns an Array with the best spawn position and best rotation as its elements.
 
 func determine_spawn_pos_and_rotation(
 	t_shape: String
 ) -> Array:
-	if is_correct_solution_piece(t_shape):
-		return solution.solution_list[0]["spawn_pos"]
-
 	# we need to determine the best spawn first
 	var best_score = INF
-	var best_spawn = Vector2.ZERO	# fallback spawn position
-	var best_rot_angle = 0	# fallback rotation
+	var best_spawn = Vector2.ZERO # fallback spawn position
+	var best_rot_angle = 0 # fallback rotation
 
 	# if there are any open gaps in the grid, then we'll be able to find an 
 	# ideal spawn position
@@ -217,12 +215,12 @@ func evaluate_spawn_pos(
 	t_shape: String,
 	spawn_pos: Vector2
 ) -> Array:
-	var best_score = INF	# the lower the score, the better
+	var best_score = INF # the lower the score, the better
 	var best_rot_angle = 0
 
 	# find the valid rotations for the tetrimino
 	var valid_rotations = []
-	for rot_angle in [0, 90, 180, 270]:	# at most, there's 4 different rotations
+	for rot_angle in [0, 90, 180, 270]: # at most, there's 4 different rotations
 		match t_shape:
 			# O-shape has only 1 rotation
 			"O":
@@ -262,7 +260,7 @@ func evaluate_spawn_pos_and_rotation(
 
 	# update the tetrimino's position and ensure it fits in the grid
 	var ghost_tetrimino = tetrimino_test.get_tetrimino()
-	ghost_tetrimino.visible = false	# make sure it's invisible
+	ghost_tetrimino.visible = false # make sure it's invisible
 	# BTW, we need to shift the spawn position in the x position down by 1
 	# because the spawn position of the Tetrimino node and the top-left block
 	# are a block-width apart, meaning that the spawn position will always be
@@ -363,3 +361,8 @@ func is_correct_solution_piece(t_shape: String) -> bool:
 	# Compare t_shape with the solution's first element.
 	var sol = solution.solution_list[0]
 	return t_shape == sol["shape"]
+
+
+func _on_test_drop_pressed() -> void:
+	selected_shape_name = "J"
+	selected_rotation_angle = 90
