@@ -18,6 +18,8 @@ var rotation_angle := 0
 
 var _is_selected : bool = false
 
+signal select(shape_name, rotation_angle, slot_index)
+
 func _ready():
 	load_puzzle()  # Load the current puzzle based on puzzle_num
 	_update_style()
@@ -36,16 +38,14 @@ func load_puzzle() -> void:
 		print("Error: Could not load puzzle file or file is not of type PuzzleSolution.")
 
 func _refresh_preview() -> void:
-
-	# ✅ Access the solutions array directly
+	# Access the solutions array directly
 	if puzzle_data and slot_index < puzzle_data.solution_list.size():
 		var entry = puzzle_data.solution_list[slot_index]
 		if entry.has("shape"):
 			shape_name = entry["shape"]
 		if entry.has("rotation"):
 			rotation_angle = entry["rotation"]
-
-	# ✅ Instantiate the tetrimino
+	# Instantiate the tetrimino
 	if tetrimino_scene:
 		var tetrimino_manager = tetrimino_scene.instantiate()
 		tetrimino_manager.t_shape = shape_name
@@ -60,10 +60,17 @@ func _refresh_preview() -> void:
 			(bbox.w + bbox.z) * 0.5
 		)
 		tetrimino.position = viewport.size * 0.5 - center_offset
+		
+		
+func _on_button_pressed() -> void:
+	set_selected(_is_selected)
+	#toggle_superposition()
 
 func set_selected(selected: bool) -> void:
 	_is_selected = selected
+	select.emit(shape_name, rotation_angle)
 	_update_style()
+	
 
 func _update_style():
 	var sb = StyleBoxFlat.new()
@@ -72,6 +79,7 @@ func _update_style():
 	sb.set_border_width_all(3)
 	sb.set_corner_radius_all(4)
 	panel.add_theme_stylebox_override("panel", sb)
+
 
 # will load next puzzle at the end of round
 func end_round() -> void:

@@ -1,8 +1,5 @@
 extends Control
 
-# how far apart to float the popups
-const POPUP_DISTANCE := 120
-
 @export var puzzle_file: PuzzleSolution
 
 @export var slot_1: TetriminoSlot
@@ -12,6 +9,7 @@ const POPUP_DISTANCE := 120
 var current_index: int = 0
 var tetriminos = []
 var tetriminos_data = []
+
 
 
 

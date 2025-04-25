@@ -24,8 +24,9 @@ extends Node
 var puzzle: PuzzleResource
 var solution: PuzzleSolution
 var temp_solution_list: Array
-
-
+var current_slot: Node = null
+var selected_shape_name: String = ""
+var selected_rotation_angle: int = 0
 
 # constants
 const TETRIMINO_SCENE_PATH = "res://scenes/mini_game_1/tetrimino.tscn"
@@ -33,7 +34,16 @@ const TETRIMINO_SCENE = preload(TETRIMINO_SCENE_PATH)
 const DEFAULT_PUZZLE_NAME = "puzzle_1"
 
 func _ready() -> void:
-	# listen for score updates
+# listen for score updates
+	grid_container.update_score.connect(_on_score_update)
+# getting tetrimino slots/shapes/rot
+	for slot in get_tree().get_nodes_in_group("tetrimino_slots"):
+		slot.connect("select", Callable(self, "_on_slot_selected"))
+
+## logic for decreasing gate use number after someone presses button
+# (rest of logic start at lines 309)
+	update_gate_count()
+	$sgate.pressed.connect(_on_use_gate_pressed)
 	grid_container.update_score.connect(_on_score_update)
 
 	# for now, let's just get a random puzzle (unless it's a test puzzle)
@@ -63,16 +73,68 @@ func _ready() -> void:
 			rot_angle = result[1]
 		if tetrimino_selector:
 			initialize_tetrimino_selector()
-		grid_container.spawn_new_tetrimino(t_shape, spawn_pos, (rot_angle / 90) % 4)
+			grid_container.spawn_new_tetrimino(t_shape, spawn_pos, (rot_angle / 90) % 4)
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
-## logic for decreasing gate use number after someone presses button
-## (rest of logic start at lines 309)
-	update_gate_count()
-	#$hgate.pressed.connect(_on_use_gate_pressed)
-	$sgate.pressed.connect(_on_use_gate_pressed)
+
 
 ## calculating points on interface
 	#score_node = $HBoxContainer2/ScoreCount
+
+func _on_slot_selected(shape_name: String, rotation_angle: int, slot_index: Node) -> void:
+	if current_slot == slot_index:
+		# Deselect if already selected
+		slot_index.set_selected(false)
+		current_slot = null
+		selected_shape_name = ""
+		selected_rotation_angle = 0
+	else:
+		# Deselect previous
+		if current_slot:
+			current_slot.set_selected(false)
+		# Select new
+		slot_index.set_selected(true)
+		current_slot = slot_index
+		selected_shape_name = shape_name
+		selected_rotation_angle = rotation_angle
+
+# gate uses UI logic
+var gate_uses: int = 2
+func _on_use_gate_pressed():
+	if gate_uses > 0:
+		gate_uses -= 1
+		update_gate_count()
+
+func update_gate_count():
+	$HBoxContainer/GateCount.text = str(gate_uses)
+	if gate_uses <= 0:
+		$hgate.visible = false
+		$sgate.visible = false
+		
+func _on_hgate_pressed() -> void:
+	_on_use_gate_pressed()
+
+func _on_score_update(new_score: int) -> void:
+	total_score += new_score
+	score_node.text = str(total_score)
+
+func _on_collapse_pressed() -> void:
+	var tetrimino_manager = grid_container.get_current_tetrimino()
+	if tetrimino_manager:
+		tetrimino_manager.collapse()
 
 
 func _input(event: InputEvent) -> void:
@@ -82,28 +144,19 @@ func _input(event: InputEvent) -> void:
 
 func spawn_next_tetrimino(remaining_tetriminos: int) -> void:
 	if remaining_tetriminos > 0:
-		# for the solution, we'll always grab the first element
-		temp_solution_list.pop_front()
-		var t_shape = temp_solution_list[0]["shape"]
-		var spawn_pos: Vector2
-		var rot_angle: int
-
-		# if the current tetrimino is the correct one, then use the solution's
-		# spawn position and rotation. otherwise, dynamically determine the best
-		# one
-		if is_correct_solution_piece(t_shape):
-			spawn_pos = temp_solution_list[0]["spawn_pos"]
-			rot_angle = temp_solution_list[0]["rotation"]
+		var t_shape: String = ""  # Declare variables here
+		var rot_angle: int = 0    # Initialize them
+		if selected_shape_name != "":
+			t_shape = selected_shape_name
+			rot_angle = selected_rotation_angle
 		else:
-			var result = determine_spawn_pos_and_rotation(t_shape) 
-			spawn_pos = result[0]
-			rot_angle = result[1]
-
-		# make sure to free the current tetrimino and spawn in a new one
-		var tetrimino_manager = grid_container.get_node_or_null("TetriminoManager")
-		if tetrimino_manager:
-			grid_container._free_and_spawn(tetrimino_manager, t_shape, spawn_pos, (rot_angle / 90) % 4, true)
-
+			print("error loading tetrimino")
+		var spawn_pos: Vector2 = Vector2(0, 0) # adjust as needed
+		# Assuming there's a function like this:
+		grid_container.spawn_tetrimino(t_shape, spawn_pos, rot_angle)
+		
+		#### didnt touch after here 4/25 JM
+		
 func reset_game() -> void:
 	print("mini_game_1.gd: Restarting the game!")
 	temp_solution_list = get_randomized_solution(solution)
@@ -122,9 +175,8 @@ func initialize_tetrimino_selector() -> void:
 		#pass
 		#tetrimino_selector.slots[i] = 
 
-"""
-Returns an Array with the best spawn position and best rotation as its elements.
-"""
+#Returns an Array with the best spawn position and best rotation as its elements.
+
 func determine_spawn_pos_and_rotation(
 	t_shape: String
 ) -> Array:
@@ -311,30 +363,3 @@ func is_correct_solution_piece(t_shape: String) -> bool:
 	# Compare t_shape with the solution's first element.
 	var sol = solution.solution_list[0]
 	return t_shape == sol["shape"]
-
-
-# gate uses UI logic
-var gate_uses: int = 2
-func _on_use_gate_pressed():
-	if gate_uses > 0:
-		gate_uses -= 1
-		update_gate_count()
-
-func update_gate_count():
-	$HBoxContainer/GateCount.text = str(gate_uses)
-	if gate_uses <= 0:
-		$hgate.visible = false
-		$sgate.visible = false
-		
-func _on_hgate_pressed() -> void:
-	_on_use_gate_pressed()
-
-func _on_score_update(new_score: int) -> void:
-	total_score += new_score
-	score_node.text = str(total_score)
-
-
-func _on_collapse_pressed() -> void:
-	var tetrimino_manager = grid_container.get_current_tetrimino()
-	if tetrimino_manager:
-		tetrimino_manager.collapse()
