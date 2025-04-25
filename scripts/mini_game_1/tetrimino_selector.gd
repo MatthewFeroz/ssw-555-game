@@ -16,7 +16,7 @@ var tetriminos_data = []
 func _ready():
 	# Check if puzzle file is provided
 	if puzzle_file:
-		tetriminos_data = puzzle_file.solution_list  # Access the array from the file
+		tetriminos_data = puzzle_file.solution_pieces  # Access the array from the file
 		print(tetriminos_data)  # Print out the data to verify its structure
 		_refresh_slots()  # Refresh slots with data from the puzzle
 		

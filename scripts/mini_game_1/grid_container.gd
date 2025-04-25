@@ -44,8 +44,6 @@ var total_blocks = 0
 # puzzle related
 #var puzzle_path: String
 var puzzle: Array
-var puzzle_num = 1
-var tetrimino_count = 3	# typically, there's only 3 tetriminos for a given solution
 
 # inspector variables
 @export_enum("O", "I", "T", "L", "J", "S", "Z") var DEFAULT_SHAPE := "O"
@@ -409,12 +407,7 @@ func clear_lines() -> void:
 	# if all the blocks have been cleared, then emit a signal that the grid has 
 	# been cleared
 	if total_blocks == 0:
-		grid_clear.emit(puzzle_num)
-		puzzle_num += 1
-	# else, for testing purposes, spawn the next tetrimino in the solution
-	else:
-		tetrimino_count -= 1
-		spawn_tetrimino.emit(tetrimino_count)
+		grid_clear.emit()
 
 func can_line_clear() -> bool:
 	# look through all of the locked blocks
@@ -547,7 +540,6 @@ func reset_grid(
 			var valid_shapes = TetriminoManager.get_valid_shapes()
 			DEFAULT_SHAPE = valid_shapes[randi() % valid_shapes.size()]
 		call_deferred("_free_and_spawn", tetrimino_manager, DEFAULT_SHAPE, DEFAULT_SPAWN_POS, randi_range(0, 3), spawn_new_piece)
-	tetrimino_count = 3
 
 func has_open_gaps() -> bool:
 	var open_gap_found = false

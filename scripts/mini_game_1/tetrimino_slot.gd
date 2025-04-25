@@ -33,14 +33,14 @@ func load_puzzle() -> void:
 	var resource = ResourceLoader.load(puzzle_file_path)
 	if resource and resource is PuzzleSolution:
 		puzzle_data = resource
-		print("Puzzle loaded successfully! Solution count: ", puzzle_data.solution_list.size())
+		print("Puzzle loaded successfully! Solution count: ", puzzle_data.solution_pieces.size())
 	else:
 		print("Error: Could not load puzzle file or file is not of type PuzzleSolution.")
 
 func _refresh_preview() -> void:
 	# Access the solutions array directly
-	if puzzle_data and slot_index < puzzle_data.solution_list.size():
-		var entry = puzzle_data.solution_list[slot_index]
+	if puzzle_data and slot_index < puzzle_data.solution_pieces.size():
+		var entry = puzzle_data.solution_pieces[slot_index]
 		if entry.has("shape"):
 			shape_name = entry["shape"]
 		if entry.has("rotation"):
