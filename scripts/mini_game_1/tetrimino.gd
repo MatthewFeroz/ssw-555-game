@@ -251,6 +251,47 @@ func _get_new_probs(
 			break
 	return parts
 
+func _shift_prob_of(rot_index: int) -> void:
+	# make sure that it's a possible rotation
+	if rot_index >= 0 and rot_index < _probabilities.size():
+		var base_prob = floori(_probabilities[rot_index] * 100)
+		# the prob should only ever rise. it must rise by at least 10% to be worth it
+		# also, the prob shouldn't be able to surpass 95% (or fall below 10%)
+		var new_prob = clampi(randi_range(base_prob + 10, 95), 10, 95)
+		_probabilities[rot_index] = new_prob / 100.0
+
+		# for the remaining probs, do the following:
+		"""
+		1. get the indexes of the remaining probs (only really relevant if # of rotations > 2)
+		2. filter the probs array into a new one without the base_prob
+		3. calculate the difference between new prob and base prob
+		4. divide the difference by the remaining probs
+		4b. if there's a remainder from that result, while remainder > 0, subtract 1 from each prob in remaining
+		5. shuffle the remaining
+		6. for each index of remaining prob in the original, replace the original with the new prob
+		"""
+		var remaining_indexes = []
+		var remaining_probs = []
+		for i in range(_probabilities.size()):
+			if i != rot_index:
+				remaining_indexes.append(i)
+				remaining_probs.append(_probabilities[i] * 100)
+		var diff = new_prob - base_prob
+		var quotient = diff / remaining_probs.size()
+		remaining_probs = remaining_probs.map(func(elem): return elem - quotient)
+		var remainder = (int)(diff) % remaining_probs.size()
+		var tmp_idx = 0
+		while remainder > 0:
+			remaining_probs[tmp_idx] -= 1
+			tmp_idx += 1
+			remainder -= 1
+		remaining_probs = remaining_probs.map(func(elem): return elem / 100)
+		remaining_probs.shuffle()
+		tmp_idx = 0
+		for idx in remaining_indexes:
+			_probabilities[idx] = remaining_probs[tmp_idx]
+			tmp_idx += 1
+
 # collision detection functions
 func can_move_down() -> bool:
 	# if the tetrimino is already locked, then we're assuming it has been put

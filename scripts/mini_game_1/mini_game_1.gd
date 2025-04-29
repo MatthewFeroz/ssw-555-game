@@ -123,6 +123,10 @@ func _on_hgate_pressed() -> void:
 	managers[0].shuffle_all_probabilities()
 	_on_use_gate_pressed()
 
+func _on_sgate_pressed() -> void:
+	managers[0].shift_probability_of(0)
+	_on_use_gate_pressed()
+
 func _on_score_update(new_score: int) -> void:
 	total_score += new_score
 	score_node.text = str(total_score)

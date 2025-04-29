@@ -176,7 +176,6 @@ func toggle_superposition(state: bool) -> void:
 
 func shuffle_all_probabilities() -> void:
 	tetrimino._shuffle_all_probs()
-	pass
 
 func shift_probability_of(rot_index: int) -> void:
-	pass
+	tetrimino._shift_prob_of(rot_index)
