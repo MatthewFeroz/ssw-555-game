@@ -9,7 +9,9 @@ extends Control
 func _ready():
 	button1.connect("pressed", Callable(self, "_on_button1_pressed"))
 	button2.connect("pressed", Callable(self, "_on_button2_pressed"))
-
+	if Global.unlocked_level < 2:
+		button2.disabled = true
+		button2.modulate = Color(1, 1, 1, 0.4)
 # Refactored handler with zero duplication
 func _change_to_lesson(scene: PackedScene, button_name: String):
 	if scene:
