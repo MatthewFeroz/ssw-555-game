@@ -77,8 +77,8 @@ func get_spawn_pos(
 	# one
 	var spawn_pos: Vector2i
 	if is_correct_solution_piece(t_shape):
-		spawn_pos = solution_pieces[0]["spawn_pos"]
-		rot_angle = solution_pieces[0]["rotation"]
+		spawn_pos = solution_pieces[tetriminos_used]["spawn_pos"]
+		rot_angle = solution_pieces[tetriminos_used]["rotation"]
 	else:
 		var result = determine_spawn_pos_and_rotation(t_shape)
 		spawn_pos = result[0]
@@ -92,7 +92,7 @@ func get_spawn_pos(
 func _on_slot_selected(shape_name: String, rotation_angle: int, slot_index: Node) -> void:
 	if current_slot == slot_index:
 		# Deselect if already selected
-		slot_index.set_selected(false)
+		slot_index.set_selected(false, false)
 		current_slot = null
 		selected_shape_name = ""
 		selected_rotation_angle = 0
@@ -101,7 +101,7 @@ func _on_slot_selected(shape_name: String, rotation_angle: int, slot_index: Node
 		if current_slot:
 			current_slot.set_selected(false)
 		# Select new
-		slot_index.set_selected(true)
+		slot_index.set_selected(true, false)
 		current_slot = slot_index
 		selected_shape_name = shape_name
 		selected_rotation_angle = rotation_angle
