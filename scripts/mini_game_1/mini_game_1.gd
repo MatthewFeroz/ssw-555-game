@@ -208,21 +208,9 @@ func evaluate_spawn_pos(
 	var best_score = INF # the lower the score, the better
 	var best_rot_angle = 0
 
-	# find the valid rotations for the tetrimino
-	var valid_rotations = []
-	for rot_angle in [0, 90, 180, 270]: # at most, there's 4 different rotations
-		match t_shape:
-			# O-shape has only 1 rotation
-			"O":
-				if rot_angle == 0:
-					valid_rotations.append(rot_angle)
-			# these shapes only have 2 rotations, 0° or 90°
-			"I", "S", "Z":
-				if rot_angle == 0 or rot_angle == 90:
-					valid_rotations.append(rot_angle)
-			# these can have all 4 rotations
-			"T", "L", "J":
-				valid_rotations.append(rot_angle)
+	# get the valid rotations for the tetrimino
+	#var valid_rotations = []
+	var valid_rotations = Tetrimino.get_valid_rotations(t_shape)
 
 	# for each of the valid rotations, simulate dropping a tetrimino (a "ghost")
 	# at the given spawn position and calculate the number of blocks in the grid
