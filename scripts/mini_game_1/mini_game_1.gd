@@ -14,7 +14,7 @@ extends Node
 
 @onready var grid_container = $Game/GridContainer
 @onready var puzzle_manager = $Game/PuzzleManager
-@onready var tetrimino_selector = $UI/TetriminoSelector
+@onready var tetrimino_selector = $TetriminoSelector
 @onready var score_node = $HBoxContainer2/ScoreCount
 @onready var total_score: int = 0
 
@@ -27,6 +27,7 @@ var solution_pieces: Array
 var current_slot: Node = null
 var selected_shape_name: String = ""
 var selected_rotation_angle: int = 0
+var managers = []	# this is for testing! REMOVE LATER
 
 # constants
 const TETRIMINO_SCENE_PATH = "res://scenes/mini_game_1/tetrimino.tscn"
@@ -40,6 +41,8 @@ func _ready() -> void:
 	grid_container.update_score.connect(_on_score_update)
 # getting tetrimino slots/shapes/rot
 	for slot in get_tree().get_nodes_in_group("tetrimino_slots"):
+		var mgr_path = "Panel/SubViewportContainer/SubViewport/TetriminoPreview/TetriminoManager"	# this is for testing! REMOVE LATER
+		managers.append(slot.get_node(mgr_path))	# this is for testing! REMOVE LATER
 		slot.connect("select", Callable(self, "_on_slot_selected"))
 
 	load_puzzle(DEFAULT_PUZZLE_NAME)
@@ -117,6 +120,7 @@ func update_gate_count():
 		$sgate.visible = false
 		
 func _on_hgate_pressed() -> void:
+	managers[0].shuffle_all_probabilities()
 	_on_use_gate_pressed()
 
 func _on_score_update(new_score: int) -> void:

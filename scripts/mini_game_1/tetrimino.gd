@@ -202,6 +202,55 @@ func _toggle_superposition(state: bool) -> void:
 	in_superposition = state
 	_accum_delta = 0.0
 
+func _shuffle_all_probs() -> void:
+	var temp = _get_new_probs(100, _probabilities.size(), 5, 95)
+	_probabilities = temp.map(func(elem): return elem / 100.0)
+
+func _get_new_probs(
+	total: int,
+	k: int,
+	min_val: int,
+	max_val: int
+) -> Array:
+	"""
+	turns out... this is pretty complicated compared to everything i've done. 
+	the outcome of this function is essentially applying the Dirichlet 
+	probability distribution to our probabilities. the available algorithms for 
+	this are mostly just on Stack Overflow. using that (& GPT o3), i found the 
+	following algorithm for calculating this:
+	"""
+	if k * min_val > total or k * max_val < total:
+		printerr("Impossible bounds... Returning an empty array.")
+		return []
+
+	var slack: int = total - k * min_val
+	var parts: Array = []
+	parts.resize(k)
+	parts.fill(0)
+
+	while true:
+		var cuts: Array = []
+		cuts.resize(k - 1)
+		cuts.fill(0)
+
+		for i in range(cuts.size()):
+			cuts[i] = randi_range(0, slack + 1)
+		cuts.sort()
+
+		var prev: int = 0
+		var ok: bool = true
+		for i in range(cuts.size()):
+			parts[i] = min_val + (cuts[i] - prev)
+			if parts[i] > max_val:
+				ok = false
+				break
+			prev = cuts[i]
+
+		parts[k - 1] = min_val + (slack - prev)
+		if parts[k - 1] <= max_val and ok:
+			break
+	return parts
+
 # collision detection functions
 func can_move_down() -> bool:
 	# if the tetrimino is already locked, then we're assuming it has been put
