@@ -1,13 +1,13 @@
 [gd_scene load_steps=14 format=3 uid="uid://liywc0r121p5"]
 
 [ext_resource type="Script" uid="uid://cdg4spfqn2q02" path="res://scripts/mini_game_1/mini_game_1.gd" id="1_wbkql"]
+[ext_resource type="Texture2D" uid="uid://qoidb00ucjyg" path="res://assets/Mini-Game 1/space.jpg" id="2_8k4a5"]
 [ext_resource type="PackedScene" uid="uid://b8x0sy0ke6wfl" path="res://scenes/mini_game_1/grid.tscn" id="2_jbqk3"]
 [ext_resource type="PackedScene" uid="uid://cen8goii1hogk" path="res://scenes/pause_menu_1.tscn" id="3_8k4a5"]
 [ext_resource type="Script" uid="uid://bjoturlvfymhh" path="res://scripts/mini_game_1/puzzle_manager.gd" id="3_jbqk3"]
 [ext_resource type="AudioStream" uid="uid://doi75sfxh1d4c" path="res://assets/Audio/Decision.wav" id="4_qx31w"]
 [ext_resource type="AudioStream" uid="uid://g55mhso1y2xn" path="res://assets/Audio/Button Selection.wav" id="5_h7mtl"]
 [ext_resource type="AudioStream" uid="uid://ghbvis7r14py" path="res://assets/Audio/Line Clearance.wav" id="6_ml3h1"]
-[ext_resource type="Texture2D" uid="uid://d04pnpr1nxbvm" path="res://assets/Mini-Game 1/wooden_background.jpg" id="7_h7mtl"]
 [ext_resource type="PackedScene" uid="uid://ce660yeaqdu28" path="res://scenes/mini_game_1/tetrimino_selector.tscn" id="8_ml3h1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h7mtl"]
@@ -31,10 +31,10 @@ corner_detail = 1
 script = ExtResource("1_wbkql")
 
 [node name="TextureRect" type="TextureRect" parent="."]
-z_index = -6
+z_index = -5
 offset_right = 1951.0
 offset_bottom = 1098.0
-texture = ExtResource("7_h7mtl")
+texture = ExtResource("2_8k4a5")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -72,20 +72,20 @@ offset_bottom = 10.0
 stream = ExtResource("6_ml3h1")
 
 [node name="collapse" type="Button" parent="."]
-offset_left = 822.0
-offset_top = 641.0
-offset_right = 1039.0
-offset_bottom = 789.0
+offset_left = 645.0
+offset_top = 518.0
+offset_right = 862.0
+offset_bottom = 666.0
 theme_override_colors/font_color = Color(0.960351, 0.960351, 0.960351, 1)
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxFlat_h7mtl")
 text = "Collapse"
 
 [node name="hgate" type="Button" parent="."]
-offset_left = 1103.0
-offset_top = 639.0
-offset_right = 1320.0
-offset_bottom = 787.0
+offset_left = 926.0
+offset_top = 516.0
+offset_right = 1143.0
+offset_bottom = 664.0
 theme_override_colors/font_color = Color(0.960351, 0.960351, 0.960351, 1)
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxFlat_qx31w")
@@ -93,10 +93,10 @@ text = "H Gate"
 
 [node name="sgate" type="Button" parent="."]
 z_index = 1
-offset_left = 1392.0
-offset_top = 641.0
-offset_right = 1609.0
-offset_bottom = 789.0
+offset_left = 1215.0
+offset_top = 518.0
+offset_right = 1432.0
+offset_bottom = 666.0
 theme_override_colors/font_color = Color(0.960351, 0.960351, 0.960351, 1)
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxFlat_ml3h1")
@@ -135,16 +135,16 @@ theme_override_font_sizes/font_size = 40
 text = "2"
 
 [node name="TetriminoSelector" parent="." instance=ExtResource("8_ml3h1")]
-offset_left = -206.0
-offset_top = 308.0
-offset_right = -206.0
-offset_bottom = 308.0
+offset_left = -385.0
+offset_top = 192.0
+offset_right = -385.0
+offset_bottom = 192.0
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
-offset_left = 815.0
-offset_top = 200.0
-offset_right = 1615.0
-offset_bottom = 596.0
+offset_left = 641.0
+offset_top = 77.0
+offset_right = 1441.0
+offset_bottom = 473.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_8k4a5")
 
 [node name="Probabilities Graph" type="VBoxContainer" parent="PanelContainer"]

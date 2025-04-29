@@ -81,7 +81,8 @@ func _ready() -> void:
 	
 	
 	
-	
+	# call grid_container spawn new tetrimino function
+	# on collapse pressed uses it 
 	
 	
 	
@@ -97,7 +98,7 @@ func _ready() -> void:
 func _on_slot_selected(shape_name: String, rotation_angle: int, slot_index: Node) -> void:
 	if current_slot == slot_index:
 		# Deselect if already selected
-		slot_index.set_selected(false)
+		slot_index.set_selected(false, false)
 		current_slot = null
 		selected_shape_name = ""
 		selected_rotation_angle = 0
@@ -106,7 +107,7 @@ func _on_slot_selected(shape_name: String, rotation_angle: int, slot_index: Node
 		if current_slot:
 			current_slot.set_selected(false)
 		# Select new
-		slot_index.set_selected(true)
+		slot_index.set_selected(true, false)
 		current_slot = slot_index
 		selected_shape_name = shape_name
 		selected_rotation_angle = rotation_angle

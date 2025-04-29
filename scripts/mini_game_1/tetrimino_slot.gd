@@ -66,10 +66,13 @@ func _on_button_pressed() -> void:
 	set_selected(_is_selected)
 	#toggle_superposition()
 
-func set_selected(selected: bool) -> void:
+func set_selected(selected: bool, emit_signal: bool = true) -> void:
 	_is_selected = selected
-	select.emit(shape_name, rotation_angle)
+	#emit_signal("select", shape_name, rotation_angle, self)
+	#select.emit(shape_name, rotation_angle)
 	_update_style()
+	if emit_signal:
+		emit_signal("select", shape_name, rotation_angle, self)
 	
 
 func _update_style():
