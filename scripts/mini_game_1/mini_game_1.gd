@@ -74,8 +74,8 @@ func get_spawn_pos(
 	# one
 	var spawn_pos: Vector2i
 	if is_correct_solution_piece(t_shape):
-		spawn_pos = solution_pieces[0]["spawn_pos"]
-		rot_angle = solution_pieces[0]["rotation"]
+		spawn_pos = solution_pieces[tetriminos_used]["spawn_pos"]
+		rot_angle = solution_pieces[tetriminos_used]["rotation"]
 	else:
 		var result = determine_spawn_pos_and_rotation(t_shape)
 		spawn_pos = result[0]
