@@ -1,0 +1,79 @@
+[gd_scene load_steps=6 format=3 uid="uid://dlemsvi632rm7"]
+
+[ext_resource type="Script" uid="uid://cof4vf8dt0ekx" path="res://MiniGame/EntangledCards/CluePanel.gd" id="1_pp11a"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pp11a"]
+bg_color = Color(0.34, 0.34, 0.34, 0.657)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rhw6p"]
+bg_color = Color(0.826, 0, 0.235, 0.641)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_30nnd"]
+bg_color = Color(0.269, 0.739, 0, 0.641)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_maix1"]
+bg_color = Color(0.122, 0.359, 1, 0.541)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+
+[node name="CluePanel" type="Control"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_pp11a")
+
+[node name="BackgroundBox" type="Panel" parent="."]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_pp11a")
+
+[node name="VBox" type="VBoxContainer" parent="BackgroundBox"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="RoundLabel" type="Label" parent="BackgroundBox/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Round 1"
+horizontal_alignment = 1
+
+[node name="RedGroupLabel" type="Label" parent="BackgroundBox/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("StyleBoxFlat_rhw6p")
+text = "Red Group: ❤️ ➔ 👑 ➔ 💲"
+horizontal_alignment = 1
+
+[node name="GreenGroupLabel" type="Label" parent="BackgroundBox/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("StyleBoxFlat_30nnd")
+text = "Green Group: ❤️ ➔ 👑 ➔ 💲"
+horizontal_alignment = 1
+
+[node name="BlueGroupLabel" type="Label" parent="BackgroundBox/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("StyleBoxFlat_maix1")
+text = "Blue Group: ❤️ ➔ 👑 ➔ 💲"
+horizontal_alignment = 1

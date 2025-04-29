@@ -1,0 +1,35 @@
+[gd_scene load_steps=2 format=3 uid="uid://d2uyrprfeeas5"]
+
+[ext_resource type="Script" uid="uid://cpt3hquyvxn2t" path="res://MiniGame/EntangledCards/FeedbackPanel.gd" id="1_2o5kd"]
+
+[node name="FeedbackPanel" type="Control"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_2o5kd")
+
+[node name="ResultLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 100.0
+offset_right = 100.0
+offset_bottom = 100.0
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 50
+text = "✅ Correct! +10 pts"
+
+[node name="NextButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 180.0
+offset_right = 100.0
+offset_bottom = 180.0
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 50
+text = "Next"

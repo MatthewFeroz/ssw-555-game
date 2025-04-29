@@ -1,6 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://yatl1vufopbi"]
+[gd_scene load_steps=9 format=3 uid="uid://yatl1vufopbi"]
 
 [ext_resource type="Script" uid="uid://djdyexke4scyj" path="res://MiniGame/EntangledCards/EntangledCards.gd" id="1_x2m2l"]
+[ext_resource type="PackedScene" uid="uid://dlemsvi632rm7" path="res://MiniGame/EntangledCards/CluePanel.tscn" id="2_ce5fj"]
+[ext_resource type="PackedScene" uid="uid://fey1d5iwg4jn" path="res://MiniGame/EntangledCards/QuizPanel.tscn" id="3_wrkhx"]
+[ext_resource type="PackedScene" uid="uid://brwn8boiwe615" path="res://MiniGame/EntangledCards/CountdownPanel.tscn" id="4_xp54y"]
+[ext_resource type="PackedScene" uid="uid://d2uyrprfeeas5" path="res://MiniGame/EntangledCards/FeedbackPanel.tscn" id="5_xpdol"]
+[ext_resource type="PackedScene" uid="uid://dvjxptov1hlpc" path="res://MiniGame/EntangledCards/FinishPanel.tscn" id="6_vpfap"]
+[ext_resource type="Texture2D" uid="uid://c631pnngypdu6" path="res://assets/SpaceMap/Background.png" id="7_wrkhx"]
+[ext_resource type="PackedScene" uid="uid://cdnai5g2iyjuh" path="res://MiniGame/EntangledCards/InstructionPanel.tscn" id="8_xp54y"]
 
 [node name="EntangledCards" type="Control"]
 layout_mode = 3
@@ -11,8 +18,60 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_x2m2l")
 
-[node name="CardGrid" type="GridContainer" parent="."]
+[node name="InstructionBackground" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_wrkhx")
+metadata/_edit_use_anchors_ = true
+
+[node name="InstructionPanel" parent="." instance=ExtResource("8_xp54y")]
+layout_mode = 1
+
+[node name="MainLayout" type="HBoxContainer" parent="."]
 layout_mode = 0
+offset_right = 1913.0
+offset_bottom = 869.0
+
+[node name="CardGrid" type="GridContainer" parent="MainLayout"]
+custom_minimum_size = Vector2(700, 800)
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 columns = 3
+
+[node name="Spacer" type="Control" parent="MainLayout"]
+custom_minimum_size = Vector2(250, 200)
+layout_mode = 2
+
+[node name="RightVBox" type="VBoxContainer" parent="MainLayout"]
+custom_minimum_size = Vector2(700, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ScoreLabel" type="Label" parent="MainLayout/RightVBox"]
+custom_minimum_size = Vector2(50, 150)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 70
+text = "Score: 0"
+
+[node name="CluePanel" parent="MainLayout/RightVBox" instance=ExtResource("2_ce5fj")]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="QuizPanel" parent="MainLayout/RightVBox" instance=ExtResource("3_wrkhx")]
+layout_mode = 2
+
+[node name="FeedbackPanel" parent="MainLayout/RightVBox" instance=ExtResource("5_xpdol")]
+layout_mode = 2
+
+[node name="FinishPanel" parent="MainLayout/RightVBox" instance=ExtResource("6_vpfap")]
+layout_mode = 2
+
+[node name="CountdownPanel" parent="." instance=ExtResource("4_xp54y")]
+layout_mode = 1
