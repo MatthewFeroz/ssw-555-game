@@ -93,7 +93,8 @@ func spawn_tetrimino(
 
 	var blocks = tetrimino.get_blocks()
 	#print(blocks)
-	var shape_data = TETRIMINO_DATA.shapes[shape_name]
+	print(typeof(TETRIMINO_DATA["shapes"]))
+	var shape_data = TETRIMINO_DATA["shapes"][shape_name]
 	var coords = shape_data["coords"][rotation_index]
 	var color = shape_data["color"]
 

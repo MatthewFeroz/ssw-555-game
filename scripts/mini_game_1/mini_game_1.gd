@@ -14,7 +14,7 @@ extends Node
 
 @onready var grid_container = $Game/GridContainer
 @onready var puzzle_manager = $Game/PuzzleManager
-@onready var tetrimino_selector = $UI/TetriminoSelector
+@onready var tetrimino_selector = $TetriminoSelector
 @onready var score_node = $HBoxContainer2/ScoreCount
 @onready var total_score: int = 0
 
@@ -94,10 +94,11 @@ func _on_slot_selected(shape_name: String, rotation_angle: int, slot_index: Node
 		selected_shape_name = ""
 		selected_rotation_angle = 0
 	else:
-		# Deselect previous
+		# Deselect previous slot if there is one
 		if current_slot:
-			current_slot.set_selected(false)
-		# Select new
+			current_slot.set_selected(false, false)
+		
+		# Select new slot
 		slot_index.set_selected(true, false)
 		current_slot = slot_index
 		selected_shape_name = shape_name
