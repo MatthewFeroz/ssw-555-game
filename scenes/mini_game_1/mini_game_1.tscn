@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://liywc0r121p5"]
+[gd_scene load_steps=15 format=3 uid="uid://liywc0r121p5"]
 
 [ext_resource type="Script" uid="uid://cdg4spfqn2q02" path="res://scripts/mini_game_1/mini_game_1.gd" id="1_wbkql"]
 [ext_resource type="Texture2D" uid="uid://qoidb00ucjyg" path="res://assets/Mini-Game 1/space.jpg" id="2_8k4a5"]
@@ -26,6 +26,9 @@ corner_radius_top_right = 7
 corner_radius_bottom_right = 7
 corner_radius_bottom_left = 7
 corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xte0r"]
+bg_color = Color(0.961518, 4.45209e-06, 9.62615e-07, 1)
 
 [node name="Node" type="Node"]
 script = ExtResource("1_wbkql")
@@ -163,8 +166,18 @@ layout_mode = 2
 size_flags_horizontal = 5
 size_flags_stretch_ratio = 0.0
 
-[connection signal="grid_clear" from="Game/GridContainer" to="." method="reset_game"]
-[connection signal="spawn_tetrimino" from="Game/GridContainer" to="." method="spawn_next_tetrimino"]
+[node name="setup_piece" type="Button" parent="."]
+offset_left = 1678.0
+offset_top = 301.0
+offset_right = 1851.0
+offset_bottom = 343.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_xte0r")
+text = "Setup J Piece"
+
+[connection signal="grid_clear" from="Game/GridContainer" to="." method="_on_grid_clear"]
 [connection signal="pressed" from="collapse" to="." method="_on_collapse_pressed"]
 [connection signal="pressed" from="hgate" to="." method="_on_hgate_pressed"]
 [connection signal="pressed" from="sgate" to="." method="_on_sgate_pressed"]
+[connection signal="pressed" from="setup_piece" to="." method="_on_test_drop_pressed"]

@@ -44,8 +44,6 @@ var total_blocks = 0
 # puzzle related
 #var puzzle_path: String
 var puzzle: Array
-var puzzle_num = 1
-var tetrimino_count = 3	# typically, there's only 3 tetriminos for a given solution
 
 # inspector variables
 @export_enum("O", "I", "T", "L", "J", "S", "Z") var DEFAULT_SHAPE := "O"
@@ -410,10 +408,6 @@ func clear_lines() -> void:
 	# been cleared
 	if total_blocks == 0:
 		grid_clear.emit()
-	# else, for testing purposes, spawn the next tetrimino in the solution
-	else:
-		tetrimino_count -= 1
-		spawn_tetrimino.emit(tetrimino_count)
 
 func can_line_clear() -> bool:
 	# look through all of the locked blocks
@@ -511,7 +505,9 @@ func clear_grid_row(
 	# also emit a signal to update the score
 	update_score.emit(GRID_WIDTH)
 	
-func reset_grid() -> void:
+func reset_grid(
+	puzzle_data: Array
+) -> void:
 	# first, we clear out our internal grid cell structure
 	grid_cells.clear()
 	for y in range(GRID_HEIGHT):
@@ -529,16 +525,21 @@ func reset_grid() -> void:
 		locked_blocks.queue_free()
 	#print(total_blocks)
 
-	# reinitialize the grid with the most recent puzzle
-	#var puzzle_path	# TODO: generate the puzzle path based on the current puzzle number
-	call_deferred("initialize_grid", puzzle)
+	# reinitialize the grid with the puzzle data
+	call_deferred("initialize_grid", puzzle, puzzle_data)
 
 	# finally, free the old tetrimino and spawn in a new one
 	var tetrimino_manager = get_node_or_null("TetriminoManager") as TetriminoManager
 	if tetrimino_manager:
-		# free the tetrimino and spawn a new tetrimino
-		call_deferred("_free_and_spawn", tetrimino_manager, DEFAULT_SHAPE, DEFAULT_SPAWN_POS, randi_range(0, 3), true)
-	tetrimino_count = 3
+		# free the tetrimino and spawn a new tetrimino (if testing in the "grid"
+		# scene, make it random)
+		var spawn_new_piece: bool = false
+		var puzzle_manager = get_parent().get_node_or_null("PuzzleManager")
+		if not puzzle_manager:
+			spawn_new_piece = true
+			var valid_shapes = TetriminoManager.get_valid_shapes()
+			DEFAULT_SHAPE = valid_shapes[randi() % valid_shapes.size()]
+		call_deferred("_free_and_spawn", tetrimino_manager, DEFAULT_SHAPE, DEFAULT_SPAWN_POS, randi_range(0, 3), spawn_new_piece)
 
 func has_open_gaps() -> bool:
 	var open_gap_found = false
