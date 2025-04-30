@@ -46,11 +46,6 @@ func _refresh_preview():
 		tetrimino.position = viewport.size * 0.5 - center_offset
 
 
-		
-func _on_button_pressed() -> void:
-	set_selected(_is_selected)
-	#toggle_superposition()
-
 
 func set_selected(selected: bool, emit: bool = true) -> void:
 	if _is_selected == selected:
@@ -75,8 +70,8 @@ func _update_style():
 	sb.set_border_width_all(3)
 	sb.set_corner_radius_all(4)
 	panel.add_theme_stylebox_override("panel", sb)
-
-
+	
+	
 # will load next puzzle at the end of round
 func end_round() -> void:
 	puzzle_num += 1

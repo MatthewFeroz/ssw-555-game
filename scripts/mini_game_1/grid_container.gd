@@ -20,7 +20,7 @@ const GRID_HEIGHT := 20
 const GRID_SIZE := GRID_WIDTH * GRID_HEIGHT
 
 # constants for blocks (background & physical)
-const BACKGROUND_COLOR := Color.DARK_GRAY
+const BACKGROUND_COLOR := Color.FLORAL_WHITE
 const BORDER_COLOR := Color.NAVY_BLUE
 const BLOCK_SIZE := Vector2(32.0, 32.0)	# all blocks must be 32x32
 

@@ -69,6 +69,9 @@ func get_spawn_pos(
 	t_shape: String,
 	rot_angle: int
 ) -> Vector2i:
+
+
+
 	# if the current tetrimino is the correct one, then use the solution's
 	# spawn position and rotation. otherwise, dynamically determine the best
 	# one
@@ -87,6 +90,9 @@ func get_spawn_pos(
 	#score_node = $HBoxContainer2/ScoreCount
 
 func _on_slot_selected(shape_name: String, rotation_angle: int, slot_index: Node) -> void:
+	if used_slots.has(slot_index.name):
+		return  # Don't allow selection of used slots
+		
 	if current_slot == slot_index:
 		# Deselect if already selected
 		slot_index.set_selected(false, false)
@@ -123,6 +129,8 @@ func _on_hgate_pressed() -> void:
 func _on_score_update(new_score: int) -> void:
 	total_score += new_score
 	score_node.text = str(total_score)
+	
+var used_slots = {}
 
 func _on_collapse_pressed() -> void:
 	# make sure we can haven't hit our limit
@@ -145,13 +153,13 @@ func _on_collapse_pressed() -> void:
 		tetriminos_used += 1
 		# finally, remove the tetrimino piece from the solution pieces
 		# we're gonna have to find its position in the list
+		used_slots[current_slot.name] = true
+		current_slot.set_selected(false, false)  # Reset before hiding
+		current_slot.visible = false
 		#var sol = solution_pieces
 		### reseting game after last tetrimino collapses
-	if tetriminos_used == MAX_TETRIMINOS:
-			# Optional: delay to let the collapse animation finish
-		await get_tree().create_timer(0.5).timeout
-		_on_grid_clear()
-		
+			# Optionally reset the puzzle or end the game if all puzzles are complete
+			# e.g., reset_game() or end_game()
 		
 		
 

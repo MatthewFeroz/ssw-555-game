@@ -11,8 +11,6 @@ var tetriminos = []
 var tetriminos_data = []
 
 
-
-
 func _ready():
 	# Check if puzzle file is provided
 	if puzzle_file:
