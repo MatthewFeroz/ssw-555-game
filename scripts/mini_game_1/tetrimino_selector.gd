@@ -13,13 +13,17 @@ var tetriminos_data = []
 
 func _ready():
 	# Check if puzzle file is provided
+	  # Refresh slots with data from the puzzle
+	piece_data()
+		
+func piece_data():
 	if puzzle_file:
 		tetriminos_data = puzzle_file.solution_pieces  # Access the array from the file
 		print(tetriminos_data)  # Print out the data to verify its structure
-		_refresh_slots()  # Refresh slots with data from the puzzle
-		
-		##### test begin 
+		_refresh_slots()
+
 func _refresh_slots():
+	#current_index = 0
 	if slots.size() == 3 and tetriminos_data.size() == 3:
 		for i in range(slots.size()):
 			var piece_data = tetriminos_data[i]
@@ -27,8 +31,8 @@ func _refresh_slots():
 			slots[i].rotation_angle = piece_data["rotation"]
 			slots[i].set_selected(i == current_index)
 			slots[i]._refresh_preview()
-			
-			
+
+
 func _input(event):
 	if event is InputEventKey and event.pressed:
 		match event.keycode:

@@ -526,7 +526,8 @@ func reset_grid(
 	#print(total_blocks)
 
 	# reinitialize the grid with the puzzle data
-	call_deferred("initialize_grid", puzzle, puzzle_data)
+	#call_deferred("initialize_grid", puzzle, puzzle_data)
+	call_deferred("initialize_grid", puzzle_data)
 
 	# finally, free the old tetrimino and spawn in a new one
 	var tetrimino_manager = get_node_or_null("TetriminoManager") as TetriminoManager

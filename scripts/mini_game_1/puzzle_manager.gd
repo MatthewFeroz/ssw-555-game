@@ -62,13 +62,6 @@ func load_all_solutions() -> void:
 		print("puzzle_manager.gd: " + error_string(DirAccess.get_open_error()))
 		push_error("Failed to open solutions folder: " + solutions_path)
 
-func get_random_puzzle() -> PuzzleResource:
-	if puzzles.size() > 0:
-		var keys = puzzles.keys()
-		var rand_key = keys[randi() % keys.size()]
-		return puzzles[rand_key]
-
-	return null
 	
 
 func get_puzzle_by_name(puzzle_name: String) -> PuzzleResource:

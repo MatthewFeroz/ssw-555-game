@@ -53,11 +53,19 @@ func _ready() -> void:
 
 	
 func load_puzzle(puzzle_name: String) -> void:
-	puzzle = puzzle_manager.get_puzzle_by_name(puzzle_name)
-	solution = puzzle_manager.get_puzzle_solution_by_name(puzzle.puzzle_name)
-	solution_pieces = get_solution_pieces()
+	#puzzle = puzzle_manager.get_puzzle_by_name(puzzle_name)
+	#solution = puzzle_manager.get_puzzle_solution_by_name(puzzle.puzzle_name)
+	#solution_pieces = get_solution_pieces()
 	# if tetrimino_selector:
 	# 	initialize_tetrimino_selector()
+	print("Calling load_puzzle with name: ", puzzle_name)
+	puzzle = puzzle_manager.get_puzzle_by_name(puzzle_name)
+	if not puzzle:
+		print("Failed to find puzzle: ", puzzle_name)
+	solution = puzzle_manager.get_puzzle_solution_by_name(puzzle_name)
+	if not solution:
+		print("Failed to find solution: ", puzzle_name)
+	solution_pieces = get_solution_pieces()
 
 func get_solution_pieces() -> Array:
 	if solution:
@@ -158,8 +166,9 @@ func _on_collapse_pressed() -> void:
 		current_slot.visible = false
 		#var sol = solution_pieces
 		### reseting game after last tetrimino collapses
-		
-			
+		if tetriminos_used == MAX_TETRIMINOS:
+			await get_tree().create_timer(1.0).timeout
+			next_puzzle()
 		
 
 
@@ -176,16 +185,38 @@ func update_solution_pieces() -> void:
 func _on_grid_clear(dummy: int = 0) -> void:  # Accept the param but ignore it
 	if puzzle_num < MAX_PUZZLES:
 		puzzle_num += 1
-		reset_game()
 		load_puzzle("puzzle_%d" % puzzle_num)
+		reset_game()
 	else:
 		print("Game Over")
 
 func reset_game() -> void:
 	print("mini_game_1.gd: Restarting the game!")
+	tetriminos_used = 0
+	used_slots.clear()
 	solution_pieces = get_solution_pieces()
+	print("Loaded solution pieces: ", solution_pieces)
+	print("Puzzle start blocks: ", puzzle.starting_blocks)
+
 	grid_container.reset_grid(puzzle.starting_blocks)
-	
+
+	# Reset all slots: show and clear
+	for slot in tetrimino_selector.slots:
+		slot.visible = true
+		slot.set_selected(false, false)
+
+	tetrimino_selector.tetriminos_data = solution_pieces.filter(func(p): return p != null)
+	tetrimino_selector._refresh_slots()
+
+	current_slot = null
+	selected_shape_name = ""
+	selected_rotation_angle = 0
+
+func next_puzzle() -> void:
+	puzzle_num += 1
+	print("Loading puzzle number: ", puzzle_num)
+	load_puzzle("puzzle_%d" % puzzle_num)
+	reset_game()
 
 #Returns an Array with the best spawn position and best rotation as its elements.
 
