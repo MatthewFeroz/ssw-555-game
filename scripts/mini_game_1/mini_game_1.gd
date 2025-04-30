@@ -174,13 +174,17 @@ func _on_collapse_pressed() -> void:
 			tetrimino_manager.collapse()
 		update_solution_pieces()
 		tetriminos_used += 1
-		# finally, remove the tetrimino piece from the solution pieces
-		# we're gonna have to find its position in the list
+		# next, remove the slot with the tetrimino we just selected
 		used_slots[current_slot.name] = true
 		current_slot.set_selected(false, false)  # Reset before hiding
 		current_slot.visible = false
-		#var sol = solution_pieces
-		### reseting game after last tetrimino collapses
+		
+		# reset the current slot to prevent ghost shapes from dropping
+		current_slot = null
+		selected_shape_name = ""
+		selected_rotation_angle = 0
+
+		# finally, load in the next puzzle if all pieces have been used
 		if tetriminos_used == MAX_TETRIMINOS:
 			if puzzle_num < MAX_PUZZLES:
 				show_next_puzzle_popup()
