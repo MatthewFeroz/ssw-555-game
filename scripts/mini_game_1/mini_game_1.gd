@@ -179,6 +179,7 @@ func _on_collapse_pressed() -> void:
 		# finally, load in the next puzzle if all pieces have been used
 		if tetriminos_used == MAX_TETRIMINOS:
 			if puzzle_num < MAX_PUZZLES:
+				await get_tree().create_timer(1).timeout
 				show_next_puzzle_popup()
 			else:
 				await get_tree().create_timer(1).timeout
