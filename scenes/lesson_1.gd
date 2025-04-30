@@ -11,5 +11,5 @@ func _ready():
 
 func _on_body_entered(body):
 	if body.name == "Character" and level_number <= Global.unlocked_level:
-		var final_scene = scene_path if scene_path != "" else "res://scenes/mini_game_%d.tscn" % level_number
+		var final_scene = scene_path if scene_path != "" else "res://scenes/mini_game_%d/mini_game_%d.tscn" % level_number
 		get_tree().change_scene_to_file(final_scene)

@@ -5,10 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://dhau8u44q7blp" path="res://scenes/character.tscn" id="2_ngauo"]
 [ext_resource type="Script" uid="uid://dlorlepvjwyob" path="res://scenes/lesson_1.gd" id="3_63d8p"]
 [ext_resource type="PackedScene" uid="uid://ccfutgtg1xdbq" path="res://scenes/coin_base.tscn" id="3_bxx46"]
-<<<<<<< HEAD
-[ext_resource type="AudioStream" uid="uid://cyo1gm6c0spmj" path="res://assets/space-station-247790.mp3" id="6_63d8p"]
-[ext_resource type="FontFile" uid="uid://j7iwjfn1y60a" path="res://assets/Nasalization Rg.otf" id="7_bn0jv"]
-=======
 [ext_resource type="Script" uid="uid://cvfpg5ub7apao" path="res://scenes/mini_game_2.gd" id="4_bn0jv"]
 [ext_resource type="AudioStream" uid="uid://b26b5ftxuffvk" path="res://assets/space-station-247790.mp3" id="6_63d8p"]
 [ext_resource type="FontFile" uid="uid://xgw2i6lafy88" path="res://assets/Nasalization Rg.otf" id="7_bn0jv"]
@@ -18,7 +14,6 @@ size = Vector2(110.056, 82.0182)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i3fto"]
 size = Vector2(104.806, 78.4262)
->>>>>>> 3f5df8a7f5f722dab544f8200091788da1353f05
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i3fto"]
 

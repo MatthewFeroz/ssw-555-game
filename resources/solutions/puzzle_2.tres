@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="PuzzleSolution" load_steps=2 format=3 uid="uid://ck8osf5ddjybc"]
+
+[ext_resource type="Script" uid="uid://bold8u112ekxs" path="res://resources/puzzle_solution.gd" id="1_4twge"]
+
+[resource]
+script = ExtResource("1_4twge")
+solution_list = [{
+"rotation": 0,
+"shape": "I",
+"spawn_pos": Vector2i(9, 0)
+}, {
+"rotation": 0,
+"shape": "I",
+"spawn_pos": Vector2i(6, 0)
+}, {
+"rotation": 180,
+"shape": "L",
+"spawn_pos": Vector2i(7, 0)
+}]
+puzzle_name = "puzzle_2"
+metadata/_custom_type_script = "uid://bold8u112ekxs"

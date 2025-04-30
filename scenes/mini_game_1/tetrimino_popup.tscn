@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://coxge72tij6or"]
+
+[ext_resource type="Script" uid="uid://b1aoclp0i7fay" path="res://scripts/mini_game_1/tetrimino_popup.gd" id="1_1xm0d"]
+[ext_resource type="PackedScene" uid="uid://xt4cfjayvkvf" path="res://scenes/mini_game_1/tetrimino.tscn" id="2_t677v"]
+
+[node name="PopupPanel" type="PopupPanel"]
+size = Vector2i(520, 520)
+visible = true
+script = ExtResource("1_1xm0d")
+tetrimino_scene = ExtResource("2_t677v")
+shape_name = "L"
+rotation_angle = 1
+
+[node name="TetriminoPanel" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 516.0
+offset_bottom = 516.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="TetriminoPanel"]
+layout_mode = 2
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="TetriminoPanel/PanelContainer"]
+layout_mode = 2
+
+[node name="SubViewport" type="SubViewport" parent="TetriminoPanel/PanelContainer/SubViewportContainer"]
+handle_input_locally = false
+render_target_update_mode = 4
+
+[node name="TetriminoPreview" type="Node2D" parent="TetriminoPanel/PanelContainer/SubViewportContainer/SubViewport"]
