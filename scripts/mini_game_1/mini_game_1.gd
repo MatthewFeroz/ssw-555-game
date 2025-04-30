@@ -158,9 +158,8 @@ func _on_collapse_pressed() -> void:
 		current_slot.visible = false
 		#var sol = solution_pieces
 		### reseting game after last tetrimino collapses
-			# Optionally reset the puzzle or end the game if all puzzles are complete
-			# e.g., reset_game() or end_game()
 		
+			
 		
 
 
