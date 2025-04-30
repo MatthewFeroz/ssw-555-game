@@ -244,8 +244,76 @@ theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxFlat_xte0r")
 text = "Setup J Piece"
 
+[node name="GameOver" type="PopupPanel" parent="."]
+size = Vector2i(1950, 1000)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameOver"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -971.0
+offset_top = -496.0
+offset_right = 971.0
+offset_bottom = 496.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Label" type="Label" parent="GameOver/VBoxContainer"]
+z_index = 2
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "
+Game Over!
+Final Score"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ReturnToHome" type="Button" parent="GameOver/VBoxContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 50
+text = "          Finish          "
+icon_alignment = 1
+
+[node name="NextPuzzle" type="PopupPanel" parent="."]
+size = Vector2i(1950, 1000)
+visible = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NextPuzzle"]
+custom_minimum_size = Vector2(1942, 500)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Countdown" type="Label" parent="NextPuzzle/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Continue to Puzzle 2!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="continueButton" type="Button" parent="NextPuzzle/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 40
+text = "Continue"
+
 [connection signal="grid_clear" from="Game/GridContainer" to="." method="_on_grid_clear"]
 [connection signal="pressed" from="collapse" to="." method="_on_collapse_pressed"]
 [connection signal="pressed" from="hgate" to="." method="_on_hgate_pressed"]
 [connection signal="pressed" from="sgate" to="." method="_on_sgate_pressed"]
 [connection signal="pressed" from="setup_piece" to="." method="_on_test_drop_pressed"]
+[connection signal="pressed" from="GameOver/VBoxContainer/ReturnToHome" to="." method="_on_return_to_home_pressed"]
+[connection signal="pressed" from="NextPuzzle/VBoxContainer/continueButton" to="." method="_on_continue_button_pressed"]

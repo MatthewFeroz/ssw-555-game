@@ -18,6 +18,13 @@ extends Node
 @onready var score_node = $HBoxContainer2/ScoreCount
 @onready var total_score: int = 0
 
+# next puzzle and ending game
+@onready var next_puzzle_popup = $NextPuzzle
+@onready var continue_button = $NextPuzzle/VBoxContainer/continueButton
+@onready var next_puzzle_label = $NextPuzzle/VBoxContainer/Countdown
+@onready var game_over_popup = $GameOver
+@onready var game_over_label = $GameOver/VBoxContainer/Label
+
 # member variables
 var puzzle: PuzzleResource
 var puzzle_num: int = 1
@@ -32,7 +39,7 @@ var selected_rotation_angle: int = 0
 const TETRIMINO_SCENE_PATH = "res://scenes/mini_game_1/tetrimino.tscn"
 const TETRIMINO_SCENE = preload(TETRIMINO_SCENE_PATH)
 const DEFAULT_PUZZLE_NAME = "puzzle_1"
-const MAX_PUZZLES: int = 3
+const MAX_PUZZLES: int = 2
 const MAX_TETRIMINOS: int = 3	# there's only 3 tetriminos for a given solution
 
 func _ready() -> void:
@@ -167,9 +174,16 @@ func _on_collapse_pressed() -> void:
 		#var sol = solution_pieces
 		### reseting game after last tetrimino collapses
 		if tetriminos_used == MAX_TETRIMINOS:
-			await get_tree().create_timer(1.0).timeout
-			next_puzzle()
+			if puzzle_num < MAX_PUZZLES:
+				show_next_puzzle_popup()
+			else:
+				await get_tree().create_timer(1).timeout
+				show_game_over()
 		
+func show_next_puzzle_popup() -> void:
+	next_puzzle_label.text = "Next Puzzle Ready!"
+	next_puzzle_popup.visible = true
+	
 
 
 func _input(event: InputEvent) -> void:
@@ -189,6 +203,7 @@ func _on_grid_clear(dummy: int = 0) -> void:  # Accept the param but ignore it
 		reset_game()
 	else:
 		print("Game Over")
+		show_game_over()
 
 func reset_game() -> void:
 	print("mini_game_1.gd: Restarting the game!")
@@ -215,8 +230,25 @@ func reset_game() -> void:
 func next_puzzle() -> void:
 	puzzle_num += 1
 	print("Loading puzzle number: ", puzzle_num)
+	if puzzle_num > MAX_PUZZLES:
+		show_game_over()
+		return
 	load_puzzle("puzzle_%d" % puzzle_num)
 	reset_game()
+	
+	
+func show_game_over() -> void:
+	game_over_label.text = "Game Over! Final Score: " + str(total_score)
+	#game_over_popup.popup_centered()
+	game_over_popup.visible=true
+	
+func _on_return_to_home_pressed() -> void:
+	get_tree().change_scene_to_file("res://scenes/main_scene1.tscn")
+
+func _on_continue_button_pressed() -> void:
+	next_puzzle_popup.visible = false
+	next_puzzle()
+
 
 #Returns an Array with the best spawn position and best rotation as its elements.
 
