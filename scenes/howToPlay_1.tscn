@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://b3u62oi44srbp"]
 
 [ext_resource type="Script" uid="uid://djuu424crsvck" path="res://scripts/how_to_play_1.gd" id="1_fhwss"]
-[ext_resource type="Texture2D" uid="uid://cwdkbiwbifu8j" path="res://assets/SpaceMap/galaxy.jpg" id="2_omv47"]
+[ext_resource type="Texture2D" uid="uid://b82qjxbvsw5r3" path="res://assets/SpaceMap/galaxy.jpg" id="2_omv47"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ycy8v"]
 bg_color = Color(1, 1, 1, 1)
