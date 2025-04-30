@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://uogp14ox436t"]
 
-[ext_resource type="Script" uid="uid://rmv5p533grpb" path="res://scripts/how_to_play_2.gd" id="1_aa7aq"]
+[ext_resource type="Script" path="res://scripts/how_to_play_2.gd" id="1_aa7aq"]
 [ext_resource type="Texture2D" uid="uid://cwdkbiwbifu8j" path="res://assets/SpaceMap/galaxy.jpg" id="2_m7gth"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ycy8v"]
@@ -64,7 +64,6 @@ layout_mode = 2
 size_flags_stretch_ratio = 0.0
 theme_override_font_sizes/font_size = 26
 text = "Entanglement Memory Cards
-
 How to Play:
 "
 
@@ -73,8 +72,17 @@ modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 theme_override_font_sizes/font_size = 22
-text = "*** Explain Rules of Game Here :) **
+text = "In this game,  your goal is to memorize and deduce the values of hidden cards based on combinations for each color (red, green, blue). Each color has three cards, each showing either a 0 or 1, and the values for each color follow a specific pattern that you need to remember.
 
+Setup: There are 9 cards divided into three colors: red, green, and blue. Each color has a predetermined combination of values. These combinations are shown at the start but are hidden during gameplay.
+
+Gameplay: The cards are shuffled and placed face down. In each round, one card is flipped to reveal its value (0 or 1). You must then guess the values of the other two cards of the same color, based on the combination you memorized.
+
+Scoring: You score points if you correctly identify the values of the other two cards for the color of the flipped card. If you're wrong, you get no points.
+
+Rounds: The game continues with new cards being flipped and more questions about the remaining cards of that color. The more you remember and deduce, the more points you can earn.
+
+Your task is to keep track of the card combinations, deduce the hidden values, and try to score as many points as possible by answering correctly.
 
 
 

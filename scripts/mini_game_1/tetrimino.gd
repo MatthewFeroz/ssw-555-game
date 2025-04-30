@@ -12,6 +12,8 @@ signal lock_blocks(blocks: Array[Block])
 # member variables
 var locked: bool = false
 var falling: bool = false
+var can_fall: bool = true	# will be false if the TetriminoManager is a child of a TetriminoPreview
+var in_superposition: bool = false
 var _shape: String
 var _block_size: float
 var _rotation_index: int
@@ -26,6 +28,11 @@ func _process(_delta) -> void:
 	# don't do anything if the game isn't actually running
 	if Engine.is_editor_hint():
 		return
+
+	if Input.is_action_just_pressed("ui_up"):
+		tetrimino_manager.toggle_superposition(false)
+	if Input.is_action_just_pressed("ui_down"):
+		tetrimino_manager.toggle_superposition(true)
 
 	if not locked:
 		if Input.is_action_just_pressed("ui_left"):
@@ -51,7 +58,7 @@ func _physics_process(_delta: float) -> void:
 		# if not, we should lock the tetrimino in place
 		else:
 			#global_position.y -= Grid.BLOCK_SIZE.y
-			lock()
+			_lock()
 
 # custom functions
 
@@ -137,7 +144,7 @@ func handle_rotation(
 	#force_in_bounds()
 	print("tetrimino.gd: Current position: (%.1f, %.1f)" % [$Blocks.global_position.x, $Blocks.global_position.y])
 
-func lock() -> void:
+func _lock() -> void:
 	locked = true
 	falling = false
 	print("tetrimino.gd: Locked the Tetrimino. It will no longer be able to move.")
@@ -147,6 +154,13 @@ func lock() -> void:
 	for block in $Blocks.get_children():
 		blocks.append(block)
 	lock_blocks.emit(blocks)
+
+func _collapse() -> void:
+	if can_fall and not falling:
+		falling = true
+
+func _toggle_superposition(state: bool) -> void:
+	in_superposition = state
 
 # collision detection functions
 func can_move_down() -> bool:
