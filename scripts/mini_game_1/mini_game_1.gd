@@ -34,6 +34,7 @@ var solution_pieces: Array
 var current_slot: Node = null
 var selected_shape_name: String = ""
 var selected_rotation_angle: int = 0
+var managers = []	# this is for testing! REMOVE LATER
 
 # constants
 const TETRIMINO_SCENE_PATH = "res://scenes/mini_game_1/tetrimino.tscn"
@@ -47,6 +48,8 @@ func _ready() -> void:
 	grid_container.update_score.connect(_on_score_update)
 # getting tetrimino slots/shapes/rot
 	for slot in get_tree().get_nodes_in_group("tetrimino_slots"):
+		var mgr_path = "Panel/SubViewportContainer/SubViewport/TetriminoPreview/TetriminoManager"	# this is for testing! REMOVE LATER
+		managers.append(slot.get_node(mgr_path))	# this is for testing! REMOVE LATER
 		slot.connect("select", Callable(self, "_on_slot_selected"))
 
 	load_puzzle("puzzle_%d" % puzzle_num)
@@ -139,6 +142,11 @@ func update_gate_count():
 		$sgate.visible = false
 		
 func _on_hgate_pressed() -> void:
+	managers[0].shuffle_all_probabilities()
+	_on_use_gate_pressed()
+
+func _on_sgate_pressed() -> void:
+	managers[0].shift_probability_of(0)
 	_on_use_gate_pressed()
 
 func _on_score_update(new_score: int) -> void:
@@ -292,21 +300,9 @@ func evaluate_spawn_pos(
 	var best_score = INF # the lower the score, the better
 	var best_rot_angle = 0
 
-	# find the valid rotations for the tetrimino
-	var valid_rotations = []
-	for rot_angle in [0, 90, 180, 270]: # at most, there's 4 different rotations
-		match t_shape:
-			# O-shape has only 1 rotation
-			"O":
-				if rot_angle == 0:
-					valid_rotations.append(rot_angle)
-			# these shapes only have 2 rotations, 0° or 90°
-			"I", "S", "Z":
-				if rot_angle == 0 or rot_angle == 90:
-					valid_rotations.append(rot_angle)
-			# these can have all 4 rotations
-			"T", "L", "J":
-				valid_rotations.append(rot_angle)
+	# get the valid rotations for the tetrimino
+	#var valid_rotations = []
+	var valid_rotations = Tetrimino.get_valid_rotations(t_shape)
 
 	# for each of the valid rotations, simulate dropping a tetrimino (a "ghost")
 	# at the given spawn position and calculate the number of blocks in the grid

@@ -174,4 +174,9 @@ func toggle_superposition(state: bool) -> void:
 		if tetrimino.in_superposition:
 			print("tetrimino_manager.gd: Stopping superposition. Returning tetrimino to defaults.")
 			tetrimino._toggle_superposition(state)
-	pass
+
+func shuffle_all_probabilities() -> void:
+	tetrimino._shuffle_all_probs()
+
+func shift_probability_of(rot_index: int) -> void:
+	tetrimino._shift_prob_of(rot_index)
