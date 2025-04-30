@@ -42,7 +42,7 @@ func _ready() -> void:
 	for slot in get_tree().get_nodes_in_group("tetrimino_slots"):
 		slot.connect("select", Callable(self, "_on_slot_selected"))
 
-	load_puzzle(DEFAULT_PUZZLE_NAME)
+	load_puzzle("puzzle_%d" % puzzle_num)
 	if puzzle:
 		grid_container.initialize_grid(puzzle.starting_blocks)
 
@@ -146,6 +146,14 @@ func _on_collapse_pressed() -> void:
 		# finally, remove the tetrimino piece from the solution pieces
 		# we're gonna have to find its position in the list
 		#var sol = solution_pieces
+		### reseting game after last tetrimino collapses
+	if tetriminos_used == MAX_TETRIMINOS:
+			# Optional: delay to let the collapse animation finish
+		await get_tree().create_timer(0.5).timeout
+		_on_grid_clear()
+		
+		
+		
 
 
 func _input(event: InputEvent) -> void:
@@ -158,14 +166,19 @@ func update_solution_pieces() -> void:
 		solution_pieces[tetriminos_used] = null
 		#### didnt touch after here 4/25 JM
 
-func _on_grid_clear(puzzle_num: int) -> void:
-	load_puzzle("puzzle_%d" % puzzle_num)
-	reset_game()
+func _on_grid_clear(dummy: int = 0) -> void:  # Accept the param but ignore it
+	if puzzle_num < MAX_PUZZLES:
+		puzzle_num += 1
+		reset_game()
+		load_puzzle("puzzle_%d" % puzzle_num)
+	else:
+		print("Game Over")
 
 func reset_game() -> void:
 	print("mini_game_1.gd: Restarting the game!")
 	solution_pieces = get_solution_pieces()
 	grid_container.reset_grid(puzzle.starting_blocks)
+	
 
 #Returns an Array with the best spawn position and best rotation as its elements.
 
@@ -353,8 +366,3 @@ func is_correct_solution_piece(t_shape: String) -> bool:
 		return false
 	var sol = solution.solution_pieces[tetriminos_used]
 	return t_shape == sol["shape"]
-
-
-func _on_test_drop_pressed() -> void:
-	selected_shape_name = "J"
-	selected_rotation_angle = 90

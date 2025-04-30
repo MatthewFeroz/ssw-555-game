@@ -20,17 +20,16 @@ func _ready():
 		print(tetriminos_data)  # Print out the data to verify its structure
 		_refresh_slots()  # Refresh slots with data from the puzzle
 		
-		
+		##### test begin 
 func _refresh_slots():
 	if slots.size() == 3 and tetriminos_data.size() == 3:
 		for i in range(slots.size()):
-			# Get the tetrimino piece from the puzzle data (using the index i)
-			var piece_data = tetriminos_data[i]  # piece_data is a dictionary (rotation, shape, position)
-			
-			# Set the shape, rotation, and position from the puzzle data to the corresponding slot
-			slots[i].shape_name = piece_data["shape"]  # Set shape (e.g., "T", "L", etc.)
-			slots[i].rotation_angle = piece_data["rotation"]  # Set rotation (angle in degrees)
+			var piece_data = tetriminos_data[i]
+			slots[i].shape_name = piece_data["shape"]
+			slots[i].rotation_angle = piece_data["rotation"]
 			slots[i].set_selected(i == current_index)
+			slots[i]._refresh_preview()
+			
 			
 func _input(event):
 	if event is InputEventKey and event.pressed:
