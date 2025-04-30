@@ -1,0 +1,68 @@
+[gd_scene load_steps=4 format=3 uid="uid://5kbs3vgrrhx1"]
+
+[ext_resource type="Script" uid="uid://bahhl42k5ivbh" path="res://scripts/NameInputScene.gd" id="2_dn520"]
+[ext_resource type="FontFile" uid="uid://b0hdm6c18lv1e" path="res://fonts/Bebas_Neue/BebasNeue-Regular.ttf" id="2_q7ay7"]
+[ext_resource type="Texture2D" uid="uid://d0rmoywleiktx" path="res://assets/NameInput/NameInput.jpg" id="2_qdn7s"]
+
+[node name="NameInput" type="Node2D"]
+script = ExtResource("2_dn520")
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 750.0
+offset_top = 250.0
+offset_right = 1050.0
+offset_bottom = 350.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.960351, 0.960351, 0.960351, 1)
+theme_override_colors/font_shadow_color = Color(0.986752, 0.986752, 0.986752, 1)
+theme_override_colors/font_outline_color = Color(0.973535, 0.973535, 0.973535, 1)
+theme_override_fonts/font = ExtResource("2_q7ay7")
+theme_override_font_sizes/font_size = 30
+text = "WELCOME"
+
+[node name="ConfirmButton" type="Button" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 900.0
+offset_top = 750.0
+offset_right = 1100.0
+offset_bottom = 850.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.977937, 0.977937, 0.977937, 1)
+theme_override_fonts/font = ExtResource("2_q7ay7")
+theme_override_font_sizes/font_size = 20
+text = "Confirm"
+
+[node name="Prompt" type="Label" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 750.0
+offset_top = 375.0
+offset_right = 1250.0
+offset_bottom = 475.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_q7ay7")
+text = "Enter Your Name Here"
+horizontal_alignment = 3
+vertical_alignment = 1
+
+[node name="NameInput" type="LineEdit" parent="."]
+offset_left = 750.0
+offset_top = 475.0
+offset_right = 1250.0
+offset_bottom = 575.0
+theme_override_fonts/font = ExtResource("2_q7ay7")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_right = 1906.0
+offset_bottom = 1061.0
+texture = ExtResource("2_qdn7s")
+expand_mode = 1

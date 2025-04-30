@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://dhau8u44q7blp"]
 
-[ext_resource type="Texture2D" uid="uid://dmgbjhb7uwgaa" path="res://assets/sprites/spaceshipsrz-0.png" id="1_agfs1"]
+[ext_resource type="Texture2D" uid="uid://b81qqbx8ev1bd" path="res://assets/sprites/spaceshipsrz-0.png" id="1_agfs1"]
 
 [sub_resource type="GDScript" id="GDScript_dkjbp"]
 script/source = "extends CharacterBody2D
