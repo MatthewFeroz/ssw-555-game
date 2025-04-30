@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cf2rq7p8a3y0v" path="res://MiniGame/EntangledCards/Card.gd" id="1_22kf8"]
 
 [node name="Card" type="TextureButton"]
-custom_minimum_size = Vector2(150, 200)
+custom_minimum_size = Vector2(225, 290)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
