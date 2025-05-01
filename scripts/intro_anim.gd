@@ -10,3 +10,6 @@ func _on_animation_player_animation_finished(anim_name: StringName):
 
 func change_scene():
 	get_tree().change_scene_to_file("res://scenes/main_scene1.tscn")
+
+func _on_music_toggled(toggled_on: bool) -> void:
+	AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), toggled_on)

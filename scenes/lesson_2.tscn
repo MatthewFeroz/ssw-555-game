@@ -87,7 +87,7 @@ layout_direction = 4
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 22
-text = "Quantum entanglement is a phenomenon where two or more particles become linked, sharing information instantly, no matter how far apart they are. If you measure one particle, the state of the other changes immediately, even across vast distances. Scientists call this “spooky action at a distance.”"
+text = "Quantum entanglement is a phenomenon where two or more particles become linked, sharing information instantly, no matter how far apart they are. If you measure one particle, the state of the other changes immediately, even across vast distances. Scientists call this "
 autowrap_mode = 3
 
 [node name="TextureRect" type="TextureRect" parent="Control/Panel/ScrollContainer/VBoxContainer"]
@@ -122,7 +122,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 20
 text = "Why is Quantum Entanglement cool?
 When two particles interact and become entangled, their states will be connected.
-If one particle’s state is measured, the other changes instantly, no matter the distance.
+If one particle's state is measured, the other changes instantly, no matter the distance.
 This challenges classical physics, proving that quantum mechanics operates beyond our usual understanding of space and time!"
 autowrap_mode = 3
 

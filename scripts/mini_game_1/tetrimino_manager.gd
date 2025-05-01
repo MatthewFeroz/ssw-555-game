@@ -2,9 +2,12 @@
 class_name TetriminoManager
 extends Node
 
+# signals
+signal probabilities_changed(new_probs: Array)
+
 # constants for tetrimino shape data
 const TETRIMINO_SHAPES_PATH = "res://resources/shapes/tetrimino_shapes.tres"
-const TETRIMINO_DATA = preload(TETRIMINO_SHAPES_PATH)	# tetrimino_shape: key, shape_data: value
+const TETRIMINO_DATA = preload(TETRIMINO_SHAPES_PATH) # tetrimino_shape: key, shape_data: value
 const VALID_SHAPES = ["O", "I", "T", "L", "J", "S", "Z"]
 
 # constants for block scene
@@ -39,8 +42,10 @@ const BLOCK_SCENE = preload(BLOCK_SCENE_PATH)
 # member variables
 var tetrimino: Tetrimino
 var t_shape: String = "O"
-var block_size: float = 128.0	# the original texture size is 128x128
+var block_size: float = 128.0 # the original texture size is 128x128
 var rotation_index: int = 0
+var in_superposition: bool = false
+var probabilities: Array = []
 
 # built-in functions
 func _ready() -> void:
@@ -71,72 +76,74 @@ func spawn_tetrimino(
 	block_size: float = block_size,
 	rotation_index: int = rotation_index
 ) -> Tetrimino:
-	var tetrimino
-	# if there's already an existing tetrimino, then all we're doing is getting 
-	# rid of its blocks and updating it through this function
-	# TODO: you're probably gonna remove this code eventually if you can confirm that this will always have a Tetrimino as its child
-	var existing = get_node_or_null("Tetrimino") as Tetrimino
-	if existing and existing is InstancePlaceholder:
-		existing = existing.create_instance(true)
-		existing.name = "Tetrimino"
-	if existing:
-		existing.clear_blocks()
-		tetrimino = existing
+	# Get valid rotations for this shape
+	var valid_rotations = Tetrimino.get_valid_rotations(shape_name)
+	# Ensure rotation index is valid for this shape
+	rotation_index = rotation_index % valid_rotations.size()
+
+	# Check for existing tetrimino first
+	if has_node("Tetrimino"):
+		tetrimino = get_node("Tetrimino")
+		tetrimino.clear_blocks()
 	else:
-		print("Here we created a new tetrimino!")
 		tetrimino = Tetrimino.new()
+		tetrimino.name = "Tetrimino"
+		add_child(tetrimino)
+		
 		if tetrimino.get_child_count() == 0:
 			var blocks = Node2D.new()
 			blocks.name = "Blocks"
 			tetrimino.add_child(blocks)
-		print(tetrimino.get_children())
 
+	# Setup tetrimino properties
+	tetrimino._shape = shape_name
+	tetrimino._block_size = block_size
+	tetrimino._rotation_index = rotation_index
+	tetrimino._valid_rotations = valid_rotations
+	tetrimino.tetrimino_manager = self
+
+	# Create blocks
 	var blocks = tetrimino.get_blocks()
-	#print(blocks)
-	print(typeof(TETRIMINO_DATA["shapes"]))
 	var shape_data = TETRIMINO_DATA["shapes"][shape_name]
 	var coords = shape_data["coords"][rotation_index]
 	var color = shape_data["color"]
 
+	# Calculate center offset for auto-centering
+	var min_x = INF
+	var max_x = -INF
+	var min_y = INF
+	var max_y = -INF
+	
+	for coord in coords:
+		min_x = min(min_x, coord.x)
+		max_x = max(max_x, coord.x)
+		min_y = min(min_y, coord.y)
+		max_y = max(max_y, coord.y)
+	
+	var center_offset = Vector2(
+		(min_x + max_x) * block_size * 0.5,
+		(min_y + max_y) * block_size * 0.5
+	)
+
 	var block_num = 1
 	for coord in coords:
-		# create the block scene
-		# print("tetrimino_manager.gd: Adding Block #" + str(block_num))
 		var block = BLOCK_SCENE.instantiate()
 		block.name = "Block %d" % block_num
-		
-		# change the block's color and size
-		# print("tetrimino_manager.gd: Calling set_block_color() on block " + str(block) + ", with argument " + str(color))
 		block.set_block_color(color)
-		# print("tetrimino_manager.gd: Calling resize_block() on block " + str(block) + ", with argument " + str(TETRIMINO_BLOCK_SIZE))
 		block.resize_block(block_size)
-		
-		# add the block to the Blocks node
 		blocks.add_child(block)
-		# makes the blocks visible in the editor
-		if Engine.is_editor_hint():
-			print("Adding " + block.name + " to the editor's scene tree.")
-			block.owner = owner
-		# print("tetrimino_manager.gd: Adding Block #" + str(block_num) + " to the scene")
 		
-		# position the block in the right place for the shape
-		# print("tetrimino_manager.gd: Initial position of Block #" + str(block_num) + ": " + str(block.position))
-		block.position = coord * block_size
-		# print("tetrimino_manager.gd: Updated position of Block #" + str(block_num) + ": " + str(block.position))
+		# Position block relative to center
+		block.position = (coord * block_size) - center_offset
 		block_num += 1
 
-		# ensure that the blocks are selectable nodes in the editor
-		#if Engine.is_editor_hint():
-			#add_child(tetrimino)
-			#tetrimino.owner = self
-
-	# ensure that tetriminos in an UI element cannot fall
+	# Handle UI preview specific setup
 	if is_child_of_preview():
 		tetrimino.can_fall = false
-	
-	# send out a signal that the tetrimino has been spawned
-	#tetrimino.spawned.emit(tetrimino.global_position)
-	tetrimino.tetrimino_manager = self	# ensure that it's not an orphan!
+		
+	if not tetrimino.probs_changed.is_connected(_on_probabilities_changed):
+		tetrimino.probs_changed.connect(_on_probabilities_changed)
+
 	return tetrimino
 
 func free_tetrimino(
@@ -170,8 +177,41 @@ func toggle_superposition(state: bool) -> void:
 		if not tetrimino.in_superposition:
 			print("tetrimino_manager.gd: Putting the tetrimino in superposition!")
 			tetrimino._toggle_superposition(state)
+			in_superposition = state
 	else:
 		if tetrimino.in_superposition:
 			print("tetrimino_manager.gd: Stopping superposition. Returning tetrimino to defaults.")
 			tetrimino._toggle_superposition(state)
+			in_superposition = state
 	pass
+
+# probability functions
+
+func shuffle_all_probabilities() -> void:
+	# var valid_rotations = Tetrimino.get_valid_rotations(t_shape)
+	# if not rot_index in valid_rotations and valid_rotations.size() > 0:
+	# 	rot_index = valid_rotations[0]
+	tetrimino._shuffle_all_probs()
+	probabilities = tetrimino._probabilities
+
+func shift_probability_of(rot_index: int) -> void:
+	var valid_rotations = Tetrimino.get_valid_rotations(t_shape)
+	if not rot_index in valid_rotations and valid_rotations.size() > 0:
+		tetrimino._shift_prob_of(rot_index)
+		probabilities[rot_index] = tetrimino._probabilities[rot_index]
+
+func reset_probabilities() -> void:
+	# Reset to equal probabilities for all valid rotations
+	var valid_rotations = Tetrimino.get_valid_rotations(t_shape)
+	var prob_value = 1.0 / valid_rotations.size() if valid_rotations.size() > 0 else 1.0
+	
+	var new_probs = [0.0, 0.0, 0.0, 0.0]
+	for i in range(valid_rotations.size()):
+		new_probs[i] = prob_value
+	
+	probabilities = new_probs
+
+# internal functions
+func _on_probabilities_changed(new_probs: Array) -> void:
+	probabilities = new_probs
+	probabilities_changed.emit(new_probs)
