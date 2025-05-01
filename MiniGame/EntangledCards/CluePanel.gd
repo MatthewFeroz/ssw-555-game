@@ -16,3 +16,10 @@ func show_clue(duration: float) -> void:
 	visible = true
 	await get_tree().create_timer(duration).timeout
 	visible = false
+
+@onready var bgm = $BackgroundMusic
+func _ready():
+	if not bgm.playing:
+			bgm.play()
+
+   

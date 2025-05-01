@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dvjxptov1hlpc"]
+[gd_scene load_steps=3 format=3 uid="uid://dvjxptov1hlpc"]
 
 [ext_resource type="Script" uid="uid://clasfgxhwel6b" path="res://MiniGame/EntangledCards/FinishPanel.gd" id="1_ga621"]
+[ext_resource type="AudioStream" uid="uid://eqi602u06tcv" path="res://assets/Audio/Line Clearance.wav" id="2_dr4w0"]
 
 [node name="FinishPanel" type="Control"]
 visible = false
@@ -34,3 +35,6 @@ grow_vertical = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 50
 text = "Finish"
+
+[node name="FinishSoundPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_dr4w0")

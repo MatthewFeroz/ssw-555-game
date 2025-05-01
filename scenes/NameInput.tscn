@@ -1,0 +1,116 @@
+[gd_scene load_steps=9 format=3 uid="uid://5kbs3vgrrhx1"]
+
+[ext_resource type="Script" uid="uid://bahhl42k5ivbh" path="res://scripts/NameInputScene.gd" id="2_dn520"]
+[ext_resource type="FontFile" uid="uid://b0hdm6c18lv1e" path="res://fonts/Bebas_Neue/BebasNeue-Regular.ttf" id="2_q7ay7"]
+[ext_resource type="Texture2D" uid="uid://d0rmoywleiktx" path="res://assets/NameInput/NameInput.jpg" id="2_qdn7s"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dxudf"]
+bg_color = Color(0.123909, 0.645217, 0.876611, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qdn7s"]
+bg_color = Color(0.133422, 0.589862, 0.326712, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k14d2"]
+bg_color = Color(0.2, 0.6, 0.286275, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1624q"]
+bg_color = Color(0.814512, 0.706965, 0.0956789, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q7ay7"]
+bg_color = Color(0.603922, 0.631373, 0.133333, 1)
+
+[node name="NameLineInput" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("2_dn520")
+
+[node name="Label" type="Label" parent="."]
+top_level = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 650.0
+offset_top = 250.0
+offset_right = -270.0
+offset_bottom = 378.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.960351, 0.960351, 0.960351, 1)
+theme_override_colors/font_shadow_color = Color(0.986752, 0.986752, 0.986752, 1)
+theme_override_colors/font_outline_color = Color(0.973535, 0.973535, 0.973535, 1)
+theme_override_fonts/font = ExtResource("2_q7ay7")
+theme_override_font_sizes/font_size = 100
+text = "THANKYOU FOR PLAYING!"
+metadata/_edit_use_anchors_ = true
+
+[node name="Prompt" type="Label" parent="."]
+top_level = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 800.0
+offset_top = 400.0
+offset_right = -750.0
+offset_bottom = -480.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_q7ay7")
+theme_override_font_sizes/font_size = 50
+text = "Enter Your Name Here"
+horizontal_alignment = 3
+vertical_alignment = 1
+
+[node name="NameInput" type="LineEdit" parent="." node_paths=PackedStringArray("shortcut_context")]
+show_behind_parent = true
+top_level = true
+layout_mode = 0
+offset_left = 725.0
+offset_top = 650.0
+offset_right = 1225.0
+offset_bottom = 740.0
+shortcut_context = NodePath(".")
+theme_override_fonts/font = ExtResource("2_q7ay7")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_dxudf")
+placeholder_text = "Enter your name"
+alignment = 1
+max_length = 50
+keep_editing_on_text_submit = true
+expand_to_text_length = true
+clear_button_enabled = true
+deselect_on_focus_loss_enabled = false
+select_all_on_focus = true
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 1906.0
+offset_bottom = 1061.0
+mouse_filter = 2
+texture = ExtResource("2_qdn7s")
+expand_mode = 1
+
+[node name="ConfirmButton" type="Button" parent="."]
+top_level = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -85.0
+offset_top = -280.0
+offset_right = 115.0
+offset_bottom = -180.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/icon_hover_color = Color(0.00257731, 0.128486, 0.613538, 1)
+theme_override_colors/icon_normal_color = Color(0, 0.764052, 0, 1)
+theme_override_colors/font_color = Color(0.977937, 0.977937, 0.977937, 1)
+theme_override_fonts/font = ExtResource("2_q7ay7")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_qdn7s")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxFlat_k14d2")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1624q")
+theme_override_styles/normal = SubResource("StyleBoxFlat_q7ay7")
+action_mode = 0
+text = "Confirm"
