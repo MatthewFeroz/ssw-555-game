@@ -5,6 +5,7 @@ extends Node2D
 @onready var tetrimino_manager = get_parent()
 
 # signals
+signal rotated
 #signal spawned(pos: Vector2)
 signal out_of_bounds(direction: Vector2, bbox: Vector4)
 signal lock_blocks(blocks: Array[Block])
@@ -162,6 +163,7 @@ func get_bbox() -> Vector4:
 func _schedule_next_rotation() -> void:
 	var new_index = (_rotation_index + 1) % _valid_rotations.size()
 	_set_rotation_index_to(new_index)
+	rotated.emit(new_index)
 
 func _set_rotation_index_to(
 	new_index: int

@@ -41,6 +41,8 @@ var tetrimino: Tetrimino
 var t_shape: String = "O"
 var block_size: float = 128.0	# the original texture size is 128x128
 var rotation_index: int = 0
+var in_superposition: bool = false
+var probabilities: Array = []
 
 # built-in functions
 func _ready() -> void:
@@ -85,6 +87,7 @@ func spawn_tetrimino(
 	else:
 		print("Here we created a new tetrimino!")
 		tetrimino = Tetrimino.new()
+		probabilities = tetrimino._probabilities
 		if tetrimino.get_child_count() == 0:
 			var blocks = Node2D.new()
 			blocks.name = "Blocks"
@@ -133,6 +136,7 @@ func spawn_tetrimino(
 	# ensure that tetriminos in an UI element cannot fall
 	if is_child_of_preview():
 		tetrimino.can_fall = false
+	probabilities = tetrimino._probabilities
 	
 	# send out a signal that the tetrimino has been spawned
 	#tetrimino.spawned.emit(tetrimino.global_position)
@@ -170,13 +174,17 @@ func toggle_superposition(state: bool) -> void:
 		if not tetrimino.in_superposition:
 			print("tetrimino_manager.gd: Putting the tetrimino in superposition!")
 			tetrimino._toggle_superposition(state)
+			in_superposition = state
 	else:
 		if tetrimino.in_superposition:
 			print("tetrimino_manager.gd: Stopping superposition. Returning tetrimino to defaults.")
 			tetrimino._toggle_superposition(state)
+			in_superposition = state
 
 func shuffle_all_probabilities() -> void:
 	tetrimino._shuffle_all_probs()
+	probabilities = tetrimino._probabilities
 
 func shift_probability_of(rot_index: int) -> void:
 	tetrimino._shift_prob_of(rot_index)
+	probabilities[rot_index] = tetrimino._probabilities[rot_index]

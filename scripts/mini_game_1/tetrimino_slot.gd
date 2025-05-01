@@ -27,35 +27,65 @@ func _ready():
 
 
 func _refresh_preview():
-	for child in preview_root.get_children():
-		child.queue_free()
+	var props = {}
+	if preview_root:
+		var tm = get_tetrimino_manager()
+		if tm:
+			props = {
+				"in_superposition": tm.in_superposition,
+				"probabilities": tm.probabilities,
+				"t_shape": shape_name,
+				"block_size": 32.0,
+				"rotation_index": (rotation_angle / 90) % 4
+			}
+			tm.name = "DeletedTetriminoManager"
+			tm.get_tetrimino().disconnect("rotated", _on_rotated)
+			tm.queue_free()
 
 	if tetrimino_scene:
 		var tetrimino_manager = tetrimino_scene.instantiate()
-		tetrimino_manager.t_shape = shape_name
-		tetrimino_manager.block_size = 32.0
-		tetrimino_manager.rotation_index = (rotation_angle / 90) % 4
+		tetrimino_manager.name = "TetriminoManager"
+		tetrimino_manager.in_superposition = props["in_superposition"] if props else false
+		tetrimino_manager.probabilities = props["probabilities"] if props else []
+		tetrimino_manager.t_shape = props["t_shape"] if props else shape_name
+		tetrimino_manager.block_size = props["block_size"] if props else 32.0
+		tetrimino_manager.rotation_index = props["rotation_index"] if props else (rotation_angle / 90) % 4
 		preview_root.add_child(tetrimino_manager)
+		_recenter_tetrimino()
 
-		var tetrimino = tetrimino_manager.get_tetrimino()
+		# make sure to connect the rotated signal so that it automatically 
+		# recenters the tetrimino after rotation.
+		tetrimino_manager.get_tetrimino().rotated.connect(_on_rotated)
+
+		if props.has("in_superposition") and props["in_superposition"]:
+			tetrimino_manager.toggle_superposition(true)
+
+func _recenter_tetrimino() -> void:
+	if preview_root:
+		var tm = get_tetrimino_manager()
+		if not tm:
+			return
+
+		var tetrimino = tm.get_tetrimino()
 		var bbox = tetrimino.get_bbox()
+		var left = bbox.x - tetrimino.global_position.x
+		var right = bbox.y - tetrimino.global_position.x
+		var top = bbox.z - tetrimino.global_position.y
+		var bottom = bbox.w - tetrimino.global_position.y
 		var center_offset = Vector2(
-			(bbox.x + bbox.y) * 0.5,
-			(bbox.w + bbox.z) * 0.5
+			(left + right) * 0.5,
+			(top + bottom) * 0.5
 		)
 		tetrimino.position = viewport.size * 0.5 - center_offset
 
+func _on_rotated(rot_index: int) -> void:
+	rotation_angle = rot_index * 90
+	# bc Godot will update layout sizes after the next frame, we need to run this after that point.
+	_recenter_after_frame()
 
-func set_selected(selected: bool, emit: bool = true) -> void:
-	if _is_selected == selected:
-		return # No change, avoid extra logic
-
-	_is_selected = selected
-	_update_style()
-
-	if emit:
-		emit_signal("select", shape_name, rotation_angle, self)
-	
+func _recenter_after_frame() -> void:
+	await get_tree().process_frame
+	_recenter_tetrimino()
 
 func _update_style():
 	var sb = StyleBoxFlat.new()
@@ -69,6 +99,25 @@ func _update_style():
 	sb.set_border_width_all(3)
 	sb.set_corner_radius_all(4)
 	panel.add_theme_stylebox_override("panel", sb)
+
+func set_selected(selected: bool, emit: bool = true) -> void:
+	if _is_selected == selected:
+		return # No change, avoid extra logic
+
+	_is_selected = selected
+	_update_style()
+	if preview_root:
+		var tm = get_tetrimino_manager()
+		if tm:
+			tm.toggle_superposition(_is_selected)
+			#if not _is_selected:
+				#rotation_angle = tm.rotation_index * 90
+
+	if emit:
+		emit_signal("select", shape_name, rotation_angle, self)
+
+func get_tetrimino_manager() -> TetriminoManager:
+	return preview_root.get_node_or_null("TetriminoManager") as TetriminoManager
 	
 	
 # will load next puzzle at the end of round
