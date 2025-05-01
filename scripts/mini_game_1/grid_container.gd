@@ -11,6 +11,7 @@ extends Node2D
 signal line_clear(cleared_row_index: int)
 signal grid_clear
 signal spawn_tetrimino(remaining_tetriminos: int)
+signal update_score(score: int)
 
 # constants for the grid
 const GRID_ORIGIN := Vector2(BLOCK_SIZE)
@@ -19,8 +20,8 @@ const GRID_HEIGHT := 20
 const GRID_SIZE := GRID_WIDTH * GRID_HEIGHT
 
 # constants for blocks (background & physical)
-const BACKGROUND_COLOR := Color.DARK_GRAY
-const BORDER_COLOR := Color.DIM_GRAY
+const BACKGROUND_COLOR := Color.FLORAL_WHITE
+const BORDER_COLOR := Color.NAVY_BLUE
 const BLOCK_SIZE := Vector2(32.0, 32.0)	# all blocks must be 32x32
 
 # constants for out-of-bounds detection
@@ -43,8 +44,6 @@ var total_blocks = 0
 # puzzle related
 #var puzzle_path: String
 var puzzle: Array
-var puzzle_num = 1
-var tetrimino_count = 3	# typically, there's only 3 tetriminos for a given solution
 
 # inspector variables
 @export_enum("O", "I", "T", "L", "J", "S", "Z") var DEFAULT_SHAPE := "O"
@@ -102,10 +101,6 @@ func _process(_delta: float) -> void:
 	var tetrimino = tetrimino_manager.get_tetrimino()
 	if not tetrimino.is_in_bounds():
 		tetrimino.force_in_bounds()
-
-	if Input.is_action_just_pressed("ui_down"):
-		if tetrimino and not tetrimino.falling:
-			tetrimino.falling = true
 
 # custom functions
 static func grid_to_pixel(coord: Vector2) -> Vector2:
@@ -394,6 +389,13 @@ func align_tetrimino(
 	diff = expected_top - actual_top
 	tetrimino.position.y += diff
 
+"""
+This function returns the current tetrimino in the grid.
+Useful for accessing the tetrimino's functions (e.g. lock(), collapse())
+"""
+func get_current_tetrimino() -> TetriminoManager:
+	return get_node_or_null("TetriminoManager")
+
 func clear_lines() -> void:
 	var num_clearable_rows = find_num_clearable_rows()
 	# clear any lines if it's possible
@@ -406,10 +408,6 @@ func clear_lines() -> void:
 	# been cleared
 	if total_blocks == 0:
 		grid_clear.emit()
-	# else, for testing purposes, spawn the next tetrimino in the solution
-	else:
-		tetrimino_count -= 1
-		spawn_tetrimino.emit(tetrimino_count)
 
 func can_line_clear() -> bool:
 	# look through all of the locked blocks
@@ -502,10 +500,16 @@ func clear_grid_row(
 	for col_index in range(grid_row.size()):
 		grid_cells[row_index][col_index] = null
 
+	$LineClearance.play() # plays sound effect
+
 	# now, emit the signal that a line has been cleared
 	line_clear.emit(row_index)
+	# also emit a signal to update the score
+	update_score.emit(GRID_WIDTH)
 	
-func reset_grid() -> void:
+func reset_grid(
+	puzzle_data: Array
+) -> void:
 	# first, we clear out our internal grid cell structure
 	grid_cells.clear()
 	for y in range(GRID_HEIGHT):
@@ -523,16 +527,22 @@ func reset_grid() -> void:
 		locked_blocks.queue_free()
 	#print(total_blocks)
 
-	# reinitialize the grid with the most recent puzzle
-	#var puzzle_path	# TODO: generate the puzzle path based on the current puzzle number
-	call_deferred("initialize_grid", puzzle)
+	# reinitialize the grid with the puzzle data
+	#call_deferred("initialize_grid", puzzle, puzzle_data)
+	call_deferred("initialize_grid", puzzle_data)
 
 	# finally, free the old tetrimino and spawn in a new one
 	var tetrimino_manager = get_node_or_null("TetriminoManager") as TetriminoManager
 	if tetrimino_manager:
-		# free the tetrimino and spawn a new tetrimino
-		call_deferred("_free_and_spawn", tetrimino_manager, DEFAULT_SHAPE, DEFAULT_SPAWN_POS, randi_range(0, 3), true)
-	tetrimino_count = 3
+		# free the tetrimino and spawn a new tetrimino (if testing in the "grid"
+		# scene, make it random)
+		var spawn_new_piece: bool = false
+		var puzzle_manager = get_parent().get_node_or_null("PuzzleManager")
+		if not puzzle_manager:
+			spawn_new_piece = true
+			var valid_shapes = TetriminoManager.get_valid_shapes()
+			DEFAULT_SHAPE = valid_shapes[randi() % valid_shapes.size()]
+		call_deferred("_free_and_spawn", tetrimino_manager, DEFAULT_SHAPE, DEFAULT_SPAWN_POS, randi_range(0, 3), spawn_new_piece)
 
 func has_open_gaps() -> bool:
 	var open_gap_found = false
@@ -579,6 +589,10 @@ func find_open_gaps() -> Array:
 	return spawn_col_candidates
 
 # internal functions
+"""
+This function is responsible for updating the grid after a line clear. It 
+*doesn't* clear any lines.
+"""
 func _on_Grid_line_clear(
 	cleared_row_index: int
 ) -> void:
@@ -709,7 +723,7 @@ func _on_Tetrimino_out_of_bounds(
 			# it from moving.
 			if grid_has_blocks:
 				tetrimino.global_position.y += BLOCK_SIZE.y
-			tetrimino.lock()
+			tetrimino_manager.lock()
 		Vector2.DOWN:
 			print("grid_container.gd: Shifting the tetrimino down...")
 			border_start = grid_origin.y
@@ -738,6 +752,8 @@ func _on_Tetrimino_locked(
 	for block in blocks:
 		call_deferred("place_block", pixel_to_grid(block.global_position), block.color)
 		block.queue_free()
+		# for every block from a locked piece added, we'll update the score by 1
+		update_score.emit(1)
 
 	# now that the tetrimino's blocks are removed, free the tetrimino too (and
 	# disconnect its signals!)

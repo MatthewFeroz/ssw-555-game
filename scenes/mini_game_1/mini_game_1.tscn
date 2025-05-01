@@ -1,26 +1,54 @@
-[gd_scene load_steps=7 format=3 uid="uid://liywc0r121p5"]
+[gd_scene load_steps=16 format=3 uid="uid://liywc0r121p5"]
 
 [ext_resource type="Script" uid="uid://cdg4spfqn2q02" path="res://scripts/mini_game_1/mini_game_1.gd" id="1_wbkql"]
+[ext_resource type="Texture2D" uid="uid://qoidb00ucjyg" path="res://assets/Mini-Game 1/space.jpg" id="2_8k4a5"]
 [ext_resource type="PackedScene" uid="uid://b8x0sy0ke6wfl" path="res://scenes/mini_game_1/grid.tscn" id="2_jbqk3"]
+[ext_resource type="PackedScene" uid="uid://cen8goii1hogk" path="res://scenes/pause_menu_1.tscn" id="3_8k4a5"]
 [ext_resource type="Script" uid="uid://bjoturlvfymhh" path="res://scripts/mini_game_1/puzzle_manager.gd" id="3_jbqk3"]
-[ext_resource type="AudioStream" uid="uid://c50v7hwemmutt" path="res://assets/Audio/Decision.wav" id="4_qx31w"]
-[ext_resource type="AudioStream" uid="uid://xr8yqjwjnce7" path="res://assets/Audio/Button Selection.wav" id="5_h7mtl"]
-[ext_resource type="AudioStream" uid="uid://cdauf34yh88m2" path="res://assets/Audio/Line Clearance.wav" id="6_ml3h1"]
+[ext_resource type="AudioStream" uid="uid://doi75sfxh1d4c" path="res://assets/Audio/Decision.wav" id="4_qx31w"]
+[ext_resource type="AudioStream" uid="uid://g55mhso1y2xn" path="res://assets/Audio/Button Selection.wav" id="5_h7mtl"]
+[ext_resource type="AudioStream" uid="uid://ghbvis7r14py" path="res://assets/Audio/Line Clearance.wav" id="6_ml3h1"]
+[ext_resource type="PackedScene" uid="uid://ce660yeaqdu28" path="res://scenes/mini_game_1/tetrimino_selector.tscn" id="8_ml3h1"]
+[ext_resource type="Script" path="res://scripts/mini_game_1/prob_graph.gd" id="10_xte0r"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h7mtl"]
+bg_color = Color(0.678431, 0.305882, 0.858824, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qx31w"]
+bg_color = Color(0.134217, 0.614875, 0.685357, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ml3h1"]
+bg_color = Color(0, 0.718913, 0.353342, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8k4a5"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xte0r"]
+bg_color = Color(0.961518, 4.45209e-06, 9.62615e-07, 1)
 
 [node name="Node" type="Node"]
 script = ExtResource("1_wbkql")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+z_index = -5
+offset_right = 1951.0
+offset_bottom = 1098.0
+texture = ExtResource("2_8k4a5")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PauseMenu1" parent="CanvasLayer" instance=ExtResource("3_8k4a5")]
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-
-[node name="Label" type="Label" parent="UI"]
-layout_mode = 0
-offset_right = 215.0
-offset_bottom = 23.0
-text = "Mini-Game 1: Superposition"
 
 [node name="Game" type="Node2D" parent="."]
 position = Vector2(0, -2)
@@ -47,5 +75,245 @@ offset_bottom = 10.0
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Line_clearance"]
 stream = ExtResource("6_ml3h1")
 
-[connection signal="grid_clear" from="Game/GridContainer" to="." method="reset_game"]
-[connection signal="spawn_tetrimino" from="Game/GridContainer" to="." method="spawn_next_tetrimino"]
+[node name="collapse" type="Button" parent="."]
+offset_left = 645.0
+offset_top = 518.0
+offset_right = 862.0
+offset_bottom = 666.0
+theme_override_colors/font_color = Color(0.960351, 0.960351, 0.960351, 1)
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_h7mtl")
+text = "Collapse"
+
+[node name="hgate" type="Button" parent="."]
+offset_left = 926.0
+offset_top = 516.0
+offset_right = 1143.0
+offset_bottom = 664.0
+theme_override_colors/font_color = Color(0.960351, 0.960351, 0.960351, 1)
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_qx31w")
+text = "H Gate"
+
+[node name="sgate" type="Button" parent="."]
+z_index = 1
+offset_left = 1215.0
+offset_top = 518.0
+offset_right = 1432.0
+offset_bottom = 666.0
+theme_override_colors/font_color = Color(0.960351, 0.960351, 0.960351, 1)
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_ml3h1")
+text = "S Gate"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+offset_left = 1576.0
+offset_top = 91.0
+offset_right = 1839.0
+offset_bottom = 211.0
+
+[node name="Score" type="Label" parent="HBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Score: "
+
+[node name="ScoreCount" type="Label" parent="HBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "   0"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+offset_left = 1577.0
+offset_top = 8.0
+offset_right = 1902.0
+offset_bottom = 128.0
+
+[node name="GateUses" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Gate Uses:  "
+
+[node name="GateCount" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "2"
+
+[node name="TetriminoSelector" parent="." instance=ExtResource("8_ml3h1")]
+offset_left = -385.0
+offset_top = 192.0
+offset_right = -385.0
+offset_bottom = 192.0
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+offset_left = 641.0
+offset_top = 77.0
+offset_right = 1441.0
+offset_bottom = 473.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8k4a5")
+
+[node name="Probabilities Graph" type="VBoxContainer" parent="PanelContainer"]
+z_index = 1
+layout_mode = 2
+
+[node name="graph title" type="Label" parent="PanelContainer/Probabilities Graph"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "  Rotation Probabilities"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/Probabilities Graph"]
+custom_minimum_size = Vector2(0, 350)
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_stretch_ratio = 0.0
+theme_override_constants/separation = 125
+alignment = 1
+script = ExtResource("10_xte0r")
+
+[node name="bar_and_label_1" type="VBoxContainer" parent="PanelContainer/Probabilities Graph/HBoxContainer"]
+layout_mode = 2
+
+[node name="prob_bar_1" type="ColorRect" parent="PanelContainer/Probabilities Graph/HBoxContainer/bar_and_label_1"]
+custom_minimum_size = Vector2(50, 300)
+layout_mode = 2
+size_flags_vertical = 10
+color = Color(0, 0, 0, 1)
+
+[node name="prob_label_1" type="Label" parent="PanelContainer/Probabilities Graph/HBoxContainer/bar_and_label_1"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "100%"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="bar_and_label_2" type="VBoxContainer" parent="PanelContainer/Probabilities Graph/HBoxContainer"]
+layout_mode = 2
+
+[node name="prob_bar_2" type="ColorRect" parent="PanelContainer/Probabilities Graph/HBoxContainer/bar_and_label_2"]
+custom_minimum_size = Vector2(50, 300)
+layout_mode = 2
+size_flags_vertical = 10
+color = Color(0, 0, 0, 1)
+
+[node name="prob_label_2" type="Label" parent="PanelContainer/Probabilities Graph/HBoxContainer/bar_and_label_2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "100%"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="bar_and_label_3" type="VBoxContainer" parent="PanelContainer/Probabilities Graph/HBoxContainer"]
+layout_mode = 2
+
+[node name="prob_bar_3" type="ColorRect" parent="PanelContainer/Probabilities Graph/HBoxContainer/bar_and_label_3"]
+custom_minimum_size = Vector2(50, 300)
+layout_mode = 2
+size_flags_vertical = 10
+color = Color(0, 0, 0, 1)
+
+[node name="prob_label_3" type="Label" parent="PanelContainer/Probabilities Graph/HBoxContainer/bar_and_label_3"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "100%"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="bar_and_label_4" type="VBoxContainer" parent="PanelContainer/Probabilities Graph/HBoxContainer"]
+layout_mode = 2
+
+[node name="prob_bar_4" type="ColorRect" parent="PanelContainer/Probabilities Graph/HBoxContainer/bar_and_label_4"]
+custom_minimum_size = Vector2(50, 300)
+layout_mode = 2
+size_flags_vertical = 10
+color = Color(0, 0, 0, 1)
+
+[node name="prob_label_4" type="Label" parent="PanelContainer/Probabilities Graph/HBoxContainer/bar_and_label_4"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "100%"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="setup_piece" type="Button" parent="."]
+offset_left = 1678.0
+offset_top = 301.0
+offset_right = 1851.0
+offset_bottom = 343.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_xte0r")
+text = "Setup J Piece"
+
+[node name="GameOver" type="PopupPanel" parent="."]
+size = Vector2i(1950, 1000)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameOver"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 1946.0
+offset_bottom = 996.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Label" type="Label" parent="GameOver/VBoxContainer"]
+z_index = 2
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "
+Game Over!
+Final Score"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ReturnToHome" type="Button" parent="GameOver/VBoxContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 50
+text = "          Finish          "
+icon_alignment = 1
+
+[node name="NextPuzzle" type="PopupPanel" parent="."]
+size = Vector2i(1950, 1000)
+visible = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NextPuzzle"]
+custom_minimum_size = Vector2(1942, 500)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Countdown" type="Label" parent="NextPuzzle/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Continue to Puzzle 2!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="continueButton" type="Button" parent="NextPuzzle/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 40
+text = "Continue"
+
+[connection signal="grid_clear" from="Game/GridContainer" to="." method="_on_grid_clear"]
+[connection signal="pressed" from="collapse" to="." method="_on_collapse_pressed"]
+[connection signal="pressed" from="hgate" to="." method="_on_hgate_pressed"]
+[connection signal="pressed" from="sgate" to="." method="_on_sgate_pressed"]
+[connection signal="pressed" from="setup_piece" to="." method="_on_test_drop_pressed"]
+[connection signal="pressed" from="GameOver/VBoxContainer/ReturnToHome" to="." method="_on_return_to_home_pressed"]
+[connection signal="pressed" from="NextPuzzle/VBoxContainer/continueButton" to="." method="_on_continue_button_pressed"]

@@ -93,7 +93,8 @@ func spawn_tetrimino(
 
 	var blocks = tetrimino.get_blocks()
 	#print(blocks)
-	var shape_data = TETRIMINO_DATA.shapes[shape_name]
+	print(typeof(TETRIMINO_DATA["shapes"]))
+	var shape_data = TETRIMINO_DATA["shapes"][shape_name]
 	var coords = shape_data["coords"][rotation_index]
 	var color = shape_data["color"]
 
@@ -129,7 +130,10 @@ func spawn_tetrimino(
 			#add_child(tetrimino)
 			#tetrimino.owner = self
 
-	blocks.rotation_degrees = 0
+	# ensure that tetriminos in an UI element cannot fall
+	if is_child_of_preview():
+		tetrimino.can_fall = false
+	
 	# send out a signal that the tetrimino has been spawned
 	#tetrimino.spawned.emit(tetrimino.global_position)
 	tetrimino.tetrimino_manager = self	# ensure that it's not an orphan!
@@ -146,3 +150,28 @@ func free_tetrimino(
 	t_shape = "O"
 	block_size = 128.0
 	rotation_index = 0
+
+"""
+In the tetrimino_slot scene, TetriminoManager will be a child of 
+TetriminoPreview. This function simply checks if it is a child of that node.
+"""
+func is_child_of_preview() -> bool:
+	var parent = get_parent()
+	return parent.name == "TetriminoPreview"
+
+func lock() -> void:
+	tetrimino._lock()
+
+func collapse() -> void:
+	tetrimino._collapse()
+
+func toggle_superposition(state: bool) -> void:
+	if state:
+		if not tetrimino.in_superposition:
+			print("tetrimino_manager.gd: Putting the tetrimino in superposition!")
+			tetrimino._toggle_superposition(state)
+	else:
+		if tetrimino.in_superposition:
+			print("tetrimino_manager.gd: Stopping superposition. Returning tetrimino to defaults.")
+			tetrimino._toggle_superposition(state)
+	pass
