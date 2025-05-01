@@ -8,7 +8,7 @@
 [ext_resource type="AudioStream" uid="uid://doi75sfxh1d4c" path="res://assets/Audio/Decision.wav" id="4_qx31w"]
 [ext_resource type="AudioStream" uid="uid://g55mhso1y2xn" path="res://assets/Audio/Button Selection.wav" id="5_h7mtl"]
 [ext_resource type="PackedScene" uid="uid://ce660yeaqdu28" path="res://scenes/mini_game_1/tetrimino_selector.tscn" id="8_ml3h1"]
-[ext_resource type="Script" uid="uid://r0gadebx83tx" path="res://scripts/mini_game_1/prob_graph.gd" id="10_xte0r"]
+[ext_resource type="Script" path="res://scripts/mini_game_1/prob_graph.gd" id="10_xte0r"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h7mtl"]
 bg_color = Color(0.678431, 0.305882, 0.858824, 1)
