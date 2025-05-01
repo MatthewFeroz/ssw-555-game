@@ -44,7 +44,8 @@ func _refresh_preview():
 			(bbox.w + bbox.z) * 0.5
 		)
 		tetrimino.position = viewport.size * 0.5 - center_offset
-
+		if _is_selected:
+			tetrimino_manager.toggle_superposition(true)
 
 
 func set_selected(selected: bool, emit: bool = true) -> void:
@@ -54,7 +55,7 @@ func set_selected(selected: bool, emit: bool = true) -> void:
 	_is_selected = selected
 	
 	_update_style()
-
+	_refresh_preview()
 	if emit:
 		emit_signal("select", shape_name, rotation_angle, self)
 	
