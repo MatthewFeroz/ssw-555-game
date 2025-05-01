@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://b8x0sy0ke6wfl"]
 
 [ext_resource type="Script" uid="uid://dyyynqqjdup0" path="res://scripts/mini_game_1/grid_container.gd" id="1_t5fjg"]
-[ext_resource type="AudioStream" uid="uid://ghbvis7r14py" path="res://assets/Audio/Line Clearance.wav" id="2_l4qr3"]
+[ext_resource type="AudioStream" uid="uid://cdauf34yh88m2" path="res://assets/Audio/Line Clearance.wav" id="2_l4qr3"]
 
 [node name="GridContainer" type="Node2D"]
 script = ExtResource("1_t5fjg")

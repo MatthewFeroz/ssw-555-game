@@ -6,8 +6,10 @@ extends Node2D
 
 # signals
 #signal spawned(pos: Vector2)
+signal rotated
 signal out_of_bounds(direction: Vector2, bbox: Vector4)
 signal lock_blocks(blocks: Array[Block])
+signal probs_changed(new_probs: Array)
 
 # member variables
 var locked: bool = false
@@ -44,11 +46,8 @@ func _process(delta) -> void:
 		if _accum_delta >= _probabilities[_rotation_index]:
 			_schedule_next_rotation()
 			_accum_delta = 0.0
-
-	if Input.is_action_just_pressed("ui_up"):
-		tetrimino_manager.toggle_superposition(false)
-	if Input.is_action_just_pressed("ui_down"):
-		tetrimino_manager.toggle_superposition(true)
+	else:
+		probs_changed.emit(_probabilities)
 
 func _physics_process(_delta: float) -> void:
 	# don't do anything if the game isn't actually running
@@ -162,6 +161,7 @@ func get_bbox() -> Vector4:
 func _schedule_next_rotation() -> void:
 	var new_index = (_rotation_index + 1) % _valid_rotations.size()
 	_set_rotation_index_to(new_index)
+	rotated.emit(new_index)
 
 func _set_rotation_index_to(
 	new_index: int
@@ -201,10 +201,17 @@ func _collapse() -> void:
 func _toggle_superposition(state: bool) -> void:
 	in_superposition = state
 	_accum_delta = 0.0
+	if not in_superposition:
+		rotated.emit(_rotation_index)
+	else:
+		probs_changed.emit(_probabilities)
 
 func _shuffle_all_probs() -> void:
 	var temp = _get_new_probs(100, _probabilities.size(), 5, 95)
 	_probabilities = temp.map(func(elem): return elem / 100.0)
+	# once all of the probabilities have been updated, send out a signal so
+	# other components can know!
+	probs_changed.emit(_probabilities)
 
 func _get_new_probs(
 	total: int,
@@ -291,6 +298,9 @@ func _shift_prob_of(rot_index: int) -> void:
 		for idx in remaining_indexes:
 			_probabilities[idx] = remaining_probs[tmp_idx]
 			tmp_idx += 1
+	# once all of the probabilities have been updated, send out a signal so
+	# other components can know!
+	probs_changed.emit(_probabilities)
 
 # collision detection functions
 func can_move_down() -> bool:

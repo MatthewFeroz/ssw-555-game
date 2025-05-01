@@ -55,12 +55,6 @@ func _ready() -> void:
 	load_puzzle("puzzle_%d" % puzzle_num)
 	if puzzle:
 		grid_container.initialize_grid(puzzle.starting_blocks)
-
-## logic for decreasing gate use number after someone presses button
-# (rest of logic start at lines 309)
-	update_gate_count()
-	$sgate.pressed.connect(_on_use_gate_pressed)
-
 	
 func load_puzzle(puzzle_name: String) -> void:
 	print("Calling load_puzzle with name: ", puzzle_name)
@@ -137,7 +131,14 @@ func update_gate_count():
 		$sgate.visible = false
 		
 func _on_hgate_pressed() -> void:
-	_on_use_gate_pressed()
+	if current_slot:
+		current_slot.get_tetrimino_manager().shuffle_all_probabilities()
+		_on_use_gate_pressed()
+
+func _on_sgate_pressed() -> void:
+	if current_slot:
+		current_slot.get_tetrimino_manager().shift_probability_of(0)
+		_on_use_gate_pressed()
 
 func _on_score_update(new_score: int) -> void:
 	total_score += new_score

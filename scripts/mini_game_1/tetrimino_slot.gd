@@ -20,6 +20,7 @@ var _is_selected : bool = false
 
 
 signal select(shape_name, rotation_angle, slot_index)
+signal probs_updated(slot: Node, new_probs: Array)
 
 func _ready():
 	_update_style()
@@ -27,8 +28,13 @@ func _ready():
 
 
 func _refresh_preview():
-	for child in preview_root.get_children():
-		child.queue_free()
+	if preview_root:
+		var tm = get_tetrimino_manager()
+		if tm:
+			tm.name = "DeletedTetriminoManager"
+			tm.get_tetrimino().disconnect("rotated", _on_rotated)
+			tm.queue_free()
+
 
 	if tetrimino_scene:
 		var tetrimino_manager = tetrimino_scene.instantiate()
@@ -38,6 +44,13 @@ func _refresh_preview():
 		preview_root.add_child(tetrimino_manager)
 
 		var tetrimino = tetrimino_manager.get_tetrimino()
+		# make sure to connect the rotated signal so that it automatically 
+		# recenters the tetrimino after rotation.
+		tetrimino_manager.connect("probabilities_changed", _on_probs_changed)
+		tetrimino_manager.get_tetrimino().rotated.connect(_on_rotated)
+		#if props.has("in_superposition") and props["in_superposition"]:
+			#tetrimino_manager.toggle_superposition(true)
+
 		var bbox = tetrimino.get_bbox()
 		var center_offset = Vector2(
 			(bbox.x + bbox.y) * 0.5,
@@ -47,6 +60,13 @@ func _refresh_preview():
 		if _is_selected:
 			tetrimino_manager.toggle_superposition(true)
 
+func _on_rotated(rot_index: int) -> void:
+	rotation_angle = rot_index * 90
+	# bc Godot will update layout sizes after the next frame, we need to run this after that point.
+
+
+func _on_probs_changed(probs: Array) -> void:
+	probs_updated.emit(self, probs)
 
 func set_selected(selected: bool, emit: bool = true) -> void:
 	if _is_selected == selected:
@@ -55,6 +75,11 @@ func set_selected(selected: bool, emit: bool = true) -> void:
 	_is_selected = selected
 	
 	_update_style()
+	if preview_root:
+		var tm = get_tetrimino_manager()
+		if tm:
+			tm.toggle_superposition(_is_selected)
+			
 	_refresh_preview()
 	if emit:
 		emit_signal("select", shape_name, rotation_angle, self)
@@ -73,6 +98,8 @@ func _update_style():
 	sb.set_corner_radius_all(4)
 	panel.add_theme_stylebox_override("panel", sb)
 	
+func get_tetrimino_manager() -> TetriminoManager:
+	return preview_root.get_node_or_null("TetriminoManager") as TetriminoManager
 	
 # will load next puzzle at the end of round
 func end_round() -> void:
