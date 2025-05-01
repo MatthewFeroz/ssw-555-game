@@ -18,8 +18,9 @@ var rotation_angle := 0
 
 var _is_selected: bool = false
 
-
+# signals
 signal select(shape_name, rotation_angle, slot_index)
+signal probs_updated(slot: Node, new_probs: Array)
 
 func _ready():
 	_update_style()
@@ -40,6 +41,7 @@ func _refresh_preview():
 			}
 			tm.name = "DeletedTetriminoManager"
 			tm.get_tetrimino().disconnect("rotated", _on_rotated)
+			tm.disconnect("probabilities_changed", _on_probs_changed)
 			tm.queue_free()
 
 	if tetrimino_scene:
@@ -50,6 +52,7 @@ func _refresh_preview():
 		tetrimino_manager.t_shape = props["t_shape"] if props else shape_name
 		tetrimino_manager.block_size = props["block_size"] if props else 32.0
 		tetrimino_manager.rotation_index = props["rotation_index"] if props else (rotation_angle / 90) % 4
+		tetrimino_manager.connect("probabilities_changed", _on_probs_changed)
 		preview_root.add_child(tetrimino_manager)
 		_recenter_tetrimino()
 
@@ -59,6 +62,9 @@ func _refresh_preview():
 
 		if props.has("in_superposition") and props["in_superposition"]:
 			tetrimino_manager.toggle_superposition(true)
+
+func _on_probs_changed(probs: Array) -> void:
+	probs_updated.emit(self, probs)
 
 func _recenter_tetrimino() -> void:
 	if preview_root:

@@ -2,6 +2,9 @@
 class_name TetriminoManager
 extends Node
 
+# signals
+signal probabilities_changed(new_probs: Array)
+
 # constants for tetrimino shape data
 const TETRIMINO_SHAPES_PATH = "res://resources/shapes/tetrimino_shapes.tres"
 const TETRIMINO_DATA = preload(TETRIMINO_SHAPES_PATH)	# tetrimino_shape: key, shape_data: value
@@ -136,8 +139,10 @@ func spawn_tetrimino(
 	# ensure that tetriminos in an UI element cannot fall
 	if is_child_of_preview():
 		tetrimino.can_fall = false
-	probabilities = tetrimino._probabilities
-	
+
+	# set up a listener for when the probabilities change
+	tetrimino.probs_changed.connect(_on_probabilities_changed)
+
 	# send out a signal that the tetrimino has been spawned
 	#tetrimino.spawned.emit(tetrimino.global_position)
 	tetrimino.tetrimino_manager = self	# ensure that it's not an orphan!
@@ -188,3 +193,8 @@ func shuffle_all_probabilities() -> void:
 func shift_probability_of(rot_index: int) -> void:
 	tetrimino._shift_prob_of(rot_index)
 	probabilities[rot_index] = tetrimino._probabilities[rot_index]
+
+# internal functions
+func _on_probabilities_changed(new_probs: Array) -> void:
+	probabilities = new_probs
+	probabilities_changed.emit(new_probs)

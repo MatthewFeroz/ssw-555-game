@@ -33,12 +33,22 @@ var current_slot: Node = null
 
 # built-in functions
 func _ready() -> void:
+	# wait until after the frame so that the default slot's tetrimino manager
+	# is initialized
+	await get_tree().process_frame
 	# set the current slot to the default slot
 	current_slot = default_slot
-	# TODO: display the correct bar chart for the probabilities associated with the current slot
+	var tm = current_slot.get_tetrimino_manager()
+	var probs = tm.probabilities if tm else []
+	_draw_bars(current_slot.shape_name, probs)
+
+	# display the correct bar chart for the probabilities associated with the current slot
+	current_slot.select.emit(current_slot.shape_name, 0, current_slot)
+
 	# ensure that every slot has listener for updating the bar graphs
 	for slot in get_tree().get_nodes_in_group("tetrimino_slots"):
 		slot.connect("select", _on_slot_selected)
+		slot.connect("probs_updated", _on_probs_updated)
 
 # custom functions
 
@@ -83,32 +93,42 @@ func toggle_visibility(
 
 
 # internal functions
-func update_bar_charts(
-	color: Color,
-	bars: Array[ColorRect],
-	labels: Array[Label],
-	probs: Array
-) -> void:
-	pass
-
 func _on_slot_selected(shape_name: String, _rotation_angle: int, slot_index: Node) -> void:
-	# TODO: will refactor so that it uses other functions to do the work!
 	if current_slot == slot_index:
 		# Deselect if already selected
 		current_slot = null
 		for i in range(bar_label_map.size()):
 			var bar = bar_label_map[i]["bar"]
 			var label = bar_label_map[i]["label"]
-			#set_visibility(bar, label, false)
 			set_bar_height(bar, 0)
 			set_label_text(label, "0%")
 	else:
 		# Select new slot
 		current_slot = slot_index
 		var color = get_shape_color(shape_name)
-		# add code to get the number of visible bars
 		for i in range(bar_label_map.size()):
 			var bar = bar_label_map[i]["bar"]
 			var label = bar_label_map[i]["label"]
-			#set_visibility(bar, label, true)
 			set_bar_color(bar, color)
+
+func _on_probs_updated(slot: Node, probs: Array) -> void:
+	if slot != current_slot:
+		return
+
+	_draw_bars(slot.shape_name, probs)
+
+func _draw_bars(shape_name: String, probs: Array) -> void:
+	var color = get_shape_color(shape_name)
+	for i in range(bar_label_map.size()):
+		var bar = bar_label_map[i]["bar"]
+		var label = bar_label_map[i]["label"]
+		if i < probs.size():
+			var percentage: int = roundi(probs[i] * 100)
+			set_bar_height(bar, probs[i] * MAX_BAR_SIZE.y)
+			set_bar_color(bar, color)
+			set_label_text(label, "%d%%" % percentage)
+			set_visibility(bar, label, true)
+		else:
+			set_bar_height(bar, 0)
+			set_label_text(label, "0%")
+			set_visibility(bar, label, false)

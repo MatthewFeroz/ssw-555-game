@@ -44,13 +44,23 @@ const MAX_PUZZLES: int = 2
 const MAX_TETRIMINOS: int = 3	# there's only 3 tetriminos for a given solution
 
 func _ready() -> void:
-# listen for score updates
+	# listen for score updates
 	grid_container.update_score.connect(_on_score_update)
-# getting tetrimino slots/shapes/rot
+
+	# getting tetrimino slots/shapes/rot
 	for slot in get_tree().get_nodes_in_group("tetrimino_slots"):
 		var mgr_path = "Panel/SubViewportContainer/SubViewport/TetriminoPreview/TetriminoManager"	# this is for testing! REMOVE LATER
 		managers.append(slot.get_node(mgr_path))	# this is for testing! REMOVE LATER
 		slot.connect("select", Callable(self, "_on_slot_selected"))
+
+	await get_tree().process_frame
+
+	if not current_slot:
+		# initialize the default selected slot (the 1st one)
+		var default_slot = tetrimino_selector.get_node("HBoxContainer/TetriminoSlot1")
+		current_slot = default_slot
+		current_slot.set_selected(true, false)
+		_on_slot_selected(current_slot.shape_name, 0, current_slot)
 
 	load_puzzle("puzzle_%d" % puzzle_num)
 	if puzzle:
@@ -156,8 +166,8 @@ func _on_score_update(new_score: int) -> void:
 var used_slots = {}
 
 func _on_collapse_pressed() -> void:
-	# make sure we can haven't hit our limit
-	if tetriminos_used < MAX_TETRIMINOS:
+	# make sure we can haven't hit our limit and that there's even a piece to collapse
+	if current_slot and tetriminos_used < MAX_TETRIMINOS:
 		# first, get the spawn position of the selected piece
 		var spawn_pos = get_spawn_pos(selected_shape_name, selected_rotation_angle)
 		# next, spawn the tetrimino piece on the grid using the currently
@@ -178,7 +188,9 @@ func _on_collapse_pressed() -> void:
 		used_slots[current_slot.name] = true
 		current_slot.set_selected(false, false)  # Reset before hiding
 		current_slot.visible = false
-		
+		# reset the bar chart
+		current_slot.probs_updated.emit(current_slot, [])
+
 		# reset the current slot to prevent ghost shapes from dropping
 		current_slot = null
 		selected_shape_name = ""
