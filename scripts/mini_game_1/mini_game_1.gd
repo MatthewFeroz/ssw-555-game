@@ -185,10 +185,6 @@ func show_next_puzzle_popup() -> void:
 	next_puzzle_popup.visible = true
 	
 
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_accept"):
-		if grid_container.total_blocks == 0:
-			reset_game()
 
 func update_solution_pieces() -> void:
 	if tetriminos_used < MAX_TETRIMINOS:
@@ -197,9 +193,8 @@ func update_solution_pieces() -> void:
 
 func _on_grid_clear(dummy: int = 0) -> void:  # Accept the param but ignore it
 	if puzzle_num < MAX_PUZZLES:
-		puzzle_num += 1
 		load_puzzle("puzzle_%d" % puzzle_num)
-		reset_game()
+		#reset_game()
 	else:
 		print("Game Over")
 		show_game_over()
@@ -456,8 +451,8 @@ func simulate_tetrimino_lock(
 
 	# for each block coordinate, fill the grid cell with a random integer
 	for coord in block_coordinates:
-		var row_index = clampi(floori(coord.y), 0, Grid.GRID_HEIGHT)
-		var col_index = clampi(floori(coord.x), 0, Grid.GRID_WIDTH)
+		var row_index = clampi(floori(coord.y), 0, Grid.GRID_HEIGHT-1)
+		var col_index = clampi(floori(coord.x), 0, Grid.GRID_WIDTH-1)
 		grid_container.grid_cells[row_index][col_index] = randi()
 
 func is_correct_solution_piece(t_shape: String) -> bool:

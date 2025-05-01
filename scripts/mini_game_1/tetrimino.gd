@@ -179,7 +179,7 @@ func _set_rotation_index_to(
 	self._rotation_index = new_rotation_index
 
 	print("tetrimino.gd: New angle: %d°" % (self._rotation_index * 90))
-	#force_in_bounds()
+	force_in_bounds()
 	print("tetrimino.gd: Current position: (%.1f, %.1f)" % [$Blocks.global_position.x, $Blocks.global_position.y])
 
 func _lock() -> void:
@@ -294,49 +294,29 @@ func _shift_prob_of(rot_index: int) -> void:
 
 # collision detection functions
 func can_move_down() -> bool:
-	# if the tetrimino is already locked, then we're assuming it has been put
-	# at its final resting place.
 	if locked:
 		return false
 
-	# to test if it's possible to move the tetrimino down, we'll determine 
-	# if it would theoretically overlap the blocks already on the grid OR if the
-	# bottom is touching the grid's bottom
-	var bbox = get_bbox()
-	var max_y = Grid.GRID_ORIGIN.y + (Grid.GRID_HEIGHT * Grid.BLOCK_SIZE.y)
-	if bbox.w >= max_y:
-		return false
-		
 	var test_move = Vector2(0, Grid.BLOCK_SIZE.y)
-	for block in $Blocks.get_children():
-		var curr_pos = block.global_position	# uncomment this for debugging if needed
-		var new_pos = curr_pos + test_move	# uncomment this for debugging if needed
-		new_pos = Grid.pixel_to_grid(new_pos)
-		var new_row_index = floori(new_pos.y)
-		var new_col_index = floori(new_pos.x)
-		#var new_pos = block.global_position + test_move
-		var other_blocks = get_tree().get_nodes_in_group("blocks")
-		for other in other_blocks:
-			# if the other block doesn't belong to the same row as the 
-			# tetrimino's block AFTER the test move, then it probably won't have
-			# any effect on its collision detection at all
-			var other_pos = other.global_position	# uncomment this for debugging if needed
-			other_pos = Grid.pixel_to_grid(other_pos)
-			var other_row_index = floori(other_pos.y)
-			var other_col_index = floori(other_pos.x)
-			if other.global_position.y != new_pos.y:
-				continue
 
-			# assuming the only blocks left are the ones in the same row of the 
-			# tetrimino's block, all we need to do is see if they share the same
-			# position. if so, they're overlapping, meaning that the tetrimino 
-			# cannot move down.
-			print("grid_container.gd: Other Block's Position: (%f, %f)" % [other_pos.x, other_pos.y])
-			print("grid_container.gd: Test Move Position: (%f, %f)" % [new_pos.x, new_pos.y])
-			if is_equal_approx(other.global_position.x, new_pos.x):
+	for block in $Blocks.get_children():
+		var new_pos = block.global_position + test_move
+		var new_grid_pos = Grid.pixel_to_grid(new_pos).floor()
+
+		# Check if we're hitting the bottom of the grid
+		if new_grid_pos.y >= Grid.GRID_HEIGHT:
+			return false
+
+		# Check for collision with other locked blocks
+		for other in get_tree().get_nodes_in_group("blocks"):
+			var other_grid_pos = Grid.pixel_to_grid(other.global_position).floor()
+			if new_grid_pos == other_grid_pos:
 				return false
 
 	return true
+
+	
+	
 
 func is_in_bounds() -> bool:
 	# check if the grid even exists in the scene tree. if it doesn't, then 

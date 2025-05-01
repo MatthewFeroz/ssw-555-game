@@ -30,7 +30,7 @@ corner_detail = 1
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xte0r"]
 bg_color = Color(0.961518, 4.45209e-06, 9.62615e-07, 1)
 
-[node name="Node" type="Node"]
+[node name="MiniGame1" type="Node"]
 script = ExtResource("1_wbkql")
 
 [node name="SelectSound" type="AudioStreamPlayer" parent="."]
