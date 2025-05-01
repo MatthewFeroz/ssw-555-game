@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_pvqru")
-solution_list = [{
+solution_pieces = [{
 "rotation": 90,
 "shape": "J",
 "spawn_pos": Vector2i(3, 0)

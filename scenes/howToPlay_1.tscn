@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://b3u62oi44srbp"]
 
-[ext_resource type="Script" uid="uid://djuu424crsvck" path="res://scripts/how_to_play_1.gd" id="1_fhwss"]
+[ext_resource type="Script" path="res://scripts/how_to_play_1.gd" id="1_fhwss"]
 [ext_resource type="Texture2D" uid="uid://cwdkbiwbifu8j" path="res://assets/SpaceMap/galaxy.jpg" id="2_omv47"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ycy8v"]
@@ -64,25 +64,29 @@ layout_mode = 2
 size_flags_stretch_ratio = 0.0
 theme_override_font_sizes/font_size = 26
 text = "Superposition Tetris
-
-How to Play:
-"
+How to Play:"
 
 [node name="Label2" type="Label" parent="Panel/ScrollContainer/VBoxContainer"]
 modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
 theme_override_font_sizes/font_size = 22
-text = "*** Explain Rules of Game Here :) **
+text = "In this game, your goal is to clear all the blocks from the grid using the 3 provided tetrimino pieces. Each round, you get 3 tetrimino pieces and decide how to place them on the grid to clear blocks.
 
+Piece Selection: At the start of each round, you select one of the 3 available tetrimino pieces to use.
 
+Superposition Mode: The selected piece starts in superposition, meaning it can be in all possible orientations (rotations and reflections) at once. The piece will randomly collapse into one of these orientations when dropped, but you can influence this process.
 
+Gates:
+Collapse Button: You can press the Collapse button to drop the piece in a random orientation.
 
+H-Gate: Clicking the H-Gate changes the probability for each orientation of the piece. One orientation will have a higher chance of collapsing compared to the others. This helps guide the piece to a more favorable position, but it still remains random.
 
+S-Gate: The S-Gate shifts the probabilities even further, favoring the correct orientation for the selected piece, making it more likely to collapse into the most ideal position.
 
+Gate Limits: You can use either the H-Gate or S-Gate only twice per round, so use them strategically!
 
-
-"
+Goal: Use the tetrimino pieces to clear all the blocks on the grid by arranging the pieces in the right orientations. Each round offers a challenge to clear the grid with limited use of the gates."
 autowrap_mode = 3
 
 [node name="\'Next\' button" type="Button" parent="Panel/ScrollContainer/VBoxContainer"]

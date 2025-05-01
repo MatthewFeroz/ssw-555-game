@@ -7,6 +7,45 @@
 [ext_resource type="FontFile" uid="uid://bjbxm137y6toe" path="res://fonts/Open_Sans/OpenSans-VariableFont_wdth,wght.ttf" id="5_kkapo"]
 [ext_resource type="FontFile" uid="uid://dsogw14lrysqk" path="res://fonts/Roboto/Roboto-Italic-VariableFont_wdth,wght.ttf" id="6_lvvva"]
 
+[sub_resource type="GDScript" id="GDScript_35urw"]
+script/source = "extends Node2D
+
+@export var player_name: String = \"\"
+
+@onready var name_label = $Control/Name
+@onready var date_label = $Control/Date
+#@onready var title_label = $Control/Title
+#@onready var message_label = $Control/Message
+
+func _ready():
+	name_label.text = player_name
+	date_label.text = \"Date: \" + Time.get_datetime_string_from_system()
+
+'''func _on_Download_pressed():
+	await get_tree().process_frame  # ensure full render before capture
+
+	# Capture the certificate as image
+	var img = get_viewport().get_texture().get_image()
+	var path = \"user://certificate.png\"
+	img.save_png(path)
+	print(\"✅ Certificate saved as PNG to: \", path)'''
+
+func _on_download_button_pressed() -> void:
+	await get_tree().process_frame  # ensure full render before capture
+
+	# Capture the certificate as image
+	var img = get_viewport().get_texture().get_image()
+	var path = \"user://certificate.png\"
+	var result = img.save_png(path)
+	if result == OK:
+		print(\"✅ Certificate saved at:\", path)
+
+		# 🔓 Open the folder or the file automatically (optional)
+		OS.shell_open(ProjectSettings.globalize_path(\"user://certificate.png\"))
+	else:
+		print(\"❌ Failed to save certificate.\")
+"
+
 [sub_resource type="Theme" id="Theme_defiv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iu4qx"]
@@ -16,7 +55,7 @@ bg_color = Color(0.120388, 0.885616, 0.898176, 1)
 bg_color = Color(0.892743, 0.669767, 0.255762, 1)
 
 [node name="Certificate" type="Node2D"]
-script = ExtResource("1_defiv")
+script = SubResource("GDScript_35urw")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
