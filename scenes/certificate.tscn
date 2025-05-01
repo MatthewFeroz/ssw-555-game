@@ -1,11 +1,11 @@
 [gd_scene load_steps=12 format=3 uid="uid://dn33na5wl4x1k"]
 
-[ext_resource type="Texture2D" uid="uid://buesipx4iyuqi" path="res://assets/Certificate/certificatebg.jpg" id="1_iuj6c"]
-[ext_resource type="FontFile" uid="uid://b0hdm6c18lv1e" path="res://fonts/Bebas_Neue/BebasNeue-Regular.ttf" id="3_defiv"]
-[ext_resource type="FontFile" uid="uid://c5kciakupf6jo" path="res://fonts/Pacifico/Pacifico-Regular.ttf" id="4_defiv"]
-[ext_resource type="FontFile" uid="uid://bjbxm137y6toe" path="res://fonts/Open_Sans/OpenSans-VariableFont_wdth,wght.ttf" id="5_kkapo"]
-[ext_resource type="FontFile" uid="uid://b6i6wrc1uu15c" path="res://assets/Adventure.otf" id="6_defiv"]
-[ext_resource type="FontFile" uid="uid://dsogw14lrysqk" path="res://fonts/Roboto/Roboto-Italic-VariableFont_wdth,wght.ttf" id="6_lvvva"]
+[ext_resource type="Texture2D" uid="uid://mlom3lndnqhs" path="res://assets/Certificate/certificatebg.jpg" id="1_iuj6c"]
+[ext_resource type="FontFile" uid="uid://dbxj44r7jcfuu" path="res://fonts/Bebas_Neue/BebasNeue-Regular.ttf" id="3_defiv"]
+[ext_resource type="FontFile" uid="uid://c16o8ns3fugec" path="res://fonts/Pacifico/Pacifico-Regular.ttf" id="4_defiv"]
+[ext_resource type="FontFile" uid="uid://bc7egci5imuwg" path="res://fonts/Open_Sans/OpenSans-VariableFont_wdth,wght.ttf" id="5_kkapo"]
+[ext_resource type="FontFile" uid="uid://wqotraq6ld7x" path="res://assets/Adventure.otf" id="6_defiv"]
+[ext_resource type="FontFile" uid="uid://dl7mygwr4c52v" path="res://fonts/Roboto/Roboto-Italic-VariableFont_wdth,wght.ttf" id="6_lvvva"]
 
 [sub_resource type="GDScript" id="GDScript_35urw"]
 script/source = "'''extends Node2D

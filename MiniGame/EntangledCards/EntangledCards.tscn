@@ -1,13 +1,13 @@
 [gd_scene load_steps=9 format=3 uid="uid://yatl1vufopbi"]
 
 [ext_resource type="Script" uid="uid://djdyexke4scyj" path="res://MiniGame/EntangledCards/EntangledCards.gd" id="1_x2m2l"]
-[ext_resource type="PackedScene" uid="uid://dlemsvi632rm7" path="res://MiniGame/EntangledCards/CluePanel.tscn" id="2_ce5fj"]
-[ext_resource type="PackedScene" uid="uid://fey1d5iwg4jn" path="res://MiniGame/EntangledCards/QuizPanel.tscn" id="3_wrkhx"]
-[ext_resource type="PackedScene" uid="uid://brwn8boiwe615" path="res://MiniGame/EntangledCards/CountdownPanel.tscn" id="4_xp54y"]
-[ext_resource type="PackedScene" uid="uid://d2uyrprfeeas5" path="res://MiniGame/EntangledCards/FeedbackPanel.tscn" id="5_xpdol"]
-[ext_resource type="PackedScene" uid="uid://dvjxptov1hlpc" path="res://MiniGame/EntangledCards/FinishPanel.tscn" id="6_vpfap"]
-[ext_resource type="Texture2D" uid="uid://42o1qbog2myi" path="res://assets/SpaceMap/Background.png" id="7_wrkhx"]
-[ext_resource type="PackedScene" uid="uid://cdnai5g2iyjuh" path="res://MiniGame/EntangledCards/InstructionPanel.tscn" id="8_xp54y"]
+[ext_resource type="PackedScene" path="res://MiniGame/EntangledCards/CluePanel.tscn" id="2_ce5fj"]
+[ext_resource type="PackedScene" path="res://MiniGame/EntangledCards/QuizPanel.tscn" id="3_wrkhx"]
+[ext_resource type="PackedScene" path="res://MiniGame/EntangledCards/CountdownPanel.tscn" id="4_xp54y"]
+[ext_resource type="PackedScene" path="res://MiniGame/EntangledCards/FeedbackPanel.tscn" id="5_xpdol"]
+[ext_resource type="PackedScene" path="res://MiniGame/EntangledCards/FinishPanel.tscn" id="6_vpfap"]
+[ext_resource type="Texture2D" uid="uid://k4x3nn7hdo1x" path="res://assets/SpaceMap/Background.png" id="7_wrkhx"]
+[ext_resource type="PackedScene" path="res://MiniGame/EntangledCards/InstructionPanel.tscn" id="8_xp54y"]
 
 [node name="EntangledCards" type="Control"]
 layout_mode = 3
