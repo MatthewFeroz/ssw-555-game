@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://brwn8boiwe615"]
+[gd_scene load_steps=3 format=3 uid="uid://brwn8boiwe615"]
 
 [ext_resource type="Script" uid="uid://crc4h0ysl8hug" path="res://MiniGame/EntangledCards/CountdownPanel.gd" id="1"]
+[ext_resource type="AudioStream" uid="uid://dnsahjmwxw54j" path="res://assets/Audio/female-vocal-321-countdown-240912.wav" id="2_8l6mm"]
 
 [node name="CountdownPanel" type="Control"]
 visible = false
@@ -27,3 +28,7 @@ theme_override_font_sizes/font_size = 48
 text = "Game starts in... 3"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="CountdownSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_8l6mm")
+playback_type = 1

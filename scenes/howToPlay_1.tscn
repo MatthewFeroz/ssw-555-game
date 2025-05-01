@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://b3u62oi44srbp"]
+[gd_scene load_steps=7 format=3 uid="uid://bba06npnk24jm"]
 
 [ext_resource type="Script" path="res://scripts/how_to_play_1.gd" id="1_fhwss"]
 [ext_resource type="Texture2D" uid="uid://cwdkbiwbifu8j" path="res://assets/SpaceMap/galaxy.jpg" id="2_omv47"]

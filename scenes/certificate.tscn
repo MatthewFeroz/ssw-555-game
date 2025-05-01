@@ -1,13 +1,14 @@
-[gd_scene load_steps=10 format=3 uid="uid://dn33na5wl4x1k"]
+[gd_scene load_steps=12 format=3 uid="uid://dn33na5wl4x1k"]
 
-[ext_resource type="Texture2D" uid="uid://mlom3lndnqhs" path="res://assets/Certificate/certificatebg.jpg" id="1_iuj6c"]
-[ext_resource type="FontFile" uid="uid://dbxj44r7jcfuu" path="res://fonts/Bebas_Neue/BebasNeue-Regular.ttf" id="3_defiv"]
-[ext_resource type="FontFile" uid="uid://c16o8ns3fugec" path="res://fonts/Pacifico/Pacifico-Regular.ttf" id="4_defiv"]
-[ext_resource type="FontFile" uid="uid://bc7egci5imuwg" path="res://fonts/Open_Sans/OpenSans-VariableFont_wdth,wght.ttf" id="5_kkapo"]
-[ext_resource type="FontFile" uid="uid://dl7mygwr4c52v" path="res://fonts/Roboto/Roboto-Italic-VariableFont_wdth,wght.ttf" id="6_lvvva"]
+[ext_resource type="Texture2D" uid="uid://buesipx4iyuqi" path="res://assets/Certificate/certificatebg.jpg" id="1_iuj6c"]
+[ext_resource type="FontFile" uid="uid://b0hdm6c18lv1e" path="res://fonts/Bebas_Neue/BebasNeue-Regular.ttf" id="3_defiv"]
+[ext_resource type="FontFile" uid="uid://c5kciakupf6jo" path="res://fonts/Pacifico/Pacifico-Regular.ttf" id="4_defiv"]
+[ext_resource type="FontFile" uid="uid://bjbxm137y6toe" path="res://fonts/Open_Sans/OpenSans-VariableFont_wdth,wght.ttf" id="5_kkapo"]
+[ext_resource type="FontFile" uid="uid://b6i6wrc1uu15c" path="res://assets/Adventure.otf" id="6_defiv"]
+[ext_resource type="FontFile" uid="uid://dsogw14lrysqk" path="res://fonts/Roboto/Roboto-Italic-VariableFont_wdth,wght.ttf" id="6_lvvva"]
 
 [sub_resource type="GDScript" id="GDScript_35urw"]
-script/source = "extends Node2D
+script/source = "'''extends Node2D
 
 @export var player_name: String = \"\"
 
@@ -19,8 +20,9 @@ script/source = "extends Node2D
 func _ready():
 	name_label.text = player_name
 	date_label.text = \"Date: \" + Time.get_datetime_string_from_system()
+	print(\"Global name received:\", Global.user_name)
 
-'''func _on_Download_pressed():
+func _on_Download_pressed():
 	await get_tree().process_frame  # ensure full render before capture
 
 	# Capture the certificate as image
@@ -28,21 +30,37 @@ func _ready():
 	var path = \"user://certificate.png\"
 	img.save_png(path)
 	print(\"✅ Certificate saved as PNG to: \", path)'''
+# certificate.gd
+extends Node2D
+
+var player_name: String = \"\"
+
+@onready var name_label = $Control/Name
+@onready var date_label = $Control/Date
+@onready var exit_button = $Control/ExitButton
+func _ready():
+	name_label.text = player_name
+	date_label.text = \"Date: \" + Time.get_datetime_string_from_system()
+	print(\"Certificate name:\", player_name)
+	exit_button.pressed.connect(_on_exit_button_pressed)
 
 func _on_download_button_pressed() -> void:
 	await get_tree().process_frame  # ensure full render before capture
-
 	# Capture the certificate as image
 	var img = get_viewport().get_texture().get_image()
 	var path = \"user://certificate.png\"
 	var result = img.save_png(path)
 	if result == OK:
-		print(\"✅ Certificate saved at:\", path)
+		print(\"Certificate saved at:\", path)
 
 		# 🔓 Open the folder or the file automatically (optional)
 		OS.shell_open(ProjectSettings.globalize_path(\"user://certificate.png\"))
 	else:
-		print(\"❌ Failed to save certificate.\")
+		print(\"Failed to save certificate.\")
+		
+func _on_exit_button_pressed():
+	print(\" Returning to main screen\")
+	get_tree().change_scene_to_file(\"res://scenes/main_menu.tscn\") 
 "
 
 [sub_resource type="Theme" id="Theme_defiv"]
@@ -52,6 +70,9 @@ bg_color = Color(0.120388, 0.885616, 0.898176, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kkapo"]
 bg_color = Color(0.892743, 0.669767, 0.255762, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_defiv"]
+bg_color = Color(0.294118, 0.0431373, 0.980392, 1)
 
 [node name="Certificate" type="Node2D"]
 script = SubResource("GDScript_35urw")
@@ -90,6 +111,7 @@ offset_bottom = 520.0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("4_defiv")
 theme_override_font_sizes/font_size = 40
+horizontal_alignment = 1
 uppercase = true
 
 [node name="Date" type="Label" parent="Control"]
@@ -123,6 +145,7 @@ offset_right = 1902.0
 offset_bottom = 968.0
 size_flags_horizontal = 8
 theme = SubResource("Theme_defiv")
+theme_override_colors/icon_hover_color = Color(0.164706, 0.92549, 0.164706, 1)
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 23
 theme_override_styles/hover = SubResource("StyleBoxFlat_iu4qx")
@@ -130,5 +153,17 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_kkapo")
 text = " Download "
 icon_alignment = 2
 vertical_icon_alignment = 2
+
+[node name="ExitButton" type="Button" parent="Control"]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 50.0
+offset_right = 200.0
+offset_bottom = 100.0
+theme_override_colors/icon_hover_color = Color(1, 0.494251, 0.42709, 1)
+theme_override_colors/font_color = Color(0.969137, 0.969137, 0.969137, 1)
+theme_override_fonts/font = ExtResource("6_defiv")
+theme_override_styles/normal = SubResource("StyleBoxFlat_defiv")
+text = "<-EXIT"
 
 [connection signal="pressed" from="Control/Download_button" to="." method="_on_download_button_pressed"]

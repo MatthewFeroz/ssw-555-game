@@ -11,15 +11,15 @@ config_version=5
 [application]
 
 config/name="SSW-555-Game"
-run/main_scene="uid://dh2nhxtcj3f4f"
+run/main_scene="uid://5kbs3vgrrhx1"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
-SaveGlobal="*res://scripts/SaveGlobal.gd"
 Global="*res://scripts/Global.gd"
 ScoreManager="*res://scripts/ScoreManager.gd"
+SaveGlobal="*res://scripts/SaveGlobal.gd"
 
 [display]
 
