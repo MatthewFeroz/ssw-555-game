@@ -52,6 +52,7 @@ func set_selected(selected: bool, emit: bool = true) -> void:
 		return # No change, avoid extra logic
 
 	_is_selected = selected
+	
 	_update_style()
 
 	if emit:

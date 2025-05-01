@@ -48,7 +48,7 @@ func _ready() -> void:
 # getting tetrimino slots/shapes/rot
 	for slot in get_tree().get_nodes_in_group("tetrimino_slots"):
 		slot.connect("select", Callable(self, "_on_slot_selected"))
-
+	
 	load_puzzle("puzzle_%d" % puzzle_num)
 	if puzzle:
 		grid_container.initialize_grid(puzzle.starting_blocks)
@@ -124,6 +124,8 @@ func _on_slot_selected(shape_name: String, rotation_angle: int, slot_index: Node
 		current_slot = slot_index
 		selected_shape_name = shape_name
 		selected_rotation_angle = rotation_angle
+		
+		$SelectSound.play()
 
 # gate uses UI logic
 var gate_uses: int = 2
@@ -219,6 +221,7 @@ func reset_game() -> void:
 	print("Puzzle start blocks: ", puzzle.starting_blocks)
 
 	grid_container.reset_grid(puzzle.starting_blocks)
+	tetrimino_selector.current_index = -1
 
 	# Reset all slots: show and clear
 	for slot in tetrimino_selector.slots:
@@ -231,6 +234,11 @@ func reset_game() -> void:
 	current_slot = null
 	selected_shape_name = ""
 	selected_rotation_angle = 0
+	
+	gate_uses = 2
+	update_gate_count()
+	$hgate.visible = true
+	$sgate.visible = true
 
 func next_puzzle() -> void:
 	puzzle_num += 1
