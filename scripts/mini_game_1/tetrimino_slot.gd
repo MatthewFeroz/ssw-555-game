@@ -40,7 +40,7 @@ func _refresh_preview():
 				"rotation_index": (rotation_angle / 90) % 4
 			}
 			tm.name = "DeletedTetriminoManager"
-			tm.get_tetrimino().disconnect("rotated", _on_rotated)
+			# tm.get_tetrimino().disconnect("rotated", _on_rotated)
 			tm.disconnect("probabilities_changed", _on_probs_changed)
 			tm.queue_free()
 
@@ -58,7 +58,7 @@ func _refresh_preview():
 
 		# make sure to connect the rotated signal so that it automatically 
 		# recenters the tetrimino after rotation.
-		tetrimino_manager.get_tetrimino().rotated.connect(_on_rotated)
+		# tetrimino_manager.get_tetrimino().rotated.connect(_on_rotated)
 
 		if props.has("in_superposition") and props["in_superposition"]:
 			tetrimino_manager.toggle_superposition(true)
@@ -84,7 +84,7 @@ func _recenter_tetrimino() -> void:
 		)
 		tetrimino.position = viewport.size * 0.5 - center_offset
 		if _is_selected:
-			tetrimino_manager.toggle_superposition(true)
+			tm.toggle_superposition(true)
 
 
 func set_selected(selected: bool, emit: bool = true) -> void:
@@ -111,22 +111,6 @@ func _update_style():
 	sb.set_border_width_all(3)
 	sb.set_corner_radius_all(4)
 	panel.add_theme_stylebox_override("panel", sb)
-
-func set_selected(selected: bool, emit: bool = true) -> void:
-	if _is_selected == selected:
-		return # No change, avoid extra logic
-
-	_is_selected = selected
-	_update_style()
-	if preview_root:
-		var tm = get_tetrimino_manager()
-		if tm:
-			tm.toggle_superposition(_is_selected)
-			#if not _is_selected:
-				#rotation_angle = tm.rotation_index * 90
-
-	if emit:
-		emit_signal("select", shape_name, rotation_angle, self)
 
 func get_tetrimino_manager() -> TetriminoManager:
 	return preview_root.get_node_or_null("TetriminoManager") as TetriminoManager
