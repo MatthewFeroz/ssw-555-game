@@ -40,6 +40,12 @@ const MAX_PUZZLES: int = 2
 const MAX_TETRIMINOS: int = 3	# there's only 3 tetriminos for a given solution
 
 func _ready() -> void:
+	for slot in get_tree().get_nodes_in_group("tetrimino_slots"):
+		slot.set_selected(false, false)
+	current_slot = null
+	selected_shape_name = ""
+	selected_rotation_angle = 0
+	
 # listen for score updates
 	grid_container.update_score.connect(_on_score_update)
 # getting tetrimino slots/shapes/rot
