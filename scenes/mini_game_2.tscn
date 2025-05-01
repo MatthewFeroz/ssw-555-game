@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://dg8fx3ghxgfs8"]
+[gd_scene load_steps=5 format=3 uid="uid://dg8fx3ghxgfs8"]
 
-[ext_resource type="AudioStream" uid="uid://doi75sfxh1d4c" path="res://assets/Audio/Decision.wav" id="1_d82ek"]
-[ext_resource type="AudioStream" uid="uid://g55mhso1y2xn" path="res://assets/Audio/Button Selection.wav" id="2_ulfne"]
+[ext_resource type="AudioStream" uid="uid://cuc8qvdp2qapm" path="res://assets/Audio/Decision.wav" id="1_d82ek"]
+[ext_resource type="AudioStream" uid="uid://dshkfwdfxec00" path="res://assets/Audio/Button Selection.wav" id="2_ulfne"]
+[ext_resource type="AudioStream" uid="uid://b0t575t512v4n" path="res://assets/Audio/correct_choice.wav" id="3_o5tph"]
+[ext_resource type="AudioStream" uid="uid://dnsahjmwxw54j" path="res://assets/Audio/female-vocal-321-countdown-240912.wav" id="4_ulfne"]
 
 [node name="Control" type="Node2D"]
 
@@ -24,3 +26,7 @@ offset_right = 12.0
 offset_bottom = 10.0
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Correct_answer"]
+stream = ExtResource("3_o5tph")
+
+[node name="Countdown" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_ulfne")

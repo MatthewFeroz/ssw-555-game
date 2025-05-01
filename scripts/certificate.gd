@@ -4,8 +4,7 @@ extends Node2D
 
 @onready var name_label = $Control/Name
 @onready var date_label = $Control/Date
-#@onready var title_label = $Control/Title
-#@onready var message_label = $Control/Message
+
 
 func _ready():
 	name_label.text = Global.user_name

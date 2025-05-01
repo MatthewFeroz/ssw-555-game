@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://fey1d5iwg4jn"]
+[gd_scene load_steps=3 format=3 uid="uid://fey1d5iwg4jn"]
 
 [ext_resource type="Script" uid="uid://cri6sxxkvni2j" path="res://MiniGame/EntangledCards/QuizPanel.gd" id="1_m31c4"]
+[ext_resource type="AudioStream" uid="uid://dshkfwdfxec00" path="res://assets/Audio/Button Selection.wav" id="2_3sony"]
 
 [node name="QuizPanel" type="Control"]
 visible = false
@@ -47,3 +48,6 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 70
 text = "Submit"
+
+[node name="SubmitSound" type="AudioStreamPlayer" parent="VBoxContainer"]
+stream = ExtResource("2_3sony")

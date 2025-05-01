@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://dlemsvi632rm7"]
+[gd_scene load_steps=7 format=3 uid="uid://dlemsvi632rm7"]
 
 [ext_resource type="Script" uid="uid://cof4vf8dt0ekx" path="res://MiniGame/EntangledCards/CluePanel.gd" id="1_pp11a"]
+[ext_resource type="AudioStream" uid="uid://cuc8qvdp2qapm" path="res://assets/Audio/Decision.wav" id="2_rhw6p"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pp11a"]
 bg_color = Color(0.34, 0.34, 0.34, 0.657)
@@ -77,3 +78,6 @@ theme_override_font_sizes/font_size = 42
 theme_override_styles/normal = SubResource("StyleBoxFlat_maix1")
 text = "Blue Group: ❤️ ➔ 👑 ➔ 💲"
 horizontal_alignment = 1
+
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_rhw6p")
