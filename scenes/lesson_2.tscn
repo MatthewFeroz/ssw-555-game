@@ -1,9 +1,9 @@
 [gd_scene load_steps=9 format=3 uid="uid://cy6rudqvsaxor"]
 
-[ext_resource type="Texture2D" uid="uid://b82qjxbvsw5r3" path="res://assets/SpaceMap/galaxy.jpg" id="1_6nsm3"]
-[ext_resource type="Script" uid="uid://qyfufpy04xno" path="res://scripts/lesson_2.gd" id="1_onjyn"]
-[ext_resource type="Texture2D" uid="uid://bj5d3g7ohc52r" path="res://assets/Lesson 2/entanglemetintro.jpg" id="2_6nsm3"]
-[ext_resource type="Texture2D" uid="uid://dxui2kdthpaqj" path="res://assets/Lesson 2/Entanglement1.jpg" id="4_6nsm3"]
+[ext_resource type="Texture2D" uid="uid://cwdkbiwbifu8j" path="res://assets/SpaceMap/galaxy.jpg" id="1_6nsm3"]
+[ext_resource type="Script" path="res://scripts/lesson_2.gd" id="1_onjyn"]
+[ext_resource type="Texture2D" uid="uid://d0xulma8ftf8r" path="res://assets/Lesson 2/entanglemetintro.jpg" id="2_6nsm3"]
+[ext_resource type="Texture2D" uid="uid://dqg4aicvdpcmt" path="res://assets/Lesson 2/Entanglement1.jpg" id="4_6nsm3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3rwue"]
 bg_color = Color(1, 1, 1, 1)
@@ -87,7 +87,7 @@ layout_direction = 4
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_font_sizes/font_size = 22
-text = "Quantum entanglement is a phenomenon where two or more particles become linked, sharing information instantly, no matter how far apart they are. If you measure one particle, the state of the other changes immediately, even across vast distances. Scientists call this "spooky action at a distance.""
+text = "Quantum entanglement is a phenomenon where two or more particles become linked, sharing information instantly, no matter how far apart they are. If you measure one particle, the state of the other changes immediately, even across vast distances. Scientists call this "
 autowrap_mode = 3
 
 [node name="TextureRect" type="TextureRect" parent="Control/Panel/ScrollContainer/VBoxContainer"]

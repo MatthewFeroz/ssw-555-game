@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://b0fv7ew1fr17h"]
 
-[ext_resource type="Texture2D" uid="uid://cjtniak32b445" path="res://assets/sprites/power-up1.png" id="1_c4rma"]
-[ext_resource type="Script" uid="uid://dyj0kiuxn0wq" path="res://scripts/ui.gd" id="1_ro3t7"]
+[ext_resource type="Texture2D" uid="uid://coglrlgt50gtc" path="res://assets/sprites/power-up1.png" id="1_c4rma"]
+[ext_resource type="Script" path="res://scripts/ui.gd" id="1_ro3t7"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ghj5q"]
 font_size = 50

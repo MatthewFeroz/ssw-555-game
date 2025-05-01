@@ -1,10 +1,10 @@
 [gd_scene load_steps=13 format=3 uid="uid://bwqx2rr8bbny0"]
 
 [ext_resource type="Script" uid="uid://bgw41cpf2u6wm" path="res://scripts/intro_anim.gd" id="1_ljbp6"]
-[ext_resource type="Texture2D" uid="uid://diwnyqr0wulj0" path="res://assets/SpaceMap/photo-1610296669228-602fa827fc1f.jpg" id="1_pmp6g"]
-[ext_resource type="Texture2D" uid="uid://dnlcx2cg2vf1b" path="res://assets/sprites/spaceshipsrz-0.png" id="2_ljbp6"]
-[ext_resource type="AudioStream" uid="uid://7rkfm6crefn3" path="res://assets/space-station-247790.mp3" id="4_mmwkr"]
-[ext_resource type="FontFile" uid="uid://b50mnesfr3cd2" path="res://assets/Nasalization Rg.otf" id="5_tjkwf"]
+[ext_resource type="Texture2D" uid="uid://ch6cqug7ck0w3" path="res://assets/SpaceMap/photo-1610296669228-602fa827fc1f.jpg" id="1_pmp6g"]
+[ext_resource type="Texture2D" uid="uid://dmgbjhb7uwgaa" path="res://assets/sprites/spaceshipsrz-0.png" id="2_ljbp6"]
+[ext_resource type="AudioStream" uid="uid://d4dt2m5v64epm" path="res://assets/space-station-247790.mp3" id="4_mmwkr"]
+[ext_resource type="FontFile" uid="uid://c75p5ia0spmhb" path="res://assets/Nasalization Rg.otf" id="5_tjkwf"]
 
 [sub_resource type="Animation" id="Animation_mmwkr"]
 length = 0.001
@@ -195,3 +195,4 @@ offset_bottom = 1114.0
 color = Color(0, 0, 0, 1)
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="toggled" from="music" to="." method="_on_music_toggled"]

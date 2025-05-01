@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cc88mlmwct3qq"]
+[gd_scene load_steps=14 format=3 uid="uid://cc88mlmwct3qq"]
 
 [ext_resource type="PackedScene" uid="uid://cjirkqh35qrve" path="res://scenes/main_scene.tscn" id="1_243bm"]
 [ext_resource type="Script" uid="uid://b0nyjd35uoqm8" path="res://scripts/main_scene_1.gd" id="1_ngauo"]
@@ -12,7 +12,6 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_bn0jv"]
 font_size = 20
-font_color = Color(1, 1, 1, 1)
 shadow_size = 2
 shadow_color = Color(0, 0, 0, 0.5)
 shadow_offset = Vector2(2, 2)
@@ -82,13 +81,13 @@ offset_right = 1403.72
 offset_bottom = 604.522
 scale = Vector2(1.2989, 1.2989)
 theme_override_font_sizes/font_size = 20
-text = "Planet Entaglement"
+text = "Planet Entanglement"
 
 [node name="Label2" type="Label" parent="Coins/Lesson 1"]
-offset_left = 406.123
-offset_top = 558.562
-offset_right = 811.123
-offset_bottom = 607.562
+offset_left = 292.967
+offset_top = 502.885
+offset_right = 788.967
+offset_bottom = 561.885
 scale = Vector2(1.73973, 1.49188)
 size_flags_horizontal = 0
 text = "There isn't enough coolant in the vacuum of space. 
@@ -154,5 +153,4 @@ color = Color(0, 0, 0, 1)
 
 [connection signal="body_entered" from="Coins/Lesson 1" to="Coins/Lesson 1" method="_on_body_entered"]
 [connection signal="body_entered" from="Coins/Mini Game 2" to="Coins/Mini Game 2" method="_on_body_entered"]
-[connection signal="coin_collected" from="Coins/CoinBase" to="." method="_on_coin_base_coin_collected"]
 [connection signal="toggled" from="music" to="." method="_on_music_toggled"]
