@@ -24,15 +24,6 @@ var _probabilities: Array
 var _accum_delta: float	# accumulated delta; will only be used when in superposition
 
 # built-in functions
-func _ready() -> void:
-	_shape = tetrimino_manager.t_shape
-	_block_size = tetrimino_manager.block_size
-	_rotation_index = tetrimino_manager.rotation_index
-	_valid_rotations = get_valid_rotations(_shape)
-	_probabilities = []
-	_probabilities.resize(_valid_rotations.size())
-	_probabilities.fill(1.0 / _valid_rotations.size())
-
 func _process(delta) -> void:
 	# don't do anything if the game isn't actually running
 	if Engine.is_editor_hint():
@@ -43,11 +34,29 @@ func _process(delta) -> void:
 		# when that happens, schedule the next rotation and reset the accum_delta
 		_accum_delta += delta
 		#print("accumulated delta: " + str(_accum_delta))
-		if _accum_delta >= _probabilities[_rotation_index]:
-			_schedule_next_rotation()
-			_accum_delta = 0.0
+		
+		# Make sure rotation_index is within bounds of valid rotations
+		var valid_rot_count = _valid_rotations.size()
+		if valid_rot_count > 0:
+			_rotation_index = _rotation_index % valid_rot_count
+			if _accum_delta >= _probabilities[_rotation_index]:
+				_schedule_next_rotation()
+				_accum_delta = 0.0
 	else:
 		probs_changed.emit(_probabilities)
+
+func _ready() -> void:
+	_shape = tetrimino_manager.t_shape
+	_block_size = tetrimino_manager.block_size
+	_valid_rotations = get_valid_rotations(_shape)
+	
+	# Initialize rotation index within valid bounds
+	_rotation_index = tetrimino_manager.rotation_index % _valid_rotations.size()
+	
+	# Initialize probabilities array to match valid rotations
+	_probabilities = []
+	_probabilities.resize(_valid_rotations.size())
+	_probabilities.fill(1.0 / _valid_rotations.size())
 
 func _physics_process(_delta: float) -> void:
 	# don't do anything if the game isn't actually running
