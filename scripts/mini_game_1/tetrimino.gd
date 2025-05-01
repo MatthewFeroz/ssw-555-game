@@ -203,6 +203,8 @@ func _collapse() -> void:
 func _toggle_superposition(state: bool) -> void:
 	in_superposition = state
 	_accum_delta = 0.0
+	if not in_superposition:
+		rotated.emit(_rotation_index)
 
 func _shuffle_all_probs() -> void:
 	var temp = _get_new_probs(100, _probabilities.size(), 5, 95)

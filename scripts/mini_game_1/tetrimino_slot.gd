@@ -79,7 +79,6 @@ func _recenter_tetrimino() -> void:
 		tetrimino.position = viewport.size * 0.5 - center_offset
 
 func _on_rotated(rot_index: int) -> void:
-	rotation_angle = rot_index * 90
 	# bc Godot will update layout sizes after the next frame, we need to run this after that point.
 	_recenter_after_frame()
 
