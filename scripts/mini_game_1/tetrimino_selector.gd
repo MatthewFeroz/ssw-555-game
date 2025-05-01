@@ -18,7 +18,6 @@ func _ready():
 		print(tetriminos_data)  # Print out the data to verify its structure
 		_refresh_slots()  # Refresh slots with data from the puzzle
 		
-		##### test begin 
 func _refresh_slots():
 	if slots.size() == 3 and tetriminos_data.size() == 3:
 		for i in range(slots.size()):

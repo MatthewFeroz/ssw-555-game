@@ -2,6 +2,9 @@
 class_name TetriminoManager
 extends Node
 
+# signals
+signal probabilities_changed(new_probs: Array)
+
 # constants for tetrimino shape data
 const TETRIMINO_SHAPES_PATH = "res://resources/shapes/tetrimino_shapes.tres"
 const TETRIMINO_DATA = preload(TETRIMINO_SHAPES_PATH)	# tetrimino_shape: key, shape_data: value
@@ -41,6 +44,8 @@ var tetrimino: Tetrimino
 var t_shape: String = "O"
 var block_size: float = 128.0	# the original texture size is 128x128
 var rotation_index: int = 0
+var in_superposition: bool = false
+var probabilities: Array = []
 
 # built-in functions
 func _ready() -> void:
@@ -85,6 +90,7 @@ func spawn_tetrimino(
 	else:
 		print("Here we created a new tetrimino!")
 		tetrimino = Tetrimino.new()
+		probabilities = tetrimino._probabilities
 		if tetrimino.get_child_count() == 0:
 			var blocks = Node2D.new()
 			blocks.name = "Blocks"
@@ -133,6 +139,9 @@ func spawn_tetrimino(
 	# ensure that tetriminos in an UI element cannot fall
 	if is_child_of_preview():
 		tetrimino.can_fall = false
+		
+	if not tetrimino.probs_changed.is_connected(_on_probabilities_changed):
+		tetrimino.probs_changed.connect(_on_probabilities_changed)
 	
 	# send out a signal that the tetrimino has been spawned
 	#tetrimino.spawned.emit(tetrimino.global_position)
@@ -170,8 +179,23 @@ func toggle_superposition(state: bool) -> void:
 		if not tetrimino.in_superposition:
 			print("tetrimino_manager.gd: Putting the tetrimino in superposition!")
 			tetrimino._toggle_superposition(state)
+			in_superposition = state
 	else:
 		if tetrimino.in_superposition:
 			print("tetrimino_manager.gd: Stopping superposition. Returning tetrimino to defaults.")
 			tetrimino._toggle_superposition(state)
+			in_superposition = state
 	pass
+
+func shuffle_all_probabilities() -> void:
+	tetrimino._shuffle_all_probs()
+	probabilities = tetrimino._probabilities
+
+func shift_probability_of(rot_index: int) -> void:
+	tetrimino._shift_prob_of(rot_index)
+	probabilities[rot_index] = tetrimino._probabilities[rot_index]
+
+# internal functions
+func _on_probabilities_changed(new_probs: Array) -> void:
+	probabilities = new_probs
+	probabilities_changed.emit(new_probs)
