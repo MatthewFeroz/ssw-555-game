@@ -40,8 +40,10 @@ const MAX_PUZZLES: int = 2
 const MAX_TETRIMINOS: int = 3	# there's only 3 tetriminos for a given solution
 
 func _ready() -> void:
+	await get_tree().process_frame  # Ensures UI is fully ready
 	for slot in get_tree().get_nodes_in_group("tetrimino_slots"):
 		slot.set_selected(false, false)
+
 	current_slot = null
 	selected_shape_name = ""
 	selected_rotation_angle = 0
@@ -56,6 +58,7 @@ func _ready() -> void:
 	if puzzle:
 		grid_container.initialize_grid(puzzle.starting_blocks)
 	
+
 func load_puzzle(puzzle_name: String) -> void:
 	print("Calling load_puzzle with name: ", puzzle_name)
 	puzzle = puzzle_manager.get_puzzle_by_name(puzzle_name)
@@ -133,11 +136,16 @@ func update_gate_count():
 func _on_hgate_pressed() -> void:
 	if current_slot:
 		current_slot.get_tetrimino_manager().shuffle_all_probabilities()
+		if preview_tetrimino and is_instance_valid(preview_tetrimino):
+			preview_tetrimino.shuffle_all_probabilities()
 		_on_use_gate_pressed()
+		
 
 func _on_sgate_pressed() -> void:
 	if current_slot:
 		current_slot.get_tetrimino_manager().shift_probability_of(0)
+		if preview_tetrimino and is_instance_valid(preview_tetrimino):
+			preview_tetrimino.shift_probability_of(0)
 		_on_use_gate_pressed()
 
 func _on_score_update(new_score: int) -> void:
