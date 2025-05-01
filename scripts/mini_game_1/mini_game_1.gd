@@ -267,7 +267,8 @@ func preview_selected_tetrimino() -> void:
 	)
 	# Store the newly spawned piece as the current preview
 	preview_tetrimino = grid_container.get_current_tetrimino()
-
+	if preview_tetrimino:
+		preview_tetrimino.toggle_superposition(true)
 
 
 
