@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var player_name: String = ""
+#@export var player_name: String = ""
 
 @onready var name_label = $Control/Name
 @onready var date_label = $Control/Date
@@ -9,6 +9,7 @@ extends Node2D
 func _ready():
 	name_label.text = Global.user_name
 	date_label.text = "Date: " + Time.get_datetime_string_from_system()
+	print("🧾 Name on certificate:", Global.user_name)
 
 
 func _on_download_button_pressed() -> void:

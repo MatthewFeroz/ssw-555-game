@@ -63,6 +63,7 @@ vertical_alignment = 1
 [node name="NameInput" type="LineEdit" parent="." node_paths=PackedStringArray("shortcut_context")]
 show_behind_parent = true
 top_level = true
+layout_mode = 0
 offset_left = 725.0
 offset_top = 650.0
 offset_right = 1225.0
@@ -81,6 +82,7 @@ deselect_on_focus_loss_enabled = false
 select_all_on_focus = true
 
 [node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
 offset_right = 1906.0
 offset_bottom = 1061.0
 mouse_filter = 2

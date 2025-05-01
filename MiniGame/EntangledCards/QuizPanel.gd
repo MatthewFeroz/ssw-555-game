@@ -10,6 +10,7 @@ signal answer_selected(is_correct: bool)
 	$VBoxContainer/OptionD
 ]
 @onready var submit_button = $VBoxContainer/SubmitButton
+@onready var submit_sound = $VBoxContainer/SubmitSound  # Assuming AudioStreamPlayer node is named 'AudioStreamPlayer'
 
 var correct_option := ""  # Will be set dynamically, like "B", "C", etc.
 var selected_option := ""
@@ -36,5 +37,9 @@ func _on_option_selected(option_name: String):
 func _on_submit_pressed():
 	if selected_option == "":
 		return # no selection
+	
+	# Play the sound when the submit button is pressed
+	submit_sound.play()  # Make sure the AudioStreamPlayer is assigned and has the correct sound file
+
 	var is_correct = (selected_option == correct_option)
 	emit_signal("answer_selected", is_correct)
