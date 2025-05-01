@@ -40,22 +40,29 @@ offset_bottom = 42.0
 [node name="Coins" type="Node2D" parent="."]
 z_index = 1
 
-[node name="CoinBase1" parent="Coins" instance=ExtResource("3_bxx46")]
+[node name="TotalScore" type="Label" parent="Coins"]
+offset_left = 1556.0
+offset_top = 18.0
+offset_right = 1765.0
+offset_bottom = 86.0
+theme_override_font_sizes/font_size = 40
+
+[node name="CoinBase1" parent="Coins" groups=["coins"] instance=ExtResource("3_bxx46")]
 z_index = 1
 position = Vector2(326, 448)
 collision_layer = 4
 
-[node name="CoinBase2" parent="Coins" instance=ExtResource("3_bxx46")]
+[node name="CoinBase2" parent="Coins" groups=["coins"] instance=ExtResource("3_bxx46")]
 z_index = 1
 position = Vector2(1505, 623)
 collision_layer = 4
 
-[node name="CoinBase3" parent="Coins" instance=ExtResource("3_bxx46")]
+[node name="CoinBase3" parent="Coins" groups=["coins"] instance=ExtResource("3_bxx46")]
 z_index = 1
 position = Vector2(596, 289)
 collision_layer = 4
 
-[node name="CoinBase4" parent="Coins" instance=ExtResource("3_bxx46")]
+[node name="CoinBase4" parent="Coins" groups=["coins"] instance=ExtResource("3_bxx46")]
 z_index = 1
 position = Vector2(1301, 412)
 collision_layer = 4

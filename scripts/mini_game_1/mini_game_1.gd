@@ -305,6 +305,7 @@ func next_puzzle() -> void:
 	
 func show_game_over() -> void:
 	game_over_label.text = "Game Over! Final Score: " + str(total_score)
+	ScoreManager.add_score(total_score)  # or total_score if that's the variable used
 	#game_over_popup.popup_centered()
 	game_over_popup.visible = true
 	

@@ -19,12 +19,17 @@ config/icon="res://icon.svg"
 
 SaveGlobal="*res://scripts/SaveGlobal.gd"
 Global="*res://scripts/Global.gd"
+ScoreManager="*res://scripts/ScoreManager.gd"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/canvas_textures/default_texture_filter=0
+
+[editor]
+
+movie_writer/movie_file="C:/Users/Owner/Desktop/SSW 555/ssw-555-game/QuantumSpace2.avi"
 
 [global_group]
 
