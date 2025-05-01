@@ -34,12 +34,13 @@ var solution_pieces: Array
 var current_slot: Node = null
 var selected_shape_name: String = ""
 var selected_rotation_angle: int = 0
-var managers = []	# this is for testing! REMOVE LATER
+var gate_uses: int = MAX_GATE_USES
 
 # constants
 const TETRIMINO_SCENE_PATH = "res://scenes/mini_game_1/tetrimino.tscn"
 const TETRIMINO_SCENE = preload(TETRIMINO_SCENE_PATH)
 const DEFAULT_PUZZLE_NAME = "puzzle_1"
+const MAX_GATE_USES: int = 2
 const MAX_PUZZLES: int = 2
 const MAX_TETRIMINOS: int = 3	# there's only 3 tetriminos for a given solution
 
@@ -49,8 +50,6 @@ func _ready() -> void:
 
 	# getting tetrimino slots/shapes/rot
 	for slot in get_tree().get_nodes_in_group("tetrimino_slots"):
-		var mgr_path = "Panel/SubViewportContainer/SubViewport/TetriminoPreview/TetriminoManager"	# this is for testing! REMOVE LATER
-		managers.append(slot.get_node(mgr_path))	# this is for testing! REMOVE LATER
 		slot.connect("select", Callable(self, "_on_slot_selected"))
 
 	await get_tree().process_frame
@@ -65,11 +64,11 @@ func _ready() -> void:
 	load_puzzle("puzzle_%d" % puzzle_num)
 	if puzzle:
 		grid_container.initialize_grid(puzzle.starting_blocks)
-
-## logic for decreasing gate use number after someone presses button
-# (rest of logic start at lines 309)
-	update_gate_count()
-	$sgate.pressed.connect(_on_use_gate_pressed)
+#
+### logic for decreasing gate use number after someone presses button
+## (rest of logic start at lines 309)
+	#update_gate_count()
+	#$sgate.pressed.connect(_on_use_gate_pressed)
 
 	
 func load_puzzle(puzzle_name: String) -> void:
@@ -139,7 +138,6 @@ func _on_slot_selected(shape_name: String, rotation_angle: int, slot_index: Node
 		selected_rotation_angle = rotation_angle
 
 # gate uses UI logic
-var gate_uses: int = 2
 func _on_use_gate_pressed():
 	if gate_uses > 0:
 		gate_uses -= 1
@@ -157,8 +155,9 @@ func _on_hgate_pressed() -> void:
 		_on_use_gate_pressed()
 
 func _on_sgate_pressed() -> void:
-	managers[0].shift_probability_of(0)
-	_on_use_gate_pressed()
+	if current_slot:
+		current_slot.get_tetrimino_manager().shift_probability_of(0)
+		_on_use_gate_pressed()
 
 func _on_score_update(new_score: int) -> void:
 	total_score += new_score
@@ -257,6 +256,12 @@ func reset_game() -> void:
 	current_slot = null
 	selected_shape_name = ""
 	selected_rotation_angle = 0
+
+	# reset the visibility of the gates AND gate uses
+	$sgate.visible = true
+	$hgate.visible = true
+	gate_uses = MAX_GATE_USES
+	update_gate_count()
 
 func next_puzzle() -> void:
 	puzzle_num += 1
