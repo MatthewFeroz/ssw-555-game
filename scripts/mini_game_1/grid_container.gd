@@ -500,6 +500,8 @@ func clear_grid_row(
 	for col_index in range(grid_row.size()):
 		grid_cells[row_index][col_index] = null
 
+	$LineClearance.play() # plays sound effect
+
 	# now, emit the signal that a line has been cleared
 	line_clear.emit(row_index)
 	# also emit a signal to update the score

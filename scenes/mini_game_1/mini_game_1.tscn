@@ -1,15 +1,14 @@
 [gd_scene load_steps=15 format=3 uid="uid://liywc0r121p5"]
 
 [ext_resource type="Script" uid="uid://cdg4spfqn2q02" path="res://scripts/mini_game_1/mini_game_1.gd" id="1_wbkql"]
-[ext_resource type="Texture2D" uid="uid://d3xiamq1ep2aj" path="res://assets/Mini-Game 1/space.jpg" id="2_8k4a5"]
+[ext_resource type="Texture2D" uid="uid://qoidb00ucjyg" path="res://assets/Mini-Game 1/space.jpg" id="2_8k4a5"]
 [ext_resource type="PackedScene" uid="uid://b8x0sy0ke6wfl" path="res://scenes/mini_game_1/grid.tscn" id="2_jbqk3"]
 [ext_resource type="PackedScene" uid="uid://cen8goii1hogk" path="res://scenes/pause_menu_1.tscn" id="3_8k4a5"]
 [ext_resource type="Script" uid="uid://bjoturlvfymhh" path="res://scripts/mini_game_1/puzzle_manager.gd" id="3_jbqk3"]
-[ext_resource type="AudioStream" uid="uid://c50v7hwemmutt" path="res://assets/Audio/Decision.wav" id="4_qx31w"]
-[ext_resource type="AudioStream" uid="uid://xr8yqjwjnce7" path="res://assets/Audio/Button Selection.wav" id="5_h7mtl"]
-[ext_resource type="AudioStream" uid="uid://cdauf34yh88m2" path="res://assets/Audio/Line Clearance.wav" id="6_ml3h1"]
+[ext_resource type="AudioStream" uid="uid://doi75sfxh1d4c" path="res://assets/Audio/Decision.wav" id="4_qx31w"]
+[ext_resource type="AudioStream" uid="uid://g55mhso1y2xn" path="res://assets/Audio/Button Selection.wav" id="5_h7mtl"]
 [ext_resource type="PackedScene" uid="uid://ce660yeaqdu28" path="res://scenes/mini_game_1/tetrimino_selector.tscn" id="8_ml3h1"]
-[ext_resource type="Script" uid="uid://r0gadebx83tx" path="res://scripts/mini_game_1/prob_graph.gd" id="10_xte0r"]
+[ext_resource type="Script" path="res://scripts/mini_game_1/prob_graph.gd" id="10_xte0r"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h7mtl"]
 bg_color = Color(0.678431, 0.305882, 0.858824, 1)
@@ -30,6 +29,9 @@ corner_detail = 1
 
 [node name="Node" type="Node"]
 script = ExtResource("1_wbkql")
+
+[node name="SelectSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_h7mtl")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 z_index = -5
@@ -57,20 +59,6 @@ script = ExtResource("3_jbqk3")
 
 [node name="Decision_bgm" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_qx31w")
-
-[node name="Piece_selection" type="Button" parent="."]
-offset_right = 12.0
-offset_bottom = 10.0
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Piece_selection"]
-stream = ExtResource("5_h7mtl")
-
-[node name="Line_clearance" type="Button" parent="."]
-offset_right = 12.0
-offset_bottom = 10.0
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Line_clearance"]
-stream = ExtResource("6_ml3h1")
 
 [node name="collapse" type="Button" parent="."]
 offset_left = 645.0
@@ -269,7 +257,6 @@ icon_alignment = 1
 
 [node name="NextPuzzle" type="PopupPanel" parent="."]
 size = Vector2i(1950, 1000)
-visible = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="NextPuzzle"]
 custom_minimum_size = Vector2(1942, 500)

@@ -83,14 +83,21 @@ func _recenter_tetrimino() -> void:
 			(top + bottom) * 0.5
 		)
 		tetrimino.position = viewport.size * 0.5 - center_offset
+		if _is_selected:
+			tetrimino_manager.toggle_superposition(true)
 
-func _on_rotated(rot_index: int) -> void:
-	# bc Godot will update layout sizes after the next frame, we need to run this after that point.
-	_recenter_after_frame()
 
-func _recenter_after_frame() -> void:
-	await get_tree().process_frame
-	_recenter_tetrimino()
+func set_selected(selected: bool, emit: bool = true) -> void:
+	if _is_selected == selected:
+		return # No change, avoid extra logic
+
+	_is_selected = selected
+	
+	_update_style()
+	_refresh_preview()
+	if emit:
+		emit_signal("select", shape_name, rotation_angle, self)
+	
 
 func _update_style():
 	var sb = StyleBoxFlat.new()
