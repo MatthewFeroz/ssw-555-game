@@ -152,8 +152,9 @@ func update_gate_count():
 		$sgate.visible = false
 		
 func _on_hgate_pressed() -> void:
-	managers[0].shuffle_all_probabilities()
-	_on_use_gate_pressed()
+	if current_slot:
+		current_slot.get_tetrimino_manager().shuffle_all_probabilities()
+		_on_use_gate_pressed()
 
 func _on_sgate_pressed() -> void:
 	managers[0].shift_probability_of(0)
@@ -246,6 +247,12 @@ func reset_game() -> void:
 
 	tetrimino_selector.tetriminos_data = solution_pieces.filter(func(p): return p != null)
 	tetrimino_selector._refresh_slots()
+
+	await get_tree().process_frame
+	var first_visible = tetrimino_selector.slots.filter(func(elem): return elem.visible)[0]
+	if first_visible:
+		first_visible.set_selected(true, false)
+		_on_slot_selected(first_visible.shape_name, first_visible.rotation_angle, first_visible)
 
 	current_slot = null
 	selected_shape_name = ""

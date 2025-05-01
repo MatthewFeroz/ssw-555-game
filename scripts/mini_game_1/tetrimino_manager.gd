@@ -140,8 +140,9 @@ func spawn_tetrimino(
 	if is_child_of_preview():
 		tetrimino.can_fall = false
 
-	# set up a listener for when the probabilities change
-	tetrimino.probs_changed.connect(_on_probabilities_changed)
+	# set up a listener for when the probabilities change (if not already connected)
+	if not tetrimino.probs_changed.is_connected(_on_probabilities_changed):
+		tetrimino.probs_changed.connect(_on_probabilities_changed)
 
 	# send out a signal that the tetrimino has been spawned
 	#tetrimino.spawned.emit(tetrimino.global_position)

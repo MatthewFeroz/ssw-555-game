@@ -130,5 +130,5 @@ func _draw_bars(shape_name: String, probs: Array) -> void:
 			set_visibility(bar, label, true)
 		else:
 			set_bar_height(bar, 0)
-			set_label_text(label, "0%")
+			set_label_text(label, "")
 			set_visibility(bar, label, false)
