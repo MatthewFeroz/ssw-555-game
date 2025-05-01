@@ -332,6 +332,7 @@ func preview_selected_tetrimino() -> void:
 		selected_rotation_angle = last_rotation_angles[selected_shape_name]
 		
 	var spawn_pos = get_spawn_pos(selected_shape_name, selected_rotation_angle)
+	spawn_pos.x += 1
 	grid_container.spawn_new_tetrimino(
 		selected_shape_name,
 		spawn_pos,
